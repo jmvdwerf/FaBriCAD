@@ -78,5 +78,27 @@ class Quadrangle extends Polygon
         $this->updatePoint(Quadrangle::NORTHEAST, $pt);
         return $this;
     }
+    
+    public function mirrorOnX(): Shape
+    {
+        parent::mirrorOnX();
+        
+        // west becomes east and vice versa
+        $this->flipPoints(Quadrangle::SOUTHWEST, Quadrangle::SOUTHEAST);
+        $this->flipPoints(Quadrangle::NORTHWEST, Quadrangle::NORTHEAST);
+        
+        return $this;
+    }
+    
+    public function mirrorOnY(): Shape
+    {
+        parent::mirrorOnY();
+        
+        // south becomes north and vice versa
+        $this->flipPoints(Quadrangle::NORTHWEST, Quadrangle::SOUTHWEST);
+        $this->flipPoints(Quadrangle::NORTHEAST, Quadrangle::SOUTHEAST);
+                
+        return $this;
+    }
 }
     

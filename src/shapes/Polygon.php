@@ -1,5 +1,5 @@
 <?php
-namespace jmw\frabricad\shapes;
+namespace jmw\fabricad\shapes;
 
 class Polygon extends Shape
 {
@@ -7,7 +7,7 @@ class Polygon extends Shape
      * All the points of the Polygon
      * @var array
      */
-    private $points = array();
+    protected $points = array();
     
     /**
      * Returns the origin, being the first point of the polygon. If no such
@@ -196,6 +196,15 @@ class Polygon extends Shape
         }
         
         return $this;
+    }
+    
+    public function flipPoints(int $index1, int $index2)
+    {
+        if (($index1 >= 0) && ($index1 < $this->size()) && ($index2 >= 0) && ($index2 < $this->size())) {
+            $pt = Point::copyFrom($this->points[$index1]);
+            $this->points[$index1]->set($this->points[$index2]);
+            $this->points[$index2]->set($pt);
+        }
     }
 
     /**

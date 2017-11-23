@@ -1,11 +1,8 @@
 <?php
-namespace jmw\frabricad\shapes;
+namespace jmw\fabricad\shapes;
 
-class Rectangle extends Shape
+class Rectangle extends Quadrangle
 {
-    
-    private $height = 0.0;
-    private $width = 0.0;
     
     /**
      * Constructor, optional height and width to provide
@@ -14,9 +11,13 @@ class Rectangle extends Shape
      */
     public function __construct(float $w = 0.0, float $h = 0.0, Point $origin = null)
     {
-        parent::__construct($origin);
-        $this->setHeight($h);
-        $this->setWidth($w);
+        if ($origin == null) { $origin = new Point(); }
+        
+        $nw = new Point($origin->getX(), $origin->getY() + $h);
+        $ne = new Point($origin->getX() + $w, $origin->getY() + $h);
+        $se = new Point($origin->getX() + $w, $origin->getY());
+        
+        parent::__construct($origin, $nw, $ne, $se);
     }
     
     /**
@@ -25,7 +26,7 @@ class Rectangle extends Shape
      */
     public function getHeight(): float
     {
-        return $this->height;
+        return abs($this->getNorthWest()->getY() - $this->getSouthWest()->getY());
     }
     
     /**
@@ -34,7 +35,7 @@ class Rectangle extends Shape
      */
     public function getWidth(): float
     {
-        return $this->width;
+        return abs($this->getSouthWest()->getX() - $this->getSouthEast()->getX());
     }
     
     /**
@@ -45,7 +46,8 @@ class Rectangle extends Shape
      */
     public function setHeight(float $h): Rectangle
     {
-        $this->height = $h;
+        $this->getNorthEast()->setY($this->getOrigin()->getY() + $h);
+        $this->getNorthWest()->setY($this->getNorthEast()->getY());
         return $this;
     }
     
@@ -57,8 +59,8 @@ class Rectangle extends Shape
      */
     public function setWidth(float $w): Rectangle
     {
-        $this->width = $w;
-        
+        $this->getSouthEast()->setX($this->getOrigin()->getX() + $w);
+        $this->getNorthEast()->setX($this->getSouthEast()->getX());
         return $this;
     }
     
@@ -95,17 +97,14 @@ class Rectangle extends Shape
      */
     public function getTop(): Point
     {
-        return new Point(
-            $this->getOrigin()->getX()+$this->getWidth(), 
-            $this->getOrigin()->getY()+$this->getHeight()
-        );
+        return $this->getNorthEast();
     }
     
-    /**
+    /*
      * Mirrors the rectangle over the Y-axis
      * 
      * @return Rectangle
-     */
+     *
     public function mirrorOnX(): Shape
     {
         $this->origin->setX(-1* $this->origin->getX() - $this->width);
@@ -116,33 +115,22 @@ class Rectangle extends Shape
      * Mirrors the rectangle over the X-axis
      * 
      * @return Rectangle
-     */
+     *
     public function mirrorOnY(): Shape
     {
         $this->origin->setY(-1* $this->origin->getY() - $this->height);
         return $this;
-    }
+    }*/
     
     /**
      * Returns the bounding box of the object. As this is the rectangle itself,
      * we just return the object itself.
      * {@inheritDoc}
-     * @see \jmw\HuisBouwer\shapes\Shape::getBoundingBox()
+     * @see \jmw\fabricad\shapes\Shape::getBoundingBox()
      */
     public function getBoundingBox(): Rectangle
     {
         return new Rectangle($this->getWidth(), $this->getHeight(), $this->getOrigin());
-    }
-    
-    public function toPolygon(): Polygon
-    {
-        $o = $this->getOrigin();
-        return new Polygon(array(
-            new Point($o->getX(), $o->getY()),
-            new Point($o->getX(), $o->getY() + $this->getHeight()),
-            new Point($o->getX() + $this->getWidth(), $o->getY() + $this->getHeight()),
-            new Point($o->getX() + $this->getWidth(), $o->getY()),
-        ));
     }
 
     public function contains(Point $pt): bool

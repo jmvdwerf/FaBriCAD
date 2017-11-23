@@ -123,11 +123,11 @@ final class RectangleTest extends AbstractShapeTest
     
     public function testMirrorY()
     {
-        $w = rand();
-        $h = rand();
+        $w = 4;
+        $h = 5;
         
-        $x = rand();
-        $y = rand();
+        $x = 2;
+        $y = 2;
         
         $o = new Point($x, $y);
         $r = new Rectangle($w, $h, $o);
@@ -161,8 +161,7 @@ final class RectangleTest extends AbstractShapeTest
     
     public function testToPolygon()
     {
-        $r = new Rectangle(10, 5, new Point(3,4));
-        $p = $r->toPolygon();
+        $p = new Rectangle(10, 5, new Point(3,4));
         
         $pts = $p->getPoints();
         $this->assertCount(4, $pts);
