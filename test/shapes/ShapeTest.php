@@ -1,13 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use PHPUnit\Framework\TestCase;
+namespace jmw\fabricad\shapes\test;
 
-use jmw\frabricad\shapes\Shape;
-use jmw\frabricad\shapes\Rectangle;
-use jmw\frabricad\shapes\Point;
+require_once('AbstractShapeTest.php');
 
-final class ShapeTest extends TestCase
+use jmw\fabricad\shapes\Rectangle;
+use jmw\fabricad\shapes\Point;
+
+final class ShapeTest extends AbstractShapeTest
 {
     
     public function testIntersects()

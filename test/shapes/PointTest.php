@@ -1,8 +1,11 @@
 <?php
 declare(strict_types=1);
 
+namespace jmw\fabricad\shapes\test;
+
+
 use PHPUnit\Framework\TestCase;
-use jmw\frabricad\shapes\Point;
+use jmw\fabricad\shapes\Point;
 
 final class PointTest extends TestCase
 {

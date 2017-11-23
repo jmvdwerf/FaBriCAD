@@ -1,14 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use PHPUnit\Framework\TestCase;
+namespace jmw\fabricad\shapes\test;
 
-use jmw\frabricad\shapes\Point;
-use jmw\frabricad\shapes\Polygon;
-use jmw\frabricad\shapes\Shape;
-use jmw\frabricad\shapes\Line;
+use jmw\fabricad\shapes\Point;
+use jmw\fabricad\shapes\Polygon;
 
-final class PolygonTest extends TestCase
+final class PolygonTest extends AbstractShapeTest
 {
     
     public function testEmptiness()
@@ -179,7 +177,7 @@ final class PolygonTest extends TestCase
     }
     
     
-    private function createRhombus(): Polygon
+    protected function createRhombus(): Polygon
     {
         return new Polygon(
             array(
@@ -220,26 +218,4 @@ final class PolygonTest extends TestCase
             )
         );
     }
-    
-    private function assertBoundingBox(Shape $s, $x = 0, $y = 0, $w = 0, $h = 0)
-    {
-        $bb = $s->getBoundingBox();
-        $this->assertPoint($bb->getOrigin(), $x, $y);
-        $this->assertEquals($h, $bb->getHeight());
-        $this->assertEquals($w, $bb->getWidth());
-    }
-    
-    private function assertPoint(Point $pt, float $x = 0, float $y = 0)
-    {
-        $this->assertEquals($x, $pt->getX());
-        $this->assertEquals($y, $pt->getY());
-    }
-    
-    private function assertLine(Line $l, float $sX, float $sY, float $eX, float $eY)
-    {
-        $this->assertPoint($l->getOrigin(), $sX, $sY);
-        $this->assertPoint($l->getEndPoint(), $eX, $eY);
-    }
-    
-    
 }

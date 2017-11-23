@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use PHPUnit\Framework\TestCase;
-use jmw\frabricad\shapes\Ellipse;
-use jmw\frabricad\shapes\Point;
+namespace jmw\fabricad\shapes\test;
 
-final class EllipseTest extends TestCase
+use jmw\fabricad\shapes\Ellipse;
+use jmw\fabricad\shapes\Point;
+
+final class EllipseTest extends AbstractShapeTest
 {
     public function testEllipseConstruct()
     {
