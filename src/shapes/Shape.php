@@ -1,0 +1,70 @@
+<?php
+namespace jmw\frabricad\shapes;
+
+abstract class Shape
+{
+    protected $origin = null;
+    
+    public function __construct(Point $origin = null)
+    {
+        if (empty($origin)) $origin = new Point(0,0);
+        $this->origin = $origin;
+    }
+    
+    /**
+     * Sets the origin of the shape
+     * 
+     * @param Point $orig
+     * @return Shape
+     */
+    public function setOrigin(Point $orig): Shape
+    {
+        $this->origin->set($orig);
+        
+        return $this;
+    }
+    
+    /**
+     * Returns the origin of this shape
+     * @return Point
+     */
+    public function getOrigin(): Point
+    {
+        return $this->origin;
+    }
+    
+    /**
+     * Returns true if the shape $s intersects with this shape. 
+     * Just touching returns false.
+     * 
+     * @param Shape $s
+     * @return bool
+     */
+    public function intersects(Shape $s): bool
+    {
+       $b1 = $this->getBoundingBox();
+       $b2 = $s->getBoundingBox();
+       
+       return 
+           (
+                $b1->getOrigin()->smallerThan($b2->getTop())
+             && $b1->getTop()->greaterThan($b2->getOrigin())  
+           ); 
+    }
+    
+    
+    /**
+     * Returns the boundingbox of this shape
+     * @return Rectangle
+     */
+    public abstract function getBoundingBox(): Rectangle;
+    
+    public abstract function mirrorOnX(): Shape;
+    public abstract function mirrorOnY(): Shape;
+    
+    public function contains(Point $pt): bool
+    {
+        return $this->getBoundingBox()->contains($pt);
+    }
+    
+}
