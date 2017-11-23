@@ -202,9 +202,19 @@ class Point {
     
     public function equals(Point $pt): bool
     {
-        return 
-               (abs($pt->getX() - $this->getX()) < 0.0001)
-               && (abs($pt->getY() - $this->getY()) < 0.0001);
+        return $this->equalsXY($pt->getX(), $pt->getY());
+    }
+    
+    public function equalsXY(float $x, float $y): bool
+    {
+        return
+           (abs($x - $this->getX()) < 0.0001)
+        && (abs($y - $this->getY()) < 0.0001);
+    }
+    
+    public static function copyFrom(Point $pt): Point
+    {
+        return new Point($pt->getX(), $pt->getY());
     }
 }
 

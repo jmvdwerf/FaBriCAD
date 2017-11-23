@@ -137,6 +137,47 @@ final class PolygonTest extends TestCase
         $this->assertFalse($m->isConvex());
     }
     
+    public function testDeletePoint()
+    {
+        $r = $this->createRhombus();
+        $orig = $this->createRhombus();
+        
+        $r->deletePoint(10);
+        
+        $this->assertEquals($r, $orig);
+        
+        $r->deletePoint(2);
+        
+        $this->assertEquals(3, $r->size());
+        
+        $expKey = 0;
+        foreach($r->getPoints() as $key => $pt) {
+            $this->assertEquals($expKey, $key);
+            $expKey++;
+        }
+        
+        $this->assertPoint($r->getPoints()[0], 2, 2);
+        $this->assertPoint($r->getPoints()[1], 4, 4);
+        $this->assertPoint($r->getPoints()[2], 4, 0);
+    }
+    
+    public function testUpdatePoint()
+    {
+        $s = new Polygon(array(new Point(2,2)));
+        $this->assertEquals(1, $s->size());
+        
+        $this->assertTrue($s->updatePointXY(0, 4, 4));
+        
+        $this->assertPoint($s->getOrigin(), 4, 4);
+        
+        $r = $this->createRhombus();
+        $this->assertTrue($r->updatePoint(2, new Point(7,2)));
+        
+        $this->assertFalse($r->updatePointXY(12, 3, 4));
+        
+        $this->assertPoint($r->getPoints()[2], 7 ,2);
+    }
+    
     
     private function createRhombus(): Polygon
     {

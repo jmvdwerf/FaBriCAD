@@ -157,6 +157,19 @@ final class PointTest extends TestCase
         $this->assertTrue($p1->greaterThan($p5));
         $this->assertFalse($p1->smallerThan($p5));
     }
+    
+    public function testCopyFrom()
+    {
+        $x = rand();
+        $y = rand();
+        
+        $p = new Point($x, $y);
+        $q = Point::copyFrom($p);
+        
+        $p->setX($x+1);
+        
+        $this->assertFalse($p == $q);
+    }
 }
 
 
