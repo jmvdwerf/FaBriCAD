@@ -1,5 +1,5 @@
 <?php
-namespace jmw\frabricad\shapes;
+namespace jmw\fabricad\shapes;
 
 abstract class Shape
 {
