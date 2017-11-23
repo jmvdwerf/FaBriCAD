@@ -1,12 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use PHPUnit\Framework\TestCase;
-use jmw\frabricad\shapes\Rectangle;
-use jmw\frabricad\shapes\Point;
+
+namespace jmw\fabricad\shapes\test;
+
+use jmw\fabricad\shapes\Rectangle;
+use jmw\fabricad\shapes\Point;
 
 
-final class RectangleTest extends TestCase
+final class RectangleTest extends AbstractShapeTest
 {
     
     public function testConstruct()
@@ -121,11 +123,11 @@ final class RectangleTest extends TestCase
     
     public function testMirrorY()
     {
-        $w = rand();
-        $h = rand();
+        $w = 4;
+        $h = 5;
         
-        $x = rand();
-        $y = rand();
+        $x = 2;
+        $y = 2;
         
         $o = new Point($x, $y);
         $r = new Rectangle($w, $h, $o);
@@ -159,8 +161,7 @@ final class RectangleTest extends TestCase
     
     public function testToPolygon()
     {
-        $r = new Rectangle(10, 5, new Point(3,4));
-        $p = $r->toPolygon();
+        $p = new Rectangle(10, 5, new Point(3,4));
         
         $pts = $p->getPoints();
         $this->assertCount(4, $pts);
@@ -181,20 +182,6 @@ final class RectangleTest extends TestCase
         $this->assertFalse($r->contains(new Point(10,5)));
         $this->assertFalse($r->contains(new Point(5,10)));
         $this->assertFalse($r->contains(new Point(5,0)));
-    }
-    
-    
-    private function assertRectangle(Rectangle $bb, $x = 0, $y = 0, $w = 0, $h = 0)
-    {
-        $this->assertPoint($bb->getOrigin(), $x, $y);
-        $this->assertEquals($h, $bb->getHeight());
-        $this->assertEquals($w, $bb->getWidth());
-    }
-    
-    private function assertPoint(Point $pt, float $x = 0, float $y = 0)
-    {
-        $this->assertEquals($x, $pt->getX());
-        $this->assertEquals($y, $pt->getY());
     }
 }
 

@@ -1,5 +1,5 @@
 <?php
-namespace jmw\frabricad\shapes;
+namespace jmw\fabricad\shapes;
 
 class Polygon extends Shape
 {
@@ -7,25 +7,13 @@ class Polygon extends Shape
      * All the points of the Polygon
      * @var array
      */
-    private $points = array();
-    
-    /**
-     * The origin of the bounding box 
-     * @var Point
-     */
-    private $minPoint = null;
-    
-    /**
-     * The far end point of the bounding box
-     * @var Point
-     */
-    private $maxPoint = null;
+    protected $points = array();
     
     /**
      * Returns the origin, being the first point of the polygon. If no such
      * point exists, the global origin is returned.
      * {@inheritDoc}
-     * @see \jmw\HuisBouwer\shapes\Shape::getOrigin()
+     * @see \jmw\fabricad\shapes\Shape::getOrigin()
      */
     public function getOrigin(): Point
     {
@@ -40,7 +28,7 @@ class Polygon extends Shape
      * Sets the origin, being the first point of the polygon
      * 
      * {@inheritDoc}
-     * @see \jmw\HuisBouwer\shapes\Shape::setOrigin()
+     * @see \jmw\fabricad\shapes\Shape::setOrigin()
      */
     public function setOrigin(Point $orig): Shape
     {
@@ -50,14 +38,10 @@ class Polygon extends Shape
         );
         
         $this->points[0] = $orig;
-        $this->minPoint->set($orig);
-        $this->maxPoint->set($orig);
         
         for($i = 1 ; $i < count($this->points); $i++)
         {
             $this->points[$i]->add($update);
-            $this->minPoint->min($this->points[$i]);
-            $this->maxPoint->max($this->points[$i]);
         }
         
         return $this;
@@ -77,14 +61,8 @@ class Polygon extends Shape
         }
         parent::__construct($origin);
         
-        // Set the bounding box
-        $this->minPoint = new Point($origin->getX(), $origin->getY());
-        $this->maxPoint = new Point($origin->getX(), $origin->getY());
-        
         foreach($points as $pt) {
             $this->addPoint($pt);
-            $this->minPoint->min($pt);
-            $this->maxPoint->max($pt);
         }
     }
     
@@ -108,6 +86,11 @@ class Polygon extends Shape
         return (count($this->points) == 0);
     }
     
+    public function size(): int
+    {
+        return count($this->points);
+    }
+    
     /**
      * Adds a new point to the polygon,  ensures that no two consecutive points 
      * of the polygon are equal.
@@ -124,11 +107,46 @@ class Polygon extends Shape
         }
         $this->points[] = $pt;
         
-        // update the bounding box
-        $this->minPoint->min($pt);
-        $this->maxPoint->max($pt);
-        
         return $this;
+    }
+    
+    public function deletePoint(int $index) {
+        if ((0 <= $index) && ($index < count($this->points))) {
+            array_splice($this->points, $index, 1);
+        }
+    }
+    
+    public function updatePoint(int $index, Point $pt): bool
+    {
+        return $this->updatePointXY($index, $pt->getX(), $pt->getY());
+    }
+
+    public function updatePointXY(int $index, float $x, float $y): bool
+    {
+        if ($index == 0 && $this->size() == 1) {
+            $this->getOrigin()->setX($x);
+            $this->getOrigin()->setY($y);
+            
+            return true;
+        }
+        
+        if (isset($this->points[$index])) {
+            // check if the update is allowed: 
+            //(1) the previous should not equal this one
+            $prev = (($index - 1) + $this->size()) % $this->size();
+            if ($this->points[$prev]->equalsXY($x, $y)) return false;
+            
+            //(2) the next should not equal this one
+            $next = (($index + 1) + $this->size()) % $this->size();
+            if ($this->points[$next]->equalsXY($x, $y)) return false;
+            
+            $this->points[$index]->setX($x);
+            $this->points[$index]->setY($y);
+            
+            return true;
+        }
+        
+        return false;
     }
     
     /**
@@ -158,18 +176,8 @@ class Polygon extends Shape
      */
     public function mirrorOnX(): Shape
     {
-        if ($this->isEmpty()) return $this;
-        
-        $this->points[0]->setX(-1 * $this->points[0]->getX());
-        
-        $this->minPoint->set($this->points[0]);
-        $this->maxPoint->set($this->points[0]);
-        
-        for($i = 1 ; $i < count($this->points); $i++) {
-            $this->points[$i]->setX(-1 * $this->points[$i]->getX());
-            
-            $this->minPoint->min($this->points[$i]);
-            $this->maxPoint->max($this->points[$i]);
+        for($i = 0 ; $i < count($this->points); $i++) {
+            $this->points[$i]->mirrorOnX();
         }
         
         return $this;
@@ -183,34 +191,41 @@ class Polygon extends Shape
      */
     public function mirrorOnY(): Shape
     {
-        if ($this->isEmpty()) return $this;
-        
-        $this->points[0]->setY(-1 * $this->points[0]->getY());
-        
-        $this->minPoint->set($this->points[0]);
-        $this->maxPoint->set($this->points[0]);
-        
-        for($i = 1 ; $i < count($this->points); $i++) {
-            $this->points[$i]->setY(-1 * $this->points[$i]->getY());
-            
-            $this->minPoint->min($this->points[$i]);
-            $this->maxPoint->max($this->points[$i]);
+        for($i = 0 ; $i < count($this->points); $i++) {
+            $this->points[$i]->mirrorOnY();
         }
         
         return $this;
+    }
+    
+    public function flipPoints(int $index1, int $index2)
+    {
+        if (($index1 >= 0) && ($index1 < $this->size()) && ($index2 >= 0) && ($index2 < $this->size())) {
+            $pt = Point::copyFrom($this->points[$index1]);
+            $this->points[$index1]->set($this->points[$index2]);
+            $this->points[$index2]->set($pt);
+        }
     }
 
     /**
      * Returns the bounding box
      * 
      * {@inheritDoc}
-     * @see \jmw\HuisBouwer\shapes\Shape::getBoundingBox()
+     * @see \jmw\fabricad\shapes\Shape::getBoundingBox()
      */
     public function getBoundingBox(): Rectangle
     {
+        $min = Point::copyFrom($this->getOrigin());
+        $max = Point::copyFrom($this->getOrigin());
+        
+        foreach($this->getPoints() as $pt) {
+            $min->min($pt);
+            $max->max($pt);
+        }
+        
         $r = new Rectangle();
-        $r->setOrigin($this->minPoint);
-        $r->setTop($this->maxPoint);
+        $r->setOrigin($min);
+        $r->setTop($max);
         
         return $r;
     }
@@ -219,7 +234,7 @@ class Polygon extends Shape
      * Calculates whether a point is inside the shape
      * 
      * {@inheritDoc}
-     * @see \jmw\HuisBouwer\shapes\Shape::contains()
+     * @see \jmw\fabricad\shapes\Shape::contains()
      */
     public function contains(Point $pt): bool
     {

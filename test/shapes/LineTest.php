@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-use PHPUnit\Framework\TestCase;
-use jmw\frabricad\shapes\Ellipse;
-use jmw\frabricad\shapes\Point;
-use jmw\frabricad\shapes\Rectangle;
-use jmw\frabricad\shapes\Line;
+namespace jmw\fabricad\shapes\test;
 
-final class LineTest extends TestCase
+use jmw\fabricad\shapes\Point;
+use jmw\fabricad\shapes\Line;
+
+final class LineTest extends AbstractShapeTest
 {   
     /*
      * Notice that testing mirrorOnX and mirrorOnY indirectly test the 
@@ -373,12 +372,7 @@ final class LineTest extends TestCase
         
         $this->assertTrue($l2->meets($l1));
     }
-    
-    private function assertPoint(Point $pt, float $x = 0, float $y = 0)
-    {
-        $this->assertEquals($x, $pt->getX());
-        $this->assertEquals($y, $pt->getY());
-    }
+   
 }
 
 

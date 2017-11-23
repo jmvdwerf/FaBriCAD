@@ -1,14 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use PHPUnit\Framework\TestCase;
+namespace jmw\fabricad\shapes\test;
 
-use jmw\frabricad\shapes\Point;
-use jmw\frabricad\shapes\Polygon;
-use jmw\frabricad\shapes\Shape;
-use jmw\frabricad\shapes\Line;
+use jmw\fabricad\shapes\Point;
+use jmw\fabricad\shapes\Polygon;
 
-final class PolygonTest extends TestCase
+final class PolygonTest extends AbstractShapeTest
 {
     
     public function testEmptiness()
@@ -137,8 +135,49 @@ final class PolygonTest extends TestCase
         $this->assertFalse($m->isConvex());
     }
     
+    public function testDeletePoint()
+    {
+        $r = $this->createRhombus();
+        $orig = $this->createRhombus();
+        
+        $r->deletePoint(10);
+        
+        $this->assertEquals($r, $orig);
+        
+        $r->deletePoint(2);
+        
+        $this->assertEquals(3, $r->size());
+        
+        $expKey = 0;
+        foreach($r->getPoints() as $key => $pt) {
+            $this->assertEquals($expKey, $key);
+            $expKey++;
+        }
+        
+        $this->assertPoint($r->getPoints()[0], 2, 2);
+        $this->assertPoint($r->getPoints()[1], 4, 4);
+        $this->assertPoint($r->getPoints()[2], 4, 0);
+    }
     
-    private function createRhombus(): Polygon
+    public function testUpdatePoint()
+    {
+        $s = new Polygon(array(new Point(2,2)));
+        $this->assertEquals(1, $s->size());
+        
+        $this->assertTrue($s->updatePointXY(0, 4, 4));
+        
+        $this->assertPoint($s->getOrigin(), 4, 4);
+        
+        $r = $this->createRhombus();
+        $this->assertTrue($r->updatePoint(2, new Point(7,2)));
+        
+        $this->assertFalse($r->updatePointXY(12, 3, 4));
+        
+        $this->assertPoint($r->getPoints()[2], 7 ,2);
+    }
+    
+    
+    protected function createRhombus(): Polygon
     {
         return new Polygon(
             array(
@@ -179,26 +218,4 @@ final class PolygonTest extends TestCase
             )
         );
     }
-    
-    private function assertBoundingBox(Shape $s, $x = 0, $y = 0, $w = 0, $h = 0)
-    {
-        $bb = $s->getBoundingBox();
-        $this->assertPoint($bb->getOrigin(), $x, $y);
-        $this->assertEquals($h, $bb->getHeight());
-        $this->assertEquals($w, $bb->getWidth());
-    }
-    
-    private function assertPoint(Point $pt, float $x = 0, float $y = 0)
-    {
-        $this->assertEquals($x, $pt->getX());
-        $this->assertEquals($y, $pt->getY());
-    }
-    
-    private function assertLine(Line $l, float $sX, float $sY, float $eX, float $eY)
-    {
-        $this->assertPoint($l->getOrigin(), $sX, $sY);
-        $this->assertPoint($l->getEndPoint(), $eX, $eY);
-    }
-    
-    
 }
