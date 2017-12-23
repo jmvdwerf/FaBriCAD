@@ -178,10 +178,11 @@ final class RectangleTest extends AbstractShapeTest
         $r = new Rectangle(10,10);
         
         $this->assertTrue($r->contains(new Point(3,5)));
-        $this->assertFalse($r->contains(new Point(0,5)));
-        $this->assertFalse($r->contains(new Point(10,5)));
-        $this->assertFalse($r->contains(new Point(5,10)));
-        $this->assertFalse($r->contains(new Point(5,0)));
+        // on the border, so true
+        $this->assertTrue($r->contains(new Point(0,5)));
+        $this->assertTrue($r->contains(new Point(10,5)));
+        $this->assertTrue($r->contains(new Point(5,10)));
+        $this->assertTrue($r->contains(new Point(5,0)));
     }
 }
 

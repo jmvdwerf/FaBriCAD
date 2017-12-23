@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace jmw\fabricad\shapes\test;
 
+require_once('AbstractShapeTest.php');
+
 use jmw\fabricad\shapes\Point;
 use jmw\fabricad\shapes\Line;
 
@@ -332,11 +334,12 @@ final class LineTest extends AbstractShapeTest
         $this->assertEquals(-3 * M_PI_4, $angle);
     }
     
+    
     public function testContains()
     {
         $l = new Line(new Point(0,0), new Point(10,10));
         
-        for($i = 0; $i < 11 ; $i++) {
+        for($i = 1; $i < 10 ; $i++) {
             $this->assertTrue($l->contains(new Point($i,$i)), "value: ".$i);
         }
             
@@ -372,7 +375,87 @@ final class LineTest extends AbstractShapeTest
         
         $this->assertTrue($l2->meets($l1));
     }
-   
+    
+    public function testMeets3()
+    {
+        $l1 = new Line(new Point(100,300), new Point(300, 500));
+        $l2 = new Line(new Point(300,100), new Point(200, 600));
+        
+        $this->assertBoundingBox($l1, 100,300,200,200);
+        $this->assertBoundingBox($l2, 200,100,100,500);
+        
+        $this->assertTrue($l1->intersects($l2));
+        
+        $this->assertTrue($l2->meets($l1));
+    }
+    
+    public function testLineOrder()
+    {
+        $l1 = new Line(new Point(10,10), new Point(100,10));
+        $l2 = new Line(new Point(100,10), new Point(10,10));
+        
+        $points = array(new Point(30,10), new Point(10,10), new Point(20,10), new Point(40,10));
+        
+        $l1->orderPoints($points);
+        
+        $this->assertEquals(10, $points[0]->getX());
+        $this->assertEquals(20, $points[1]->getX());
+        $this->assertEquals(30, $points[2]->getX());
+        $this->assertEquals(40, $points[3]->getX());
+    }
+    
+    public function testLineReverseOrder()
+    {
+        $l1 = new Line(new Point(100,10), new Point(10,10));
+        
+        $points = array(new Point(30,10), new Point(10,10), new Point(20,10), new Point(40,10));
+        
+        $l1->orderPoints($points);
+        
+        $this->assertEquals(10, $points[3]->getX());
+        $this->assertEquals(20, $points[2]->getX());
+        $this->assertEquals(30, $points[1]->getX());
+        $this->assertEquals(40, $points[0]->getX());
+    }
+
+    
+    public function testMeetPoints() 
+    {
+        $l1 = new Line(new Point(500, 50), new Point(400, 200));
+        $l2 = new Line(new Point(450, 600), new Point(300,100));
+        
+        $this->assertFalse($l1->isPerpendicular());
+        $this->assertFalse($l2->isPerpendicular());
+        
+        $this->assertFalse($l1->meets($l2));
+        $this->assertFalse($l2->meets($l1));
+    }
+    
+    
+    public function testMeetLines() {
+        $l1 = new Line(new Point(400, 200), new Point(50,300));
+        $l2 = new Line(new Point(100,400), new Point(100,200));
+        
+        $this->assertTrue($l1->meets($l2));
+        $this->assertTrue($l2->meets($l1));
+    }
+    
+    
+    public function testPerpendicular()
+    {
+        $l1 = new Line(new Point(0,0), new Point(100,50));
+        $l2 = new Line(new Point(50,0), new Point(50,100));
+        
+        $this->assertFalse($l1->isPerpendicular());
+        $this->assertTrue($l2->isPerpendicular());
+        
+        $this->assertTrue($l1->meets($l2));
+        $this->assertTrue($l2->meets($l1));
+        
+        $this->assertPoint($l1->meetsAt($l2), 50, 25);
+        $this->assertPoint($l2->meetsAt($l1), 50, 25);
+        
+    }
 }
 
 

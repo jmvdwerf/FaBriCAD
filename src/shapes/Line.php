@@ -48,6 +48,18 @@ class Line extends Shape
         return $this->getOrigin()->getY() - $a * $this->getOrigin()->getX();
     }
     
+    public function getY($x): float 
+    {
+        $a = tan($this->getAngle());
+        $b = $this->getConstant();
+        
+        return $a * $x + $b;
+    }
+    
+    public function getPoint($x): Point
+    {
+        return new Point($x, $this->getY($x));
+    }
     
     public function mirrorOnX(): Shape
     {
@@ -79,13 +91,26 @@ class Line extends Shape
     
     public function contains(Point $pt): bool
     {
+        $result = $this->getBoundingBox()->contains($pt);
+        
+        if ($this->isPerpendicular()) {
+            return $result;  
+        }
+        
         $y = tan($this->getAngle()) * $pt->getX() + $this->getConstant();
-     
         return 
-               (abs($y - $pt->getY()) < 0.0000001)
-            && ($this->getOrigin()->getX() <= $pt->getX())
-            && ($this->getEndPoint()->getX() >= $pt->getX())
+               (abs($y - $pt->getY()) < 0.001)
+            && $result
         ;
+    }
+    
+    public function isPerpendicular(): bool
+    {
+        if (abs($this->getEndPoint()->getX() - $this->getOrigin()->getX()) < 0.00001) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     
@@ -93,23 +118,50 @@ class Line extends Shape
     {
         if (!$this->intersects($s)) return false;
         
-        $a = tan($this->getAngle());
-        $b = $this->getConstant();
-        $c = tan($s->getAngle());
-        $d = $s->getConstant();
+        $x = 0;
+        $y = 0;
         
-        if ($a == $c) return false;
+        if ($this->isPerpendicular()) {
+            $x = $this->getOrigin()->getX();
+            $y = $s->getY($this->getOrigin()->getX()); 
+        } elseif ($s->isPerpendicular()) {
+            $x = $s->getOrigin()->getX();
+            $y = $this->getY($x);
+        } else {
+            $a = tan($this->getAngle());
+            $b = $this->getConstant();
+            $c = tan($s->getAngle());
+            $d = $s->getConstant();
+            
+            if ($a == $c) return false;
+            
+            $x = ($b - $d)/($c-$a);
+            $y = $a * $x + $b;
+        }
+
+        $p = new Point($x, $y);
         
-        $x = ($b - $d)/($c-$a);
+        $result1 = $this->contains($p);
+        $result2 = $s->contains($p);
         
-        $y = $a * $x + $b;
+       // var_dump($result1, $result2);
         
-        return $this->contains(new Point($x, $y));
+        return $result1 && $result2;;
     }
     
     public function meetsAt(Line $s): Point
     {
         if (!$this->intersects($s)) return null;
+        
+        if ($this->isPerpendicular()) {
+            $x = $this->getOrigin()->getX();
+            return $s->getPoint($x);
+        }
+        
+        if ($s->isPerpendicular()) {
+            $x = $s->getOrigin()->getX();
+            return $this->getPoint($x);
+        }
         
         $a = tan($this->getAngle());
         $b = $this->getConstant();
@@ -123,6 +175,31 @@ class Line extends Shape
         
         return new Point($x, $y);
     }
-
     
+    public function __toString(): string
+    {
+        return 'LINE: ('.$this->getOrigin().') - ('.$this->getEndPoint().')'."\n";
+    }
+    
+    public function giveFunction()
+    {
+        $a = tan($this->getAngle());
+        $b = $this->getConstant();
+        return 'LINE: Y = '.round($a,3).' * X + '.round($b,3)."\n";
+    }
+
+
+    /**
+     * Orders the point based on the X-axis of this formula
+     * @param array $points
+     * @return array
+     */
+    public function orderPoints(&$points = array())
+    {
+        if ($this->getEndPoint()->getX() < $this->getOrigin()->getX()) {
+            usort($points, function(Point $p1, Point $p2) { return $p2->getX() - $p1->getX();} );
+        } else {
+            usort($points, function(Point $p1, Point $p2) { return $p1->getX() - $p2->getX();} );
+        }
+    }
 }

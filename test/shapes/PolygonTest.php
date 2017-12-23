@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace jmw\fabricad\shapes\test;
 
+use jmw\fabricad\shapes\Line;
 use jmw\fabricad\shapes\Point;
 use jmw\fabricad\shapes\Polygon;
 
@@ -105,7 +106,7 @@ final class PolygonTest extends AbstractShapeTest
     {
         $r = $this->createRhombus();
         
-        $this->assertFalse($r->contains(new Point(2,2)));
+        $this->assertTrue($r->contains(new Point(2,2)));
         $this->assertFalse($r->contains(new Point(1,1)));
         $this->assertTrue($r->contains(new Point(4,2)));
         $this->assertFalse($r->contains(new Point(5,5)));
@@ -174,6 +175,24 @@ final class PolygonTest extends AbstractShapeTest
         $this->assertFalse($r->updatePointXY(12, 3, 4));
         
         $this->assertPoint($r->getPoints()[2], 7 ,2);
+    }
+    // *
+    
+    public function testIntersectionPoints()
+    {
+        $w = new Polygon([
+            new Point(50, 5),        // 0
+            new Point(100, 400),     // 1
+            new Point(100, 200),     // 2
+            new Point(350, 300),     // 3
+            new Point(320, 100)      // 4
+        ]);
+        
+        $l = new Line(new Point(400, 200), new Point(50, 300));
+        
+        $intersects = $w->intersectionPoints($l);
+        
+        $this->assertCount(4, $intersects);
     }
     
     
