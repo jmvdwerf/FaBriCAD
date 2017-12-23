@@ -204,6 +204,80 @@ class BinaryOperators
     
     
     /**
+     * Calculates the intersection of Polygon $one with Polygon $other.
+     * Returns an array of polygons.
+     *
+     * @param Polygon $one
+     * @param Polygon $other
+     * @return array
+     */
+    public static function intersection(Polygon $one, Polygon $other): array
+    {
+        // $nt is the extended polygon
+        $nt = $one->calculateIntersectionPointsWith($other)->expand();
+        $no = $other->calculateIntersectionPointsWith($one)->expand();
+        
+        $settings_one = BinaryOperators::calculatePreconditions($nt, $no);
+        $settings_other = BinaryOperators::calculatePreconditions($no, $nt);
+        
+        $dirA = ($nt->direction() == Polygon::DIRECTION_CLOCKWISE);
+        $dirB = ($no->direction() == Polygon::DIRECTION_CLOCKWISE);
+        
+        $results = [];
+        
+        $indexB = -1;
+        $indexA = BinaryOperators::findNextUnusedCrossing(
+            $settings_one->crossings,
+            $settings_one->processed,
+            $nt->getPoints()
+            );
+        
+        $cnt = count($nt->getPoints());
+        $cno = count($no->getPoints());
+        
+        $output = new Polygon();
+        while($indexA >= 0) {
+            $pt = $nt->getPoints()[$indexA];
+
+            if ($output->getOrigin()->equals($pt)) {
+                $results[] = $output->simplify();
+                $indexA = BinaryOperators::findNextUnusedCrossing(
+                    $settings_one->crossings,
+                    $settings_one->processed,
+                    $nt->getPoints()
+                    );
+                $output = new Polygon();
+            } else {
+                $output->addPoint($pt);
+                $settings_one->processed[$indexA] = count($results) + 1;
+                
+                // determine next point
+                $sameB = $settings_one->crossings[$indexA];
+                // if nextA is inside, add those points, until the next crossing
+                $indexA = BinaryOperators::nextIndex($indexA, $dirA, $cnt);
+                if (!$settings_one->outside[$indexA]) {
+                    // it is inside, add points until next crossing!
+                    while(!$settings_one->outside[$indexA] && $settings_one->crossings[$indexA] < 0) {
+                        $output->addPoint($nt->getPoints()[$indexA]);
+                        $indexA = BinaryOperators::nextIndex($indexA, $dirA, $cnt);
+                    }
+                } else {
+                    // else, if nextB is inside, add those points, until the next crossing
+                    $nextB = BinaryOperators::nextIndex($sameB, $dirB, $cno);
+                    while(!$settings_other->outside[$nextB] && $settings_other->crossings[$nextB] < 0) {
+                        $output->addPoint($no->getPoints()[$nextB]);
+                        $nextB = BinaryOperators::nextIndex($nextB, $dirB, $cno);
+                    }
+                    $indexA = $settings_other->crossings[$nextB];
+                }
+            }
+        }
+        
+        
+        return $results;
+    }
+    
+    /**
      * Given an index, this function tries to determine which direction to follow
      * in the binary operations. 
      * Return value:
@@ -274,6 +348,17 @@ class BinaryOperators
     {
         for($i = 0 ; $i < count($nodes);$i++) {
             if ($outside[$i] && $processed[$i] < 0) {
+                return $i;
+            }
+        }
+        
+        return -1;
+    }
+    
+    private static function findNextUnusedCrossing($crossing = array(), $processed = array(), $nodes = array()): int
+    {
+        for($i = 0 ; $i < count($nodes);$i++) {
+            if ($crossing[$i] >= 0 && $processed[$i] < 0) {
                 return $i;
             }
         }
