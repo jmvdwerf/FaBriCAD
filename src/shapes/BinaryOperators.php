@@ -8,6 +8,7 @@ class BO_Settings
     public $crossings = array();
     public $processed = array();
     
+    /*
     public function __tostring(): string
     {
         $cnt = count($this->outside);
@@ -28,19 +29,11 @@ class BO_Settings
         $str .= "\n";
         return $str;
     }
+    */
 }
 
 class BinaryOperators 
 {
-    
-    public static function expand(Polygon $one, Polygon $other): array
-    {
-        // $nt is the extended polygon
-        $nt = $one->calculateIntersectionPointsWith($other)->expand();
-        $no = $other->calculateIntersectionPointsWith($one)->expand();
-        
-        return [$nt, $no];
-    }
     
      /**
      * Calculates the difference from Polygon $one with Polygon $other.
