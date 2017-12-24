@@ -61,10 +61,10 @@ final class BinaryOperatorsTest extends AbstractShapeTest
         
         $shape = $diff[0];
         
-        $this->assertPoint($shape->getPoints()[0],  50,  50);
-        $this->assertPoint($shape->getPoints()[1],  50, 100);
-        $this->assertPoint($shape->getPoints()[2], 100, 100);
-        $this->assertPoint($shape->getPoints()[3], 100,  50);
+        $this->assertPoint($shape->getPoints()[0],  50, 100);
+        $this->assertPoint($shape->getPoints()[1], 100, 100);
+        $this->assertPoint($shape->getPoints()[2], 100,  50);
+        $this->assertPoint($shape->getPoints()[3],  50,  50);
     } 
         
     
