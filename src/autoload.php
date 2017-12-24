@@ -7,3 +7,5 @@ require_once('shapes/Quadrangle.php');
 require_once('shapes/Rectangle.php');
 require_once('shapes/Ellipse.php');
 require_once('shapes/Line.php');
+
+require_once('shapes/BinaryOperators.php');
