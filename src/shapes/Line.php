@@ -79,29 +79,34 @@ class Line extends Shape
 
     public function getBoundingBox(): Rectangle
     {
-        $oX = min($this->getEndPoint()->getX(), $this->getOrigin()->getX());
-        $oY = min($this->getEndPoint()->getY(), $this->getOrigin()->getY());
+        $orig = Point::copyFrom($this->getOrigin());
+        $orig->min($this->getEndPoint());
+        $top = Point::copyFrom($this->getEndPoint());
+        $top->max($this->getOrigin());
         
-        $w = abs($this->getEndPoint()->getX() - $this->getOrigin()->getX());
-        $h = abs($this->getEndPoint()->getY() - $this->getOrigin()->getY());
+        $r = new Rectangle();
+        $r->setOrigin($orig);
+        $r->setTop($top);
         
-        return new Rectangle($w, $h, new Point($oX, $oY));
+        return $r;
     }
     
     
     public function contains(Point $pt): bool
     {
-        $result = $this->getBoundingBox()->contains($pt);
-        
         if ($this->isPerpendicular()) {
-            return $result;  
+            // check if $ptY is in between the bounds
+            return
+                   (abs($pt->getX() - $this->getOrigin()->getX()) < 0.001 )
+                   && ($pt->getY() <= $this->getBoundingBox()->getTop()->getY())
+                   && ($pt->getY() >= $this->getBoundingBox()->getOrigin()->getY());
         }
         
-        $y = tan($this->getAngle()) * $pt->getX() + $this->getConstant();
+        $y = $this->getY($pt->getX());
         return 
-               (abs($y - $pt->getY()) < 0.001)
-            && $result
-        ;
+            (abs($y-$pt->getY()) < 0.001)
+            && ($pt->getX() <= $this->getBoundingBox()->getTop()->getX())
+            && ($pt->getX() >= $this->getBoundingBox()->getOrigin()->getX());
     }
     
     public function isPerpendicular(): bool
@@ -143,8 +148,6 @@ class Line extends Shape
         
         $result1 = $this->contains($p);
         $result2 = $s->contains($p);
-        
-       // var_dump($result1, $result2);
         
         return $result1 && $result2;;
     }

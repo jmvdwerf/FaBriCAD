@@ -237,20 +237,6 @@ class Point {
         return new Point($pt->getX(), $pt->getY());
     }
     
-    public static function sort($points = array()): array
-    {
-        usort($points, function(Point $p1, Point $p2) { return $p2->getX()-$p1->getX(); } );
-        
-        return $points;
-    }
-    
-    public static function rsort($points = array()): array
-    {
-        usort($points, function(Point $p1, Point $p2) { return $p1->getX()-$p2->getX(); } );
-        
-        return $points;
-    }
-    
     public static function find(Point $needle, $haystack = array()): int {
         foreach($haystack as $index => $pt) {
             if ($needle->equals($pt)) {

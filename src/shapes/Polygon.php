@@ -260,10 +260,10 @@ class Polygon extends Shape
     public function intersectionPoints(Line $l): array
     {
         $points = array();
-        
+                
         foreach($this->getLines() as $line) {
+            
             if ($line->meets($l)) {
-                // echo ' JA ';
                 $points[] = $line->meetsAt($l);
             }
         }
@@ -314,7 +314,7 @@ class Polygon extends Shape
             $area += ($p1->getX() * $p2->getY() - $p2->getX() * $p1->getY());
         }
         
-        if ($area > 0) {
+        if ($area < 0) {
             return Polygon::DIRECTION_CLOCKWISE;
         } else {
             return Polygon::DIRECTION_COUNTERCLOCKWISE;
@@ -334,6 +334,7 @@ class Polygon extends Shape
         $nt = new Polygon();
         
         foreach($this->getLines() as $line) {
+
             $first = Point::copyFrom($line->getOrigin());
             $nt->addPoint($first);
             
@@ -343,7 +344,6 @@ class Polygon extends Shape
                 $nt->addPoint($pt);
             }
         }
-        
         return $nt;
     }
     

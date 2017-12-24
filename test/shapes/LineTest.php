@@ -456,6 +456,18 @@ final class LineTest extends AbstractShapeTest
         $this->assertPoint($l2->meetsAt($l1), 50, 25);
         
     }
+    
+    
+    public function testMeetLines2() {
+        $l1 = new Line(new Point(150,50), new Point(50,50));
+        $l2 = new Line(new Point(100,100), new Point(100,0));
+        
+        $this->assertTrue($l1->meets($l2));
+        $this->assertTrue($l1->intersects($l2));
+        
+        $this->assertTrue($l1->intersects($l2));
+        $this->assertTrue($l2->intersects($l1));
+    }
 }
 
 

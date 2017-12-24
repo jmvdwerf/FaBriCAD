@@ -12,7 +12,7 @@ class BO_Settings
     {
         $cnt = count($this->outside);
         
-        $str = "Node | outside | proc. | Cross |\n";
+        $str = "\nNode | outside | proc. | Cross |\n";
         $str.= "-----|---------|-------|-------|\n";
             
         for($i = 0 ; $i < $cnt ; $i++) {
@@ -58,7 +58,13 @@ class BinaryOperators
         
         $settings_one = BinaryOperators::calculatePreconditions($nt, $no);
         
+        // echo 'ONE:';
+        // echo $settings_one;
+        
         $settings_other = BinaryOperators::calculatePreconditions($no, $nt);
+        
+        // echo 'OTHER:';
+        // echo $settings_one;
         
         $dirA = ($nt->direction() == Polygon::DIRECTION_CLOCKWISE);
         $dirB = ($no->direction() == Polygon::DIRECTION_CLOCKWISE);
@@ -79,14 +85,21 @@ class BinaryOperators
         while($indexA >= 0) {
             $pt = $nt->getPoints()[$indexA];
             
-            if ($output->getOrigin()->equals($pt)) {
+            // echo 'index A: '.$indexA."\n";
+            
+            if (count($output->getPoints()) > 1 && $output->getOrigin()->equals($pt)) {
                 $results[] = $output->simplify();
+                
                 $indexA = BinaryOperators::findNextUnused(
                     $settings_one->outside,
                     $settings_one->processed,
                     $nt->getPoints()
                     );
                 $output = new Polygon();
+                
+                // echo 'ONE:';
+                // echo $settings_one;
+                
             } else {
                 $output->addPoint($pt);
                 $settings_one->processed[$indexA] = count($results) + 1;
@@ -96,6 +109,8 @@ class BinaryOperators
                     // it is a crossing point!
                     // so, we move to the other polygon!
                     $sameB = $settings_one->crossings[$indexA];
+
+                    // echo 'same B: '.$sameB."\n";
                     
                     $dirB = BinaryOperators::determineDirection($sameB, $settings_other->outside);
                     $indexB = BinaryOperators::nextIndex($sameB, $dirB, $cno);
@@ -103,6 +118,9 @@ class BinaryOperators
                     // we are again at a crossing point with A
                     
                     while($settings_other->crossings[$indexB] < 0 && !$settings_other->outside[$indexB]) {
+                    
+                        // echo 'index B: '.$indexB."\n";
+                        
                         $pt = $no->getPoints()[$indexB];
                         $output->addPoint($pt);
                         // increase index B
@@ -111,8 +129,12 @@ class BinaryOperators
                     }
                     $output->addPoint($no->getPoints()[$indexB]);
                     $indexA = $settings_other->crossings[$indexB];
+                    
+                    // echo 'index B: '.$indexB."\n";
+                    // echo 'same A: '.$indexA."\n";
+                    
                 }
-                
+
                 $indexA = BinaryOperators::nextIndex($indexA, $dirA, $cnt);
             }
         }
@@ -158,7 +180,7 @@ class BinaryOperators
         $output = new Polygon();
         while($indexA >= 0) {
             $pt = $nt->getPoints()[$indexA];
-            if ($output->getOrigin()->equals($pt)) {
+            if (count($output->getPoints()) > 1 && $output->getOrigin()->equals($pt)) {
                 $results[] = $output->simplify();
                 $indexA = BinaryOperators::findNextUnused(
                     $settings_one->outside,
@@ -239,7 +261,7 @@ class BinaryOperators
         while($indexA >= 0) {
             $pt = $nt->getPoints()[$indexA];
 
-            if ($output->getOrigin()->equals($pt)) {
+            if (count($output->getPoints()) > 1 && $output->getOrigin()->equals($pt)) {
                 $results[] = $output->simplify();
                 $indexA = BinaryOperators::findNextUnusedCrossing(
                     $settings_one->crossings,

@@ -184,6 +184,17 @@ final class RectangleTest extends AbstractShapeTest
         $this->assertTrue($r->contains(new Point(5,10)));
         $this->assertTrue($r->contains(new Point(5,0)));
     }
+    
+    public function testContains2()
+    {
+        $r = new Rectangle(100,0, new Point(50,50));
+        $p = new Point(100,50);
+        
+        $this->assertPoint($r->getTop(), 150,50);
+        $this->assertPoint($r->getOrigin(), 50,50);
+        
+        $this->assertTrue($r->contains($p));
+    }
 }
 
 

@@ -135,6 +135,7 @@ class Rectangle extends Quadrangle
 
     public function contains(Point $pt): bool
     {
+        
         return 
             (  ($this->getTop()->greaterThanOrEqual($pt))
             && ($this->getOrigin()->smallerThanOrEqual($pt))

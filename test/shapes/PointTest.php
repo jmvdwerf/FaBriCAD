@@ -173,6 +173,20 @@ final class PointTest extends TestCase
         
         $this->assertFalse($p == $q);
     }
+    
+    public function testFind() 
+    {
+        $arr = [];
+        for ($i = 0 ; $i < 10 ; $i++) {
+            $arr[] = new Point($i, $i);
+        }
+        
+        for($i = 0 ; $i < 10 ;$i++) {
+            $this->assertEquals($i, Point::find(new Point($i,$i), $arr));
+        }
+        
+        $this->assertEquals(-1, Point::find(new Point(10,13), $arr));
+    }
 }
 
 
