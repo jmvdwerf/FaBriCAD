@@ -47,8 +47,8 @@ abstract class Shape
        
        return 
            (
-                $b1->getOrigin()->smallerThan($b2->getTop())
-             && $b1->getTop()->greaterThan($b2->getOrigin())  
+                $b1->getOrigin()->smallerThanOrEqual($b2->getTop())
+               && $b1->getTop()->greaterThanOrEqual($b2->getOrigin())  
            ); 
     }
     

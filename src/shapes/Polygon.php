@@ -3,6 +3,9 @@ namespace jmw\fabricad\shapes;
 
 class Polygon extends Shape
 {
+    public const DIRECTION_CLOCKWISE = 0;
+    public const DIRECTION_COUNTERCLOCKWISE = 1;
+    
     /**
      * All the points of the Polygon
      * @var array
@@ -105,7 +108,7 @@ class Polygon extends Shape
                 return; 
             }
         }
-        $this->points[] = $pt;
+        $this->points[] = Point::copyFrom($pt);
         
         return $this;
     }
@@ -172,7 +175,7 @@ class Polygon extends Shape
     /**
      * Mirrors the polygon on the X-axis
      * {@inheritDoc}
-     * @see \jmw\HuisBouwer\shapes\Shape::mirrorOnX()
+     * @see \jmw\fabricad\shapes\Shape::mirrorOnX()
      */
     public function mirrorOnX(): Shape
     {
@@ -187,7 +190,7 @@ class Polygon extends Shape
      * Mirrors the polygon over the Y-axis
      * 
      * {@inheritDoc}
-     * @see \jmw\HuisBouwer\shapes\Shape::mirrorOnY()
+     * @see \jmw\fabricad\shapes\Shape::mirrorOnY()
      */
     public function mirrorOnY(): Shape
     {
@@ -244,7 +247,7 @@ class Polygon extends Shape
         $max->scalarMultiply(2);
         
         $points = $this->intersectionPoints(new Line($pt, $max));
-        
+        //var_dump($points);
         return !((count($points) % 2) == 0);
     }
     
@@ -257,12 +260,14 @@ class Polygon extends Shape
     public function intersectionPoints(Line $l): array
     {
         $points = array();
-        $lines = $this->getLines();
-        foreach($lines as $p) {
-            if ($p->meets($l)) {
-                $points[] = $p->meetsAt($l);
+                
+        foreach($this->getLines() as $line) {
+            
+            if ($line->meets($l)) {
+                $points[] = $line->meetsAt($l);
             }
         }
+        $l->orderPoints($points);
         
         return $points;
     }
@@ -298,7 +303,111 @@ class Polygon extends Shape
         return true;
     }
     
+    
+    public function direction(): int
+    {
+        $area = 0;
+        foreach($this->getLines() as $line) {
+            $p1 = $line->getOrigin();
+            $p2 = $line->getEndPoint();
+            
+            $area += ($p1->getX() * $p2->getY() - $p2->getX() * $p1->getY());
+        }
+        
+        if ($area < 0) {
+            return Polygon::DIRECTION_CLOCKWISE;
+        } else {
+            return Polygon::DIRECTION_COUNTERCLOCKWISE;
+        }
+    }
+    
+    
+    /**
+     * Calculates the intersection points with another Polygon
+     *  
+     * @param Polygon $other
+     * @param bool $extends
+     * @return Polygon
+     */
+    public function calculateIntersectionPointsWith(Polygon $other): Polygon
+    {
+        $nt = new Polygon();
+        
+        foreach($this->getLines() as $line) {
 
+            $first = Point::copyFrom($line->getOrigin());
+            $nt->addPoint($first);
+            
+            $ips = $other->intersectionPoints($line);
+                            
+            foreach($ips as $pt) {
+                $nt->addPoint($pt);
+            }
+        }
+        return $nt;
+    }
+    
+    
+    public function expand(): Polygon
+    {
+        $p = new Polygon();
+        $points = $this->getPoints();
+        if (count($points) < 1) {
+            return $p;
+        }
+        $p->addPoint($points[0]);
+        
+        if (count($points) < 2) {
+            return $p;    
+        }
+        $p->addPoint($points[1]);
+        for($i = 2 ; $i < count($points) ; $i++) {
+            $line1 = new Line($points[$i-2], $points[$i-1]);
+            $line2 = new Line($points[$i-1], $points[$i]);
+            
+            if (abs($line1->getAngle() - $line2->getAngle()) < 0.0001) {
+                $x = ($points[$i-1]->getX() + $points[$i]->getX()) / 2;
+                $y = ($points[$i-1]->getY() + $points[$i]->getY()) / 2;
+                
+                $pts = [new Point($x, $y), $points[$i] ];
+                $line2->orderPoints($pts);
+                foreach($pts as $pt) {
+                    $p->addPoint($pt);
+                }
+            } else {
+                $p->addPoint($points[$i]);
+            }
+        }
+        
+        
+        return $p;
+    }
+    
+    public function simplify(): Polygon
+    {
+        // remove redundant nodes;
+        $lines = $this->getLines();
+        $N = count($lines);
+        $rmNode = array();
+        
+        for($i = 0 ; $i < $N ; $i++) {
+            if (abs($lines[$i]->getAngle() - $lines[($i+1) % $N]->getAngle() ) < 0.001) {
+                // the two consecutive lines have the same angle, so the point
+                // in between can be removed!
+                $rmNode[] = ($i+1) % $N;
+            }
+        }
+        
+        $p = new Polygon();
+        foreach($this->getPoints() as $index => $pt) {
+            if (!in_array($index, $rmNode)) {
+                $p->addPoint($pt);
+            }
+        }
+        
+        return $p;
+    }
+    
 }
 
 

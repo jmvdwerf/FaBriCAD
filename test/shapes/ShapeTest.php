@@ -25,17 +25,18 @@ final class ShapeTest extends AbstractShapeTest
         $this->assertTrue($r1->intersects($r2));
         $this->assertTrue($r2->intersects($r1));
         
-        $this->assertFalse($r1->intersects($r3));
-        $this->assertFalse($r3->intersects($r1));
+        // all true, because the borders are the same
+        $this->assertTrue($r1->intersects($r3));
+        $this->assertTrue($r3->intersects($r1));
         
-        $this->assertFalse($r2->intersects($r3));
-        $this->assertFalse($r3->intersects($r2));
+        $this->assertTrue($r2->intersects($r3));
+        $this->assertTrue($r3->intersects($r2));
         
         $this->assertTrue($r1->intersects($r4));
         $this->assertTrue($r4->intersects($r1));
         
-        $this->assertFalse($r1->intersects($r5));
-        $this->assertFalse($r5->intersects($r1));
+        $this->assertTrue($r1->intersects($r5));
+        $this->assertTrue($r5->intersects($r1));
         
     }
     

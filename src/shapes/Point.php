@@ -205,6 +205,26 @@ class Point {
         return $this->equalsXY($pt->getX(), $pt->getY());
     }
     
+    /**
+     * Returns true if x > pt.x and y > pt.y
+     * @param Point $pt
+     * @return bool
+     */
+    public function greaterThanOrEqual(Point $pt): bool
+    {
+        return (($this->getX() >= $pt->getX()) && ( $this->getY() >= $pt->getY()) );
+    }
+    
+    /**
+     * Returns true if x < pt.x and y < pt.y
+     * @param Point $pt
+     * @return bool
+     */
+    public function smallerThanOrEqual(Point $pt): bool
+    {
+        return (($this->getX() <= $pt->getX()) && ( $this->getY() <= $pt->getY()) );
+    }
+    
     public function equalsXY(float $x, float $y): bool
     {
         return
@@ -216,6 +236,18 @@ class Point {
     {
         return new Point($pt->getX(), $pt->getY());
     }
+    
+    public static function find(Point $needle, $haystack = array()): int {
+        foreach($haystack as $index => $pt) {
+            if ($needle->equals($pt)) {
+                return $index;
+            }
+        }
+        return -1;
+    }
+    
+    
+    
 }
 
 

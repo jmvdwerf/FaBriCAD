@@ -3,8 +3,12 @@ declare(strict_types=1);
 
 namespace jmw\fabricad\shapes\test;
 
+require_once 'AbstractShapeTest.php';
+
+use jmw\fabricad\shapes\Line;
 use jmw\fabricad\shapes\Point;
 use jmw\fabricad\shapes\Polygon;
+use jmw\fabricad\shapes\Rectangle;
 
 final class PolygonTest extends AbstractShapeTest
 {
@@ -105,7 +109,7 @@ final class PolygonTest extends AbstractShapeTest
     {
         $r = $this->createRhombus();
         
-        $this->assertFalse($r->contains(new Point(2,2)));
+        $this->assertTrue($r->contains(new Point(2,2)));
         $this->assertFalse($r->contains(new Point(1,1)));
         $this->assertTrue($r->contains(new Point(4,2)));
         $this->assertFalse($r->contains(new Point(5,5)));
@@ -174,6 +178,86 @@ final class PolygonTest extends AbstractShapeTest
         $this->assertFalse($r->updatePointXY(12, 3, 4));
         
         $this->assertPoint($r->getPoints()[2], 7 ,2);
+    }
+    // *
+    
+    public function testIntersectionPoints()
+    {
+        $w = new Polygon([
+            new Point(50, 5),        // 0
+            new Point(100, 400),     // 1
+            new Point(100, 200),     // 2
+            new Point(350, 300),     // 3
+            new Point(320, 100)      // 4
+        ]);
+        
+        $l = new Line(new Point(400, 200), new Point(50, 300));
+        
+        $intersects = $w->intersectionPoints($l);
+        
+        $this->assertCount(4, $intersects);
+    }
+    
+    public function testDirection()
+    {
+        $p = $this->createRhombus();
+        $this->assertEquals(Polygon::DIRECTION_CLOCKWISE, $p->direction());
+        
+        $p2 = $p->mirrorOnX();
+        $this->assertEquals(Polygon::DIRECTION_COUNTERCLOCKWISE, $p2->direction());
+    }
+    
+    public function testCalculateIntersectionPointsWith()
+    {
+        $r1 = new Rectangle(100,100);
+        $r2 = new Rectangle(100,100, new Point(50,50));
+        
+        $pts = $r1->calculateIntersectionPointsWith($r2);
+        $this->assertCount(6, $pts->getPoints());
+        $this->assertPoint($pts->getPoints()[0],   0,   0);
+        $this->assertPoint($pts->getPoints()[1],   0, 100);
+        $this->assertPoint($pts->getPoints()[2],  50, 100);
+        $this->assertPoint($pts->getPoints()[3], 100, 100);
+        $this->assertPoint($pts->getPoints()[4], 100,  50);
+        $this->assertPoint($pts->getPoints()[5], 100,   0);
+        
+    }
+    
+    public function testExpand()
+    {
+        $p = new Polygon();
+        $r = $p->expand();
+        $this->assertCount(0, $r->getPoints());
+        $p = new Polygon([new Point(100,100)]);
+        $r = $p->expand();
+        $this->assertCount(1, $r->getPoints());
+        
+        $r1 = new Rectangle(100,100);
+        $r2 = new Rectangle(100,100, new Point(50,50));
+        
+        $pts = $r1->calculateIntersectionPointsWith($r2)->expand();
+        $this->assertCount(8, $pts->getPoints());
+        $this->assertPoint($pts->getPoints()[0],   0,   0);
+        $this->assertPoint($pts->getPoints()[1],   0, 100);
+        $this->assertPoint($pts->getPoints()[2],  50, 100);
+        $this->assertPoint($pts->getPoints()[3],  75, 100);
+        $this->assertPoint($pts->getPoints()[4], 100, 100);
+        $this->assertPoint($pts->getPoints()[5], 100,  50);
+        $this->assertPoint($pts->getPoints()[6], 100,  25);
+        $this->assertPoint($pts->getPoints()[7], 100,   0);
+    }
+    
+    public function testSimplify()
+    {
+        $r1 = new Rectangle(100,100);
+        $r2 = new Rectangle(100,100, new Point(50,50));
+        
+        $pts = $r1->calculateIntersectionPointsWith($r2)->expand()->simplify();
+        $this->assertCount(4, $pts->getPoints());
+        $this->assertPoint($pts->getPoints()[0],   0,   0);
+        $this->assertPoint($pts->getPoints()[1],   0, 100);
+        $this->assertPoint($pts->getPoints()[2], 100, 100);
+        $this->assertPoint($pts->getPoints()[3], 100,   0);
     }
     
     
