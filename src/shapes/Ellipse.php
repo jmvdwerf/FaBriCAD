@@ -48,13 +48,13 @@ class Ellipse extends Shape
     }
     public function mirrorOnX(): Shape
     {
-        $this->getOrigin()->mirrorOnX();
+        $this->origin->mirrorOnX();
         return $this;
     }
 
     public function mirrorOnY(): Shape
     {
-        $this->getOrigin()->mirrorOnY();
+        $this->origin->mirrorOnY();
         return $this;
     }
 

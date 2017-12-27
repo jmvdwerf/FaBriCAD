@@ -21,7 +21,7 @@ class Polygon extends Shape
     public function getOrigin(): Point
     {
         if (count($this->points) > 0) {
-            return $this->points[0];
+            return Point::copyFrom($this->points[0]);
         } else {
             return new Point(0,0);
         }
@@ -126,13 +126,6 @@ class Polygon extends Shape
 
     public function updatePointXY(int $index, float $x, float $y): bool
     {
-        if ($index == 0 && $this->size() == 1) {
-            $this->getOrigin()->setX($x);
-            $this->getOrigin()->setY($y);
-            
-            return true;
-        }
-        
         if (isset($this->points[$index])) {
             // check if the update is allowed: 
             //(1) the previous should not equal this one
@@ -226,11 +219,7 @@ class Polygon extends Shape
             $max->max($pt);
         }
         
-        $r = new Rectangle();
-        $r->setOrigin($min);
-        $r->setTop($max);
-        
-        return $r;
+        return Rectangle::fromPoints($min, $max);
     }
     
     /**

@@ -10,19 +10,28 @@ class Line extends Shape
     public function __construct(Point $origin = null, Point $end = null)
     {
         parent::__construct($origin);
-        if (empty($end)) $end = new Point(0,0);
+        $this->end = new Point();
         
         $this->setEndPoint($end);
     }
     
     public function getEndPoint(): Point
     {
-        return $this->end;
+        return Point::copyFrom($this->end);
     }
     
-    public function setEndPoint(Point $end): Line
+    public function setEndPoint(Point $end = null): Line
     {
-        $this->end = $end;
+        if ($end == null) return $this;
+        
+        return $this->setEndPointXY($end->getX(), $end->getY());
+    }
+    
+    public function setEndPointXY(float $x = 0.0, float $y=0.0): Line
+    {
+        $this->end->setX($x);
+        $this->end->setY($y);
+        
         return $this;
     }
     
@@ -63,32 +72,23 @@ class Line extends Shape
     
     public function mirrorOnX(): Shape
     {
-        $this->getEndPoint()->mirrorOnX();
-        $this->getOrigin()->mirrorOnX();
+        $this->end->mirrorOnX();
+        $this->origin->mirrorOnX();
         
         return $this;
     }
 
     public function mirrorOnY(): Shape
     {
-        $this->getEndPoint()->mirrorOnY();
-        $this->getOrigin()->mirrorOnY();
+        $this->end->mirrorOnY();
+        $this->origin->mirrorOnY();
         
         return $this;
     }
 
     public function getBoundingBox(): Rectangle
-    {
-        $orig = Point::copyFrom($this->getOrigin());
-        $orig->min($this->getEndPoint());
-        $top = Point::copyFrom($this->getEndPoint());
-        $top->max($this->getOrigin());
-        
-        $r = new Rectangle();
-        $r->setOrigin($orig);
-        $r->setTop($top);
-        
-        return $r;
+    {        
+        return Rectangle::fromPoints($this->origin, $this->end);
     }
     
     

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace jmw\fabricad\shapes\test;
 
+require_once 'AbstractShapeTest.php';
+
 use jmw\fabricad\shapes\Rectangle;
 use jmw\fabricad\shapes\Point;
 
 
 final class RectangleTest extends AbstractShapeTest
 {
-    
     public function testConstruct()
     {
         $w = rand();
@@ -138,25 +139,15 @@ final class RectangleTest extends AbstractShapeTest
         $this->assertPoint($r->getTop(), $x + $w, -1 * $y);
     }
     
-    public function testSetTop1()
-    {
-        // set the top to something bigger than the origin
-        $r = new Rectangle(5, 100, new Point(2,1));
-        $r->setTop(new Point(5,5));
-        
-        $this->assertEquals(4, $r->getHeight());
-        $this->assertEquals(3, $r->getWidth());
-        
-    }
-    
-    public function testSetTop2()
+    public function testSetTop()
     {
         // set the top to something smaller than the origin
         $r = new Rectangle(5, 100, new Point(5,5));
         $r->setTop(new Point(2,3));
         
-        $this->assertEquals(2, $r->getHeight());
-        $this->assertEquals(3, $r->getWidth());
+        $this->assertPoint($r->getOrigin(), -3, -97);
+        $this->assertEquals(100, $r->getHeight());
+        $this->assertEquals(5, $r->getWidth());
     }
     
     public function testToPolygon()
@@ -194,6 +185,26 @@ final class RectangleTest extends AbstractShapeTest
         $this->assertPoint($r->getOrigin(), 50,50);
         
         $this->assertTrue($r->contains($p));
+    }
+
+    public function testIndependenceOfPoints()
+    {
+        $r1 = new Rectangle(10, 10, new Point(5,5));
+        $p = $r1->getOrigin();
+        $p->setX(12);
+        $p->setY(12);
+        
+        $this->assertPoint($r1->getOrigin(), 5, 5);
+    }
+    
+    public function testFromPoints() {
+        
+        $r = Rectangle::fromPoints(new Point(0,0), new Point(5,5));
+        $this->assertRectangle($r, 0,0, 5,5);
+        
+        $r = Rectangle::fromPoints(new Point(0,0), new Point(-5,-5));
+        $this->assertRectangle($r, -5,-5, 5,5);
+        
     }
 }
 

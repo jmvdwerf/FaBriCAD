@@ -30,7 +30,7 @@ abstract class Shape
      */
     public function getOrigin(): Point
     {
-        return $this->origin;
+        return Point::copyFrom($this->origin);
     }
     
     /**

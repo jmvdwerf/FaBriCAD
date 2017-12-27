@@ -18,13 +18,15 @@ class Container extends Shape implements \Iterator
      *  
      * @var Rectangle
      */
-    private $bb = null;
+    private $bb_min = null;
+    private $bb_max = null;
     
     public function __construct($items = [], Point $origin = null)
     {
         parent::__construct($origin);
         
-        $this->bb = new Rectangle(0,0, $origin);
+        $this->bb_min = new Point();
+        $this->bb_max = new Point();
         
         foreach($items as $s) {
             $this->addShape($s);
@@ -117,8 +119,8 @@ class Container extends Shape implements \Iterator
     private function updateInternalBox(Shape $s)
     {
         $r = $s->getBoundingBox();
-        $this->bb->getOrigin()->min($r->getOrigin());
-        $this->bb->getTop()->max($r->getTop());
+        $this->bb_min->min($r->getOrigin());
+        $this->bb_max->max($r->getTop());
     }
     
     /**
@@ -131,13 +133,7 @@ class Container extends Shape implements \Iterator
     {
        // As $bb keeps the internal bounding box, relative to our own origin,
        // we need to translate the bounding box with our origin.
-       $r = new Rectangle();
-       $orig = Point::copyFrom($this->bb->getOrigin())->add($this->getOrigin());
-       $r->setOrigin($orig);
-       $top = Point::copyFrom($this->bb->getTop())->add($this->getOrigin());
-       $r->setTop($top);
-           
-       return $r;
+       return Rectangle::fromPoints($this->bb_min, $this->bb_max);
     }
     
     

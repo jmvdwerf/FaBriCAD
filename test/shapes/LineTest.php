@@ -10,7 +10,23 @@ use jmw\fabricad\shapes\Point;
 use jmw\fabricad\shapes\Line;
 
 final class LineTest extends AbstractShapeTest
-{   
+{ 
+    
+    public function testBoundingBox()
+    {
+        $l = new Line(new Point(0,0), new Point(5,5));
+        $this->assertBoundingBox($l, 0,0, 5,5);
+        
+        $l = new Line(new Point(2,2), new Point(5,5));
+        $this->assertBoundingBox($l, 2,2, 3, 3);
+        
+        $l = new Line(new Point(0,0), new Point(-5,-5));
+        $this->assertBoundingBox($l, -5,-5, 5,5);
+        
+        
+    }
+    
+    
     /*
      * Notice that testing mirrorOnX and mirrorOnY indirectly test the 
      * boundingbox as well!

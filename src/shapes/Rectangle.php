@@ -46,8 +46,11 @@ class Rectangle extends Quadrangle
      */
     public function setHeight(float $h): Rectangle
     {
-        $this->getNorthEast()->setY($this->getOrigin()->getY() + $h);
-        $this->getNorthWest()->setY($this->getNorthEast()->getY());
+        $y = $this->getOrigin()->getY() + $h;
+        
+        $this->points[Quadrangle::NORTHEAST]->setY($y);
+        $this->points[Quadrangle::NORTHWEST]->setY($y);
+        
         return $this;
     }
     
@@ -59,34 +62,28 @@ class Rectangle extends Quadrangle
      */
     public function setWidth(float $w): Rectangle
     {
-        $this->getSouthEast()->setX($this->getOrigin()->getX() + $w);
-        $this->getNorthEast()->setX($this->getSouthEast()->getX());
+        $x = $this->getOrigin()->getX() + $w;
+        
+        $this->points[Quadrangle::SOUTHEAST]->setX($x);
+        $this->points[Quadrangle::NORTHEAST]->setX($x);
+        
         return $this;
     }
     
     /**
-     * Sets the new top point. If the X or Y is smaller than the current origin,
-     * the origin is moved accordingly.
+     * Sets the new top point. It moves the whole thing down, i.e., it ensures
+     * that the height and width remain the same.
      * 
      * @param Point $pt
      * @return Rectangle
      */
     public function setTop(Point $pt): Rectangle
     {
-        $newW = $pt->getX() - $this->getOrigin()->getX();
-        if ($newW < 0) {
-            $this->getOrigin()->setX($this->getOrigin()->getX()-$newW);
-            $this->setWidth(-1*$newW);
-        } else {
-            $this->setWidth($newW);
-        }
-        $newH = $pt->getY() - $this->getOrigin()->getY();
-        if ($newH < 0) {
-            $this->getOrigin()->setY($this->getOrigin()->getY()-$newH);
-            $this->setHeight(-1*$newH);
-        } else {
-            $this->setHeight($newH);
-        }
+        $width = $this->getWidth();
+        $height = $this->getHeight();
+        
+        $orig = new Point($pt->getX() - $width, $pt->getY() - $height);
+        $this->setOrigin($orig);
         
         return $this;
     }
@@ -140,6 +137,23 @@ class Rectangle extends Quadrangle
             (  ($this->getTop()->greaterThanOrEqual($pt))
             && ($this->getOrigin()->smallerThanOrEqual($pt))
             );
+    }
+    
+    /**
+     * Creates a rectangle from two points.
+     * @param Point $orig
+     * @param Point $top
+     * @return Rectangle
+     */
+    public static function fromPoints(Point $orig, Point $top): Rectangle
+    {       
+        $x = min($orig->getX(), $top->getX() );
+        $y = min($orig->getY(), $top->getY() );
+        
+        $w = ($orig->getX() == $x) ? $top->getX() - $x : $orig->getX() - $x;
+        $h = ($orig->getY() == $y) ? $top->getY() - $y : $orig->getY() - $y;
+                
+        return new Rectangle($w, $h, new Point($x,$y) );
     }
     
 }

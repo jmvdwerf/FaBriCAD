@@ -37,22 +37,22 @@ class Quadrangle extends Polygon
     
     public function getSouthWest(): Point
     {
-        return $this->points[Quadrangle::SOUTHWEST];
+        return Point::copyFrom($this->points[Quadrangle::SOUTHWEST]);
     }
     
     public function getNorthWest(): Point
     {
-        return $this->points[Quadrangle::NORTHWEST];
+        return Point::copyFrom($this->points[Quadrangle::NORTHWEST]);
     }
     
     public function getNorthEast(): Point
     {
-        return $this->points[Quadrangle::NORTHEAST];
+        return Point::copyFrom($this->points[Quadrangle::NORTHEAST]);
     }
     
     public function getSouthEast(): Point
     {
-        return $this->points[Quadrangle::SOUTHEAST];
+        return Point::copyFrom($this->points[Quadrangle::SOUTHEAST]);
     }
     
     public function setSouthWest(Point $pt): Quadrangle

@@ -18,16 +18,15 @@ abstract class AbstractShapeTest extends TestCase
     
     public function assertRectangle(Rectangle $s, $x = 0, $y = 0, $w = 0, $h = 0)
     {
-        $bb = $s->getBoundingBox();
-        $this->assertPoint($bb->getOrigin(), $x, $y);
-        $this->assertEquals($h, $bb->getHeight());
-        $this->assertEquals($w, $bb->getWidth());
+        $this->assertPoint($s->getOrigin(), $x, $y);
+        $this->assertEquals($h, $s->getHeight());
+        $this->assertEquals($w, $s->getWidth());
     }
     
     public function assertPoint(Point $pt, float $x = 0, float $y = 0)
     {
-        $this->assertEquals($x, $pt->getX());
-        $this->assertEquals($y, $pt->getY());
+        $this->assertEquals($x, $pt->getX(), 'Point X failed');
+        $this->assertEquals($y, $pt->getY(), 'Point Y failed');
     }
     
     public function assertLine(Line $l, float $sX, float $sY, float $eX, float $eY)
