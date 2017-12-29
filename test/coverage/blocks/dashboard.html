@@ -2,7 +2,7 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <title>Dashboard for /home/jmw/git/FaBriCAD/src/visualization</title>
+  <title>Dashboard for /home/jmw/git/FaBriCAD/src/blocks</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="../.css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../.css/nv.d3.min.css" rel="stylesheet" type="text/css">
@@ -19,7 +19,7 @@
      <div class="col-md-12">
       <ol class="breadcrumb">
         <li><a href="../index.html">/home/jmw/git/FaBriCAD/src</a></li>
-        <li><a href="index.html">visualization</a></li>
+        <li><a href="index.html">blocks</a></li>
         <li class="active">(Dashboard)</li>
 
       </ol>
@@ -59,7 +59,8 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="SVGVisualizer.php.html#11">jmw\fabricad\visualizer\SVGVisualizer</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Brickwall.php.html#9">jmw\fabricad\blocks\Brickwall</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Page.php.html#14">jmw\fabricad\blocks\Page</a></td><td class="text-right">73%</td></tr>
 
        </tbody>
       </table>
@@ -76,7 +77,7 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="SVGVisualizer.php.html#11">jmw\fabricad\visualizer\SVGVisualizer</a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="Page.php.html#14">jmw\fabricad\blocks\Page</a></td><td class="text-right">11</td></tr>
 
        </tbody>
       </table>
@@ -114,8 +115,8 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="SVGVisualizer.php.html#16"><abbr title="jmw\fabricad\visualizer\SVGVisualizer::addShape">addShape</abbr></a></td><td class="text-right">0%</td></tr>
-       <tr><td><a href="SVGVisualizer.php.html#22"><abbr title="jmw\fabricad\visualizer\SVGVisualizer::render">render</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Brickwall.php.html#11"><abbr title="jmw\fabricad\blocks\Brickwall::render">render</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Page.php.html#46"><abbr title="jmw\fabricad\blocks\Page::render">render</abbr></a></td><td class="text-right">0%</td></tr>
 
        </tbody>
       </table>
@@ -132,7 +133,7 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="SVGVisualizer.php.html#22"><abbr title="jmw\fabricad\visualizer\SVGVisualizer::render">render</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="Page.php.html#46"><abbr title="jmw\fabricad\blocks\Page::render">render</abbr></a></td><td class="text-right">6</td></tr>
 
        </tbody>
       </table>
@@ -163,7 +164,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#classCoverageDistribution svg')
-      .datum(getCoverageDistributionData([1,0,0,0,0,0,0,0,0,0,0,0], "Class Coverage"))
+      .datum(getCoverageDistributionData([1,0,0,0,0,0,0,0,1,0,0,2], "Class Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -181,7 +182,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#methodCoverageDistribution svg')
-      .datum(getCoverageDistributionData([2,0,0,0,0,0,0,0,0,0,0,0], "Method Coverage"))
+      .datum(getCoverageDistributionData([2,0,0,0,0,0,0,0,0,0,0,17], "Method Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -231,7 +232,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[0,7,"<a href=\"SVGVisualizer.php.html#11\">jmw\\fabricad\\visualizer\\SVGVisualizer<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[100,8,"<a href=\"AbstractBuildingBlock.php.html#12\">jmw\\fabricad\\blocks\\AbstractBuildingBlock<\/a>"],[0,1,"<a href=\"Brickwall.php.html#9\">jmw\\fabricad\\blocks\\Brickwall<\/a>"],[100,2,"<a href=\"Factory.php.html#5\">jmw\\fabricad\\blocks\\Factory<\/a>"],[73.333333333333329,10,"<a href=\"Page.php.html#14\">jmw\\fabricad\\blocks\\Page<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -255,7 +256,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[0,1,"<a href=\"SVGVisualizer.php.html#16\">jmw\\fabricad\\visualizer\\SVGVisualizer::addShape<\/a>"],[0,6,"<a href=\"SVGVisualizer.php.html#22\">jmw\\fabricad\\visualizer\\SVGVisualizer::render<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[100,1,"<a href=\"AbstractBuildingBlock.php.html#36\">jmw\\fabricad\\blocks\\AbstractBuildingBlock::render<\/a>"],[100,1,"<a href=\"AbstractBuildingBlock.php.html#44\">jmw\\fabricad\\blocks\\AbstractBuildingBlock::__construct<\/a>"],[100,1,"<a href=\"AbstractBuildingBlock.php.html#54\">jmw\\fabricad\\blocks\\AbstractBuildingBlock::getName<\/a>"],[100,1,"<a href=\"AbstractBuildingBlock.php.html#65\">jmw\\fabricad\\blocks\\AbstractBuildingBlock::setName<\/a>"],[100,1,"<a href=\"AbstractBuildingBlock.php.html#75\">jmw\\fabricad\\blocks\\AbstractBuildingBlock::getDescription<\/a>"],[100,1,"<a href=\"AbstractBuildingBlock.php.html#83\">jmw\\fabricad\\blocks\\AbstractBuildingBlock::setDescription<\/a>"],[100,1,"<a href=\"AbstractBuildingBlock.php.html#93\">jmw\\fabricad\\blocks\\AbstractBuildingBlock::getConfig<\/a>"],[100,1,"<a href=\"AbstractBuildingBlock.php.html#101\">jmw\\fabricad\\blocks\\AbstractBuildingBlock::setConfig<\/a>"],[0,1,"<a href=\"Brickwall.php.html#11\">jmw\\fabricad\\blocks\\Brickwall::render<\/a>"],[100,2,"<a href=\"Factory.php.html#9\">jmw\\fabricad\\blocks\\Factory::create<\/a>"],[100,1,"<a href=\"Page.php.html#29\">jmw\\fabricad\\blocks\\Page::addItem<\/a>"],[100,1,"<a href=\"Page.php.html#36\">jmw\\fabricad\\blocks\\Page::size<\/a>"],[100,1,"<a href=\"Page.php.html#41\">jmw\\fabricad\\blocks\\Page::getItems<\/a>"],[0,2,"<a href=\"Page.php.html#46\">jmw\\fabricad\\blocks\\Page::render<\/a>"],[100,1,"<a href=\"Page.php.html#61\">jmw\\fabricad\\blocks\\Page::next<\/a>"],[100,1,"<a href=\"Page.php.html#66\">jmw\\fabricad\\blocks\\Page::valid<\/a>"],[100,1,"<a href=\"Page.php.html#71\">jmw\\fabricad\\blocks\\Page::current<\/a>"],[100,1,"<a href=\"Page.php.html#76\">jmw\\fabricad\\blocks\\Page::rewind<\/a>"],[100,1,"<a href=\"Page.php.html#81\">jmw\\fabricad\\blocks\\Page::key<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);

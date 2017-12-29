@@ -10,3 +10,8 @@ require_once('shapes/Line.php');
 require_once('shapes/Container.php');
 
 require_once('shapes/BinaryOperators.php');
+
+require_once('blocks/AbstractBuildingBlock.php');
+require_once('blocks/Brickwall.php');
+require_once('blocks/Page.php');
+require_once('blocks/Factory.php');
