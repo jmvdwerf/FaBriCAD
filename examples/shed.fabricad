@@ -1,0 +1,42 @@
+{
+    "name": "Example Shed",
+    "description": "Simple example of a shed that shows the capabilities of FaBriCAD",
+    "author": "J.M.E.M. van der Werf",
+    "version": "1.0",
+    "license": "MIT",
+    "blueprints": {
+        "front": {
+            "config": [],
+            "blocks": {
+                "wall": {
+                    "type": "Brickwall",
+                    "config": [],
+                    "points": [
+                        { "x":   0, "y":   0 },
+                        { "x": 200, "y":   0 },
+                        { "x": 200, "y": 120 }, 
+                        { "x":   0, "y": 120 }
+                    ]
+                },
+                "door": {
+                    "type": "BasicBlock",
+                    "points": [
+                        { "x": 135, "y":   5 },
+                        { "x": 180, "y":   5 },
+                        { "x": 180, "y": 110 },
+                        { "x": 135, "y": 110 }
+                    ]
+                },
+                "window": {
+                    "type": "BasicBlock",
+                    "points": [
+                        { "x":  40, "y":  70 },
+                        { "x": 100, "y":  70 },
+                        { "x": 100, "y": 110 },
+                        { "x":  40, "y": 110 }
+                    ]
+                }
+            }
+        }
+    }
+}
