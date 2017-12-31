@@ -114,7 +114,7 @@ class Blueprint implements \Iterator
     
     public function valid()
     {
-        return isset($this->blocks[$it_counter]);
+        return isset($this->blocks[$this->it_counter]);
     }
     
     public function current()

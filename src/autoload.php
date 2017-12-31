@@ -12,6 +12,10 @@ require_once('shapes/Container.php');
 require_once('shapes/BinaryOperators.php');
 
 require_once('blocks/AbstractBuildingBlock.php');
+require_once('blocks/BasicBlock.php');
 require_once('blocks/Brickwall.php');
 require_once('blocks/Page.php');
 require_once('blocks/Factory.php');
+
+require_once('config/Blueprint.php');
+require_once('config/Project.php');

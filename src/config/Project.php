@@ -123,7 +123,7 @@ class Project implements \Iterator
      * @param string $version
      * @return Project
      */
-    public function setVersion($version): Project
+    public function setVersion(string $version): Project
     {
         $this->version = $version;
         return $this;
@@ -143,7 +143,7 @@ class Project implements \Iterator
      * @param string $license
      * @return string
      */
-    public function setLicense(string $license): string
+    public function setLicense(string $license): Project
     {
         $this->license = $license;
         return $this;
