@@ -18,16 +18,20 @@ class Blueprint implements \Iterator
      */
     private $description = '';
     
+    
+    private $settings = array();
+    
     /**
      * 
      * @var array
      */
     private $blocks = array();
     
-    public function __construct(string $name = '', string $description = '', $blocks = array())
+    public function __construct(string $name = '', string $description = '', $config = array(), $blocks = array())
     {
         $this->setName($name);
         $this->setDescription($description);
+        $this->setSettings($config);
         $this->setBlocks($blocks);
     }
     
@@ -84,6 +88,27 @@ class Blueprint implements \Iterator
     {
         $this->blocks[] = $block;
         
+        return $this;
+    }
+    
+    /**
+     * Sets the settings to this array
+     * 
+     * @return array
+     */
+    public function getSettings(): array
+    {
+        return $this->settings;
+    }
+    
+    /**
+     * 
+     * @param array $settings
+     * @return Blueprint
+     */
+    public function setSettings(array $settings): Blueprint
+    {
+        $this->settings = $settings;
         return $this;
     }
 
