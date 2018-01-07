@@ -3,6 +3,7 @@
 namespace jmw\fabricad;
 
 use jmw\fabricad\config\JSONReader;
+use jmw\fabricad\converter\Factory;
 
 spl_autoload_register(function ($name) {
     $items = explode("\\", $name);
@@ -33,8 +34,6 @@ class FaBriCAD
      * 
      * @var \jmw\fabricad\config\Project
      */
-    private $project = null;
-    
     private $config = array('in' => '', 'out' => []);
     
     public static function main($args = array())
@@ -73,22 +72,21 @@ class FaBriCAD
             return 2;
         }
         
-//        try {
-        $this->project = JSONReader::fromFile($this->config['in']);            
-//         } catch(\Exception $e) {
-//             echo $e->getCode().": ".$e->getMessage();
-//             return $e->getCode();
-//         }
+        try {
+            $project = JSONReader::fromFile($this->config['in']);
+        } catch(\Exception $e) {
+            echo $e->getCode().": ".$e->getMessage();
+            return $e->getCode();
+        }
 
-        var_dump($this->project);
         
         foreach($this->config['out'] as $type => $file) {
-            if (empty($file)) {
-                $this->config['out'][$type] = pathinfo($this->config['in'], PATHINFO_FILENAME).".".$type;
+            $filename = $file;
+            if (empty($filename)) {
+                $filename = pathinfo($this->config['in'], PATHINFO_FILENAME).".".$type;
             }
+            Factory::convert($type, $filename, $project);
         }
-        
-        // var_dump($this->config);
         
         return 0;
     }
@@ -120,7 +118,8 @@ class FaBriCAD
         $str .= "\t --help\t\t\toutputs this help message\n\n\n";
         
         $str .= "Currently supported output types:\n";
-        $str .= "\n";
+        $str .= "\tsvg\tExports to an HTML page with for each blueprint an SVG image\n";
+        $str .= "\n\n";
         $str .= "For example: \n\n\t".$progname." -I ../examples/shed.fabricad -Tsvg shed.svg -Tdxf shed.dxf\n\n";
         $str .= "will output an SVG drawing to shed.svg, and a DXF drawing to shed.dxf.\n\n\n";
         $str .= "FaBriCAD (c) 2018, Jan Martijn van der Werf\n\n";

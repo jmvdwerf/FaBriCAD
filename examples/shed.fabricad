@@ -12,7 +12,7 @@
                 "unit": "MILLIMETERS"
             },
             "blocks": {
-                "0": {
+                "wall": {
                     "name": "wall",
                     "type": "brickwall",
                     "config": [],
@@ -38,7 +38,7 @@
                         ]
                     }
                 },
-                "1": {
+                "door": {
                     "name": "door",
                     "type": "cutout",
                     "shape": {

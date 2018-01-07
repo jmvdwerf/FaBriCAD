@@ -51,13 +51,6 @@ class Container extends Shape implements \Iterator
         return count($this->shapes);
     }
     
-    /**
-     * Adds a shape to the collection. The coordinates of the share are relative
-     * to the origin of the Container!
-     * 
-     * @param Shape $s
-     * @return Container $this
-     */
     public function addShape(Shape $s): Container
     {
         $this->shapes[] = $s;
@@ -136,6 +129,30 @@ class Container extends Shape implements \Iterator
        return Rectangle::fromPoints($this->bb_min, $this->bb_max);
     }
     
+    /**
+     * This function returns an array of Shapes, such that all elements in the
+     * container are positioned relative to the origin of this container.
+     * 
+     * @return Shape[]
+     */
+    public function flatten(Point $origin = null): array
+    {
+        if ($origin == null) {
+            $origin = $this->getOrigin();
+        }
+        
+        $list = array();
+        
+        foreach($this as $shape) {
+            if ($shape instanceof Container) {
+                $list = array_merge($list, $shape->flatten($origin));
+            }
+        }
+        
+        return $list;
+    }
+    
+    
     
     // -------------------------------------------------------------------------
     // Functions for the iterator over the internal Shapes
@@ -197,6 +214,4 @@ class Container extends Shape implements \Iterator
         return $this->it_counter;
     }
 
-
-    
 }

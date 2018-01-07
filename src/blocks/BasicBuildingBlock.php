@@ -9,7 +9,7 @@ use jmw\fabricad\shapes\Shape;
  * @author jmw
  *
  */
-abstract class AbstractBuildingBlock
+class BasicBuildingBlock
 {
     
     /**
@@ -31,9 +31,18 @@ abstract class AbstractBuildingBlock
     
     /**
      * 
+     * @var \jmw\fabricad\shapes\Shape
+     */
+    protected $shape = null;
+    
+    /**
+     * 
      * @return \jmw\fabricad\shapes\Shape
      */
-    public abstract function render(): Shape;
+    public function render(): Shape
+    {
+        return $this->shape;
+    }
     
     
     /**
@@ -60,9 +69,9 @@ abstract class AbstractBuildingBlock
      * Sets the name of the building block
      * 
      * @param string $name
-     * @return AbstractBuildingBlock
+     * @return BasicBuildingBlock
      */
-    public function setName(string $name): AbstractBuildingBlock
+    public function setName(string $name): BasicBuildingBlock
     {
         $this->name = $name;
         
@@ -79,8 +88,9 @@ abstract class AbstractBuildingBlock
 
     /**
      * @param string $description
+     * @return BasicBuildingBlock
      */
-    public function setDescription(string $description): AbstractBuildingBlock
+    public function setDescription(string $description): BasicBuildingBlock
     {
         $this->description = $description;
         
@@ -98,9 +108,29 @@ abstract class AbstractBuildingBlock
     /**
      * @param array $config
      */
-    public function setConfig($config = array()): AbstractBuildingBlock
+    public function setConfig($config = array()): BasicBuildingBlock
     {
         $this->config = $config;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return Shape
+     */
+    public function  getShape(): Shape
+    {
+        return $this->shape;
+    }
+    
+    /**
+     * 
+     * @param Shape $shape
+     * @return BasicBuildingBlock
+     */
+    public function setShape(Shape $shape): BasicBuildingBlock
+    {
+        $this->shape = $shape;
         return $this;
     }
 

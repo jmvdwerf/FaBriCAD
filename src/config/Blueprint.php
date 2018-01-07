@@ -2,7 +2,8 @@
 
 namespace jmw\fabricad\config;
 
-use jmw\fabricad\blocks\AbstractBuildingBlock;
+use jmw\fabricad\blocks\BasicBuildingBlock;
+use jmw\fabricad\shapes\Container;
 
 class Blueprint implements \Iterator
 {
@@ -77,14 +78,14 @@ class Blueprint implements \Iterator
 
     /**
      * 
-     * @return array
+     * @return AbstractBuildingBlock[]
      */
     public function getBlocks(): array
     {
         return $this->blocks;
     }
     
-    public function addBlock(AbstractBuildingBlock $block): Blueprint
+    public function addBlock(BasicBuildingBlock $block): Blueprint
     {
         $this->blocks[] = $block;
         
@@ -127,6 +128,18 @@ class Blueprint implements \Iterator
     {
         return count($this->blocks);
     }
+    
+    
+    public function render(): Container {
+        $c = new Container();
+        foreach($this->getBlocks() as $block) {
+            $c->addShape($block->render());
+        }
+        
+        return $c;
+    }
+    
+    
     
     // -------------------------------------------------------------------------
     // Iterator implementation

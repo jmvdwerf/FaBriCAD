@@ -56,12 +56,15 @@ final class BlueprintTest extends TestCase
     {
         $n = 'Name';
         $d = 'Description';
+        $c = [ 'setting1' => 'value1', 'setting2' => 'value2'];
+        
         $s = [ new BasicBlock(), new BasicBlock()];
         
-        $bp = new Blueprint($n, $d, $s);
+        $bp = new Blueprint($n, $d, $c, $s);
         
         $this->assertEquals($n, $bp->getName());
         $this->assertEquals($d, $bp->getDescription());
+        $this->assertEquals($c, $bp->getSettings());
         $this->assertEquals($s, $bp->getBlocks());
     }
     

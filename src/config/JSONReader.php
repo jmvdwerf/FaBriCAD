@@ -2,7 +2,11 @@
 
 namespace jmw\fabricad\config;
 
-use jmw\fabricad\blocks\AbstractBuildingBlock;
+use jmw\fabricad\blocks\BasicBuildingBlock;
+use jmw\fabricad\shapes\Ellipse;
+use jmw\fabricad\shapes\Point;
+use jmw\fabricad\shapes\Polygon;
+use jmw\fabricad\shapes\Rectangle;
 
 class JSONReader
 {
@@ -24,7 +28,7 @@ class JSONReader
         }
         
         $p = new Project();
-        var_dump($arr);
+        
         foreach($arr as $key => $val) {
             switch($key) {
                 case 'name':
@@ -77,12 +81,43 @@ class JSONReader
         return $b;
     }
     
-    private static function parseBuildingBlock($arr = []): AbstractBuildingBlock 
+    private static function parseBuildingBlock($arr = []): BasicBuildingBlock
     {
-        $b = \jmw\fabricad\blocks\Factory::create($arr['type'], $arr['name']);
-        $b->setConfig($arr['config']);
+        if (!isset($arr['type'])) {
+            throw new \Exception('No type defined in Block');
+        }
+        
+        $name = isset($arr['name']) ? $arr['name'] : '';
+        
+        $b = \jmw\fabricad\blocks\Factory::create($arr['type'], $name);
+        
+        if (isset($arr['config'])) $b->setConfig($arr['config']);
         
         // parse its shape
+        if (!isset($arr['shape'])) {
+            throw new \Exception('No shape defined in Block');
+        }
+        
+        if (!isset($arr['shape']['type'])) {
+            throw new \Exception('No type defined in Shape');
+        }
+        
+        $shape = \jmw\fabricad\shapes\Factory::create($arr['shape']['type']);
+        if ($shape instanceof Rectangle) {
+            $shape->setWidth($arr['shape']['width']);
+            $shape->setWidth($arr['shape']['height']);
+            $shape->setOriginXY($arr['shape']['origin']['X'], $arr['shape']['origin']['Y']);
+        } elseif ($shape instanceof Ellipse) {
+            $shape->setXFactor($arr['shape']['A']);
+            $shape->setYFactor($arr['shape']['B']);
+            $shape->setOriginXY($arr['shape']['origin']['X'], $arr['shape']['origin']['Y']);
+        } elseif ($shape instanceof Polygon) {
+            foreach($arr['shape']['points'] as $pt) {
+                $shape->addPoint(new Point($pt['x'], $pt['y']));
+            }
+        }
+        
+        $b->setShape($shape);
         
         return $b;
     }

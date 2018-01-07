@@ -11,11 +11,11 @@ use jmw\fabricad\shapes\Shape;
  * @author jmw
  *
  */
-class Page extends AbstractBuildingBlock implements \Iterator
+class Page extends BasicBuildingBlock implements \Iterator
 {
     /**
      * 
-     * @var AbstractBuildingBlock[]
+     * @var BasicBuildingBlock[]
      */
     protected $items = array();
     
@@ -23,10 +23,10 @@ class Page extends AbstractBuildingBlock implements \Iterator
     /**
      * Adds an item to the Page Container.
      * 
-     * @param AbstractBuildingBlock $item
+     * @param BasicBuildingBlock $item
      * @return Page
      */
-    public function addItem(AbstractBuildingBlock $item): Page
+    public function addItem(BasicBuildingBlock $item): Page
     {
         $this->items[] = $item;
         
@@ -68,7 +68,7 @@ class Page extends AbstractBuildingBlock implements \Iterator
         return isset($this->items[$this->it_counter]);
     }
 
-    public function current(): AbstractBuildingBlock
+    public function current(): BasicBuildingBlock
     {
         return $this->items[$this->it_counter];
     }

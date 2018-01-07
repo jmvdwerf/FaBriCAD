@@ -1,19 +1,18 @@
 <?php
-
-namespace jmw\fabricad\blocks;
+namespace jmw\fabricad\shapes;
 
 class Factory
 {
     
     
-    public static function create(string $type, string $name, $config = array()): BasicBuildingBlock
+    public static function create(string $type): Shape
     {
         $cname = strtoupper(substr($type, 0 ,1)).substr($type, 1);
-                
-        $class = '\\jmw\\fabricad\\blocks\\'.$cname;
+        
+        $class = '\\jmw\\fabricad\\shapes\\'.$cname;
         
         if (class_exists($class)) {
-            return new $class($name, $config);
+            return new $class();
         } else {
             throw new \Exception("Cannot find class: '".$class."'", 1514580268);
         }

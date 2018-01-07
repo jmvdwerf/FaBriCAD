@@ -24,6 +24,12 @@ abstract class Shape
         return $this;
     }
     
+    public function setOriginXY(float $x, float $y)
+    {
+        $this->origin->setX($x);
+        $this->origin->setY($y);
+    }
+    
     /**
      * Returns the origin of this shape
      * @return Point

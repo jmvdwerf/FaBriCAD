@@ -2,7 +2,7 @@
 
 namespace jmw\fabricad\blocks;
 
-class Cutout extends BasicBlock
+class Cutout extends BasicBuildingBlock
 {
     
 }
