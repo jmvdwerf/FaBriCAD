@@ -6,35 +6,87 @@
     "license": "MIT",
     "blueprints": {
         "front": {
-            "config": [],
+            "name": "front",
+            "config": {
+                "margin": 2,
+                "unit": "MILLIMETERS"
+            },
             "blocks": {
-                "wall": {
-                    "type": "Brickwall",
+                "0": {
+                    "name": "wall",
+                    "type": "brickwall",
                     "config": [],
-                    "points": [
-                        { "x":   0, "y":   0 },
-                        { "x": 200, "y":   0 },
-                        { "x": 200, "y": 120 }, 
-                        { "x":   0, "y": 120 }
-                    ]
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            {
+                                "x": 0,
+                                "y": 0
+                            },
+                            {
+                                "x": 200,
+                                "y": 0
+                            },
+                            {
+                                "x": 200,
+                                "y": 120
+                            },
+                            {
+                                "x": 0,
+                                "y": 120
+                            }
+                        ]
+                    }
                 },
-                "door": {
-                    "type": "BasicBlock",
-                    "points": [
-                        { "x": 135, "y":   5 },
-                        { "x": 180, "y":   5 },
-                        { "x": 180, "y": 110 },
-                        { "x": 135, "y": 110 }
-                    ]
+                "1": {
+                    "name": "door",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            {
+                                "x": 135,
+                                "y": 5
+                            },
+                            {
+                                "x": 180,
+                                "y": 5
+                            },
+                            {
+                                "x": 180,
+                                "y": 110
+                            },
+                            {
+                                "x": 135,
+                                "y": 110
+                            }
+                        ]
+                    }
                 },
                 "window": {
-                    "type": "BasicBlock",
-                    "points": [
-                        { "x":  40, "y":  70 },
-                        { "x": 100, "y":  70 },
-                        { "x": 100, "y": 110 },
-                        { "x":  40, "y": 110 }
-                    ]
+                    "name": "window",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            {
+                                "x": 40,
+                                "y": 70
+                            },
+                            {
+                                "x": 100,
+                                "y": 70
+                            },
+                            {
+                                "x": 100,
+                                "y": 110
+                            },
+                            {
+                                "x": 40,
+                                "y": 110
+                            }
+                        ]
+                    }
                 }
             }
         }

@@ -2,6 +2,8 @@
 
 namespace jmw\fabricad;
 
+use jmw\fabricad\config\JSONReader;
+
 spl_autoload_register(function ($name) {
     $items = explode("\\", $name);
     
@@ -11,8 +13,8 @@ spl_autoload_register(function ($name) {
         
         $file = __DIR__.DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $items).".php";
         
-        echo "DIR: ".__DIR__."\n";
-        echo "FILE: ".$file."\n";
+        // echo "DIR: ".__DIR__."\n";
+        // echo "FILE: ".$file."\n";
         
         require_once($file);
     } else {
@@ -65,6 +67,20 @@ class FaBriCAD
             }
             $i++;
         }
+        
+        if (empty($this->config['in'])) {
+            echo $this->returnHelp($args[0]);
+            return 2;
+        }
+        
+//        try {
+        $this->project = JSONReader::fromFile($this->config['in']);            
+//         } catch(\Exception $e) {
+//             echo $e->getCode().": ".$e->getMessage();
+//             return $e->getCode();
+//         }
+
+        var_dump($this->project);
         
         foreach($this->config['out'] as $type => $file) {
             if (empty($file)) {
