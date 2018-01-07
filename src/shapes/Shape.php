@@ -19,9 +19,15 @@ abstract class Shape
      */
     public function setOrigin(Point $orig): Shape
     {
-        $this->origin->set($orig);
+        $this->setOriginXY($orig);
         
         return $this;
+    }
+    
+    public function setOriginXY(float $x, float $y)
+    {
+        $this->origin->setX($x);
+        $this->origin->setY($y);
     }
     
     /**
