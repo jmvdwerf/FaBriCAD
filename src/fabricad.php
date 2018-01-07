@@ -75,7 +75,7 @@ class FaBriCAD
         try {
             $project = JSONReader::fromFile($this->config['in']);
         } catch(\Exception $e) {
-            echo $e->getCode().": ".$e->getMessage();
+            echo $e->getCode().": ".$e->getMessage()."\n\n";
             return $e->getCode();
         }
 

@@ -40,10 +40,10 @@ class SVGConverter extends AbstractConverter
         $this->top = $shape->getBoundingBox()->getTop()->getY();
         
         $this->processShape($shape);
-        $this->current .= '</svg>';
+        $this->current .= "\n".'</svg>';
         
-        $text  = '<h2>'.$print->getName().'</h2>';
-        $text .= $this->current;
+        $text  = '<h2>'.$print->getName().'</h2>'."\n\n";
+        $text .= $this->current. "\n\n";
         $text .= '<table><tr><th>Name</th><td>'.$print->getName().'</td></tr>';
         $text .= '<tr><th>Description</th><td>'.$print->getDescription().'</td></tr>';
         $text .= '</table>';

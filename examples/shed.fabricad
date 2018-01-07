@@ -6,11 +6,7 @@
     "license": "MIT",
     "blueprints": {
         "front": {
-            "name": "front",
-            "config": {
-                "margin": 2,
-                "unit": "MILLIMETERS"
-            },
+            "name": "Front",
             "blocks": {
                 "wall": {
                     "name": "wall",
@@ -19,22 +15,10 @@
                     "shape": {
                         "type": "polygon",
                         "points": [
-                            {
-                                "x": 0,
-                                "y": 0
-                            },
-                            {
-                                "x": 200,
-                                "y": 0
-                            },
-                            {
-                                "x": 200,
-                                "y": 120
-                            },
-                            {
-                                "x": 0,
-                                "y": 120
-                            }
+                            { "x":   0, "y":   0 },
+                            { "x": 200, "y":   0 },
+                            { "x": 200, "y": 120 },
+                            { "x":   0, "y": 120 }
                         ]
                     }
                 },
@@ -44,22 +28,10 @@
                     "shape": {
                         "type": "polygon",
                         "points": [
-                            {
-                                "x": 135,
-                                "y": 5
-                            },
-                            {
-                                "x": 180,
-                                "y": 5
-                            },
-                            {
-                                "x": 180,
-                                "y": 110
-                            },
-                            {
-                                "x": 135,
-                                "y": 110
-                            }
+                            { "x": 135, "y":   5 },
+                            { "x": 180, "y":   5 },
+                            { "x": 180, "y": 110 },
+                            { "x": 135, "y": 110 }
                         ]
                     }
                 },
@@ -69,23 +41,78 @@
                     "shape": {
                         "type": "polygon",
                         "points": [
-                            {
-                                "x": 40,
-                                "y": 70
-                            },
-                            {
-                                "x": 100,
-                                "y": 70
-                            },
-                            {
-                                "x": 100,
-                                "y": 110
-                            },
-                            {
-                                "x": 40,
-                                "y": 110
-                            }
+                            { "x":  40, "y":  70 },
+                            { "x": 100, "y":  70 },
+                            { "x": 100, "y": 110 },
+                            { "x": 40,  "y": 110 }
                         ]
+                    }
+                }
+            }
+        },
+        "left": {
+            "name": "Left",
+            "blocks": {
+                "wall": {
+                    "name": "wall",
+                    "type": "brickwall",
+                    "shape": {
+                      "type": "polygon",
+                      "points": [
+                         { "x":  0, "y":  0 },
+                         { "x": 80, "y":  0 },
+                         { "x": 80, "y": 120 },
+                         { "x":  0, "y": 150 }                      
+                      ]
+                    }
+                },
+                "window": {
+                    "name": "window",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "ellipse",
+                        "A": 10,
+                        "B": 20,
+                        "origin": {
+                            "x": 40,
+                            "y": 80
+                        }
+                    }
+                }
+            }
+        },
+        "right": {
+            "name": "Right",
+            "blocks": {
+                "wall": {
+                    "name": "wall",
+                    "type": "brickwall",
+                    "shape": {
+                      "type": "polygon",
+                      "points": [
+                         { "x":  0, "y":  0 },
+                         { "x": 80, "y":  0 },
+                         { "x": 80, "y": 150 },
+                         { "x":  0, "y": 120 }                      
+                      ]
+                    }
+                }
+            }
+        },
+        "back": {
+            "name": "Back",
+            "blocks": {
+                "wall": {
+                    "name": "wall",
+                    "type": "brickwall",
+                    "shape": {
+                      "type": "polygon",
+                      "points": [
+                         { "x":   0, "y":  0 },
+                         { "x": 200, "y":  0 },
+                         { "x": 200, "y": 150 },
+                         { "x":   0, "y": 150 }                      
+                      ]
                     }
                 }
             }

@@ -104,13 +104,13 @@ class JSONReader
         
         $shape = \jmw\fabricad\shapes\Factory::create($arr['shape']['type']);
         if ($shape instanceof Rectangle) {
+            $shape->setOriginXY($arr['shape']['origin']['x'], $arr['shape']['origin']['y']);
             $shape->setWidth($arr['shape']['width']);
             $shape->setWidth($arr['shape']['height']);
-            $shape->setOriginXY($arr['shape']['origin']['X'], $arr['shape']['origin']['Y']);
         } elseif ($shape instanceof Ellipse) {
             $shape->setXFactor($arr['shape']['A']);
             $shape->setYFactor($arr['shape']['B']);
-            $shape->setOriginXY($arr['shape']['origin']['X'], $arr['shape']['origin']['Y']);
+            $shape->setOriginXY($arr['shape']['origin']['x'], $arr['shape']['origin']['y']);
         } elseif ($shape instanceof Polygon) {
             foreach($arr['shape']['points'] as $pt) {
                 $shape->addPoint(new Point($pt['x'], $pt['y']));
