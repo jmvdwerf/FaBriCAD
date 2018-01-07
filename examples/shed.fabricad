@@ -96,6 +96,22 @@
                          { "x":  0, "y": 120 }                      
                       ]
                     }
+                },
+                "window": {
+                    "name": "window",
+                    "type": "cutout",
+                    "config": {
+                        "style": "fill:red;stroke:black;stroke-width:1"
+                    },
+                    "shape": {
+                        "type": "rectangle",
+                        "width": 20,
+                        "height": 40,
+                        "origin": {
+                            "x": 30,
+                            "y": 60
+                        }
+                    }
                 }
             }
         },

@@ -20,7 +20,6 @@ class SVGConverter extends AbstractConverter
 {
     private $page = '';
     
-    private $currentPrint = null;
     private $current = '';
     private $top = 0;
     
@@ -31,8 +30,6 @@ class SVGConverter extends AbstractConverter
      */
     public function processBlueprint(Blueprint $print)
     {
-        $this->currentPrint = $print;
-        
         // export shape to SVG.
         $shape = $print->render();
         
@@ -80,9 +77,6 @@ class SVGConverter extends AbstractConverter
     protected function processPolygon(Polygon $p)
     {
         $style = 'fill:royalblue;stroke:black;stroke-width:1" fill-opacity="0.5';
-        if (isset($this->currentPrint->getSettings()['style'])) {
-            $style = $this->currentPrint->getSettings()['style'];
-        }
         
         $points = array();
         foreach($p->getPoints() as $pt) {
@@ -96,9 +90,6 @@ class SVGConverter extends AbstractConverter
     protected function processEllipse(Ellipse $e)
     {
         $style = 'fill:yellow;stroke:purple;stroke-width:1';
-        if (isset($this->currentPrint->getSettings()['style'])) {
-            $style = $this->currentPrint->getSettings()['style'];
-        }
         
         $str = '<ellipse cx="'.$e->getOrigin()->getX().'" cy="'.($this->top - $e->getOrigin()->getY()).'" rx="'.$e->getXFactor().'" ry="'.$e->getYFactor().'" style="'.$style.'" />';
         
@@ -108,9 +99,6 @@ class SVGConverter extends AbstractConverter
     protected function processLine(Line $l)
     {
         $style = 'stroke:black;stroke-width:1';
-        if (isset($this->currentPrint->getSettings()['style'])) {
-            $style = $this->currentPrint->getSettings()['style'];
-        }
         
         $str = '<line x1="'.$l->getOrigin()->getX().'" y1="'.($this->top - $l->getOrigin()->getY()).'" x2="'.$l->getEndPoint()->getX().'" y2="'.($this->top - $l->getEndPoint()->getY()).'" style="'.$style.'" />';
         
