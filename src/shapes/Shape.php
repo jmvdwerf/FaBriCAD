@@ -41,7 +41,7 @@ abstract class Shape
     
     /**
      * Returns true if the shape $s intersects with this shape. 
-     * Just touching returns false.
+     * Just touching is sufficient!
      * 
      * @param Shape $s
      * @return bool
@@ -56,6 +56,11 @@ abstract class Shape
                 $b1->getOrigin()->smallerThanOrEqual($b2->getTop())
                && $b1->getTop()->greaterThanOrEqual($b2->getOrigin())  
            ); 
+    }
+    
+    public function asPolygon(): Polygon
+    {
+        return $this->getBoundingBox();
     }
     
     

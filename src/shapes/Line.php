@@ -57,6 +57,14 @@ class Line extends Shape
         return $this->getOrigin()->getY() - $a * $this->getOrigin()->getX();
     }
     
+    public function getMiddlePoint(): Point
+    {
+        $x = ($this->getEndPoint()->getX() - $this->getOrigin()->getX()) / 2;
+        $y = ($this->getEndPoint()->getY() - $this->getOrigin()->getY()) / 2;
+        
+        return new Point($x + $this->getOrigin()->getX(), $y + $this->getOrigin()->getY());
+    }
+    
     public function getY($x): float 
     {
         $a = tan($this->getAngle());
@@ -204,5 +212,10 @@ class Line extends Shape
         } else {
             usort($points, function(Point $p1, Point $p2) { return $p1->getX() - $p2->getX();} );
         }
+    }
+    
+    public function asPolygon(): Polygon
+    {
+        return new Polygon([$this->getOrigin(), $this->getEndPoint()]);
     }
 }
