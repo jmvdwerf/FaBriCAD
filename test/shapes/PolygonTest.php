@@ -223,29 +223,7 @@ final class PolygonTest extends AbstractShapeTest
         
     }
     
-    public function testExpand()
-    {
-        $p = new Polygon();
-        $r = $p->expand();
-        $this->assertCount(0, $r->getPoints());
-        $p = new Polygon([new Point(100,100)]);
-        $r = $p->expand();
-        $this->assertCount(1, $r->getPoints());
-        
-        $r1 = new Rectangle(100,100);
-        $r2 = new Rectangle(100,100, new Point(50,50));
-        
-        $pts = $r1->calculateIntersectionPointsWith($r2)->expand();
-        $this->assertCount(8, $pts->getPoints());
-        $this->assertPoint($pts->getPoints()[0],   0,   0);
-        $this->assertPoint($pts->getPoints()[1],   0, 100);
-        $this->assertPoint($pts->getPoints()[2],  50, 100);
-        $this->assertPoint($pts->getPoints()[3],  75, 100);
-        $this->assertPoint($pts->getPoints()[4], 100, 100);
-        $this->assertPoint($pts->getPoints()[5], 100,  50);
-        $this->assertPoint($pts->getPoints()[6], 100,  25);
-        $this->assertPoint($pts->getPoints()[7], 100,   0);
-    }
+    
     
     public function testSimplify()
     {
