@@ -2,6 +2,7 @@
 
 namespace jmw\fabricad\visualizer;
 
+use jmw\fabricad\shapes\Ellipse;
 use jmw\fabricad\shapes\Line;
 use jmw\fabricad\shapes\Point;
 use jmw\fabricad\shapes\Shape;
@@ -48,6 +49,10 @@ class SVGVisualizer
             } elseif ($s instanceof Line) {
                 $str .= "\n\t";
                 $str .= '<line x1="'.$s->getOrigin()->getX().'" y1="'.$s->getOrigin()->getY().'" x2="'.$s->getEndPoint()->getX().'" y2="'.$s->getEndPoint()->getY().'" style="stroke:black;stroke-width:2" />';
+            } elseif ($s instanceof Ellipse) {
+                $style = 'fill:green;stroke:black;stroke-width:1';
+                $str .= "\n\t";
+                $str .= '<ellipse cx="'.$s->getOrigin()->getX().'" cy="'.($s->getOrigin()->getY()).'" rx="'.$s->getXFactor().'" ry="'.$s->getYFactor().'" style="'.$style.'" />';
             }
         }
         $str .= "\n";
