@@ -20,7 +20,7 @@ use jmw\fabricad\visualizer\SVGVisualizer;
 use jmw\fabricad\shapes\BinaryOperators;
 use jmw\fabricad\shapes\Ellipse;
 
- /*
+
 $p = new Polygon([
     new Point(1000, 0),
     new Point(1500, 250),
@@ -39,10 +39,10 @@ $w = new Polygon([
     new Point(500, 500)
 ]);
 // */
-// /*
+ /*
 $p = new Rectangle(1000,1000);
-$w = new Rectangle(1000,1000, new Point(500,500));
-/* $w = new Polygon([
+// $w = new Rectangle(1000,1000, new Point(500,500));
+$w = new Polygon([
     new Point(500, 0),
     new Point(1000, 500),
     new Point(500, 1000),
@@ -72,8 +72,10 @@ $b = $w->calculateIntersectionPointsWith($p)->expand();
 
 $diff = array();
 //$diff = BinaryOperators::intersection($p, $w);
-//$diff = BinaryOperators::union($p, $w);
-$diff = BinaryOperators::difference($p, $w);
+$diff = BinaryOperators::union($p, $w);
+//$diff = BinaryOperators::difference($p, $w);
+
+echo "Found ".count($diff)." shapes";
 echo '</pre>';
 
 $v1 = new SVGVisualizer();
@@ -106,9 +108,6 @@ foreach($diff as $i=>$s) {
 //$v2->addShape($p2);
 //$v2->addShape($w2);
 echo $v2->render();
-
-echo "Found ".count($diff)." shapes";
-echo "Point (500, 500) inside? ".($diff[0]->contains(new Point(500,500)) ? 'yes': 'no');
 ?>
 </body>
 </html>
