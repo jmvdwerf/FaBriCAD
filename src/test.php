@@ -2,78 +2,87 @@
 <body>
 <?php
 
+require_once('visualization/SVGVisualizer.php');
+require_once('shapes/Point.php');
+require_once('shapes/Shape.php');
+require_once('shapes/Ellipse.php');
+require_once('shapes/Line.php');
+require_once('shapes/Polygon.php');
+require_once('shapes/Quadrangle.php');
+require_once('shapes/Rectangle.php');
+require_once('shapes/BinaryOperators.php');
+
 use jmw\fabricad\shapes\Point;
 use jmw\fabricad\shapes\Line;
 use jmw\fabricad\shapes\Polygon;
 use jmw\fabricad\shapes\Rectangle;
 use jmw\fabricad\visualizer\SVGVisualizer;
 use jmw\fabricad\shapes\BinaryOperators;
+use jmw\fabricad\shapes\Ellipse;
 
-require_once('autoload.php');
-require_once('visualization/SVGVisualizer.php');
+ /*
+$p = new Polygon([
+    new Point(1000, 0),
+    new Point(1500, 250),
+    new Point(750, 1000),
+    new Point(1000, 250),
+    new Point(250, 750),
+    new Point(0, 250)
+    ]);
 
-///*
-$p = new Polygon(
-    array(
-        new Point(100, 300), // 0
-        new Point(300, 500), // 1
-        new Point(800, 600), // 2
-        new Point(900, 100), // 3
-        new Point(500,  50), // 4
-        new Point(400, 200)  // 5
-    )
-);
-
-$w = new Polygon(
-    array(
-        new Point(800, 50),  // 0
-        new Point(450, 600), // 1
-        new Point(300, 100), // 2
-        new Point(200, 600), // 3
-        new Point(850, 800)  // 4
-    )
-);
-// */
-//  /*
-$p = new Polygon(
-    [
-        new Point(  0, 50),     // 0
-        new Point(300, 10),     // 1
-        new Point(450, 70),     // 2
-        new Point(400, 200),    // 3
-//        new Point(200, 250),
-        new Point( 50, 300),    // 4
-        new Point( 20, 250)     // 5
-    ]
-);
-
+//$l = new Line(new Point(0, 500), new Point(1500,500));
+//$w = $l->asPolygon();
 $w = new Polygon([
-    new Point(50, 5),        // 0
-    new Point(100, 400),     // 1
-    new Point(100, 200),     // 2
-    new Point(350, 300),     // 3
-    new Point(320, 100)      // 4
+    new Point(500, 250),
+    new Point(1200, 250),
+    new Point(1200, 500),
+    new Point(500, 500)
 ]);
 // */
 // /*
-$p = new Rectangle(100,100);
-$w = new Rectangle(100,100, new Point(50,50));
+$p = new Rectangle(1000,1000);
+$w = new Rectangle(1000,1000, new Point(500,500));
+/* $w = new Polygon([
+    new Point(500, 0),
+    new Point(1000, 500),
+    new Point(500, 1000),
+    new Point(0, 500)
+]);
 // */
+/*
+$tuin = new Polygon([
+    new Point(0,0),
+    new Point(0, 630),
+    new Point(620, 630),
+    new Point(620, 940),
+    new Point(950, 940),
+    new Point(950, 1410),
+    new Point(1316, 1410),
+    new Point(1316, 0)
+]);
+
+$terras = new Ellipse(520,520, new Point(1316,0));
+$boom = new Ellipse(30,30, new Point(676, 90));
+// */
+
+
 echo '<pre>';
+$a = $p->calculateIntersectionPointsWith($w)->expand();
+$b = $w->calculateIntersectionPointsWith($p)->expand();
+
 $diff = array();
-$diff = BinaryOperators::intersection($p, $w);
+//$diff = BinaryOperators::intersection($p, $w);
 //$diff = BinaryOperators::union($p, $w);
-//$diff = BinaryOperators::difference($p, $w);
+$diff = BinaryOperators::difference($p, $w);
 echo '</pre>';
 
 $v1 = new SVGVisualizer();
 $v1->addShape($p, 'blue');
 $v1->addShape($w, 'red');
-echo $v1->render();
+//$v1->addShape($tuin);
+//$v1->addShape($terras);
+//$v1->addShape($boom);
 
-
-$a = $p->calculateIntersectionPointsWith($w)->expand();
-$b = $w->calculateIntersectionPointsWith($p)->expand();
 
 $v3 = new SVGVisualizer();
 $v3->addShape($a, 'blue');
@@ -87,8 +96,8 @@ $v4->addShape($b, 'red');
 //echo $v4->render();
 
 $v2 = new SVGVisualizer();
-$v2->addShape($p, 'yellow');
-$v2->addShape($w, 'gray');
+//$v2->addShape($p, 'yellow');
+//$v2->addShape($w, 'gray');
 $colors = array('red','green', 'blue', 'pink', 'gray' ,'yellow');
 
 foreach($diff as $i=>$s) {
@@ -98,7 +107,8 @@ foreach($diff as $i=>$s) {
 //$v2->addShape($w2);
 echo $v2->render();
 
-
+echo "Found ".count($diff)." shapes";
+echo "Point (500, 500) inside? ".($diff[0]->contains(new Point(500,500)) ? 'yes': 'no');
 ?>
 </body>
 </html>
