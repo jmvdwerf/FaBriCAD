@@ -195,7 +195,7 @@ class BinaryOperators
         // If one turns into direction A, than the direction of the other should
         // turn the other way around to get a proper difference!
         
-        
+        /*
          echo "ONE: \n";
          echo $settings_one;
          echo "OTHER: \n";
@@ -214,11 +214,11 @@ class BinaryOperators
         
         while($indexA >= 0 && $indexA <= $nt->size())
         {
-            echo "indexA: ".$indexA." ";
+            // echo "indexA: ".$indexA." ";
             // current point of polygon one:
             $pt = $nt->getPoint($indexA);
             
-            echo $pt."\n";
+            // echo $pt."\n";
             
             // whatever happens, we use this point!
             $settings_one->processed[$indexA] = count($results);
@@ -226,7 +226,7 @@ class BinaryOperators
             if ($shape->size() > 0 && $pt->equals($shape->getOrigin())) {
                 
                 // the shape is closed!
-                
+                /*
                  echo "CLOSE figure\n";
                  echo "ONE: \n";
                  echo $settings_one;
@@ -247,18 +247,18 @@ class BinaryOperators
                 } else {
                     // it is a crossing point! We need to switch to B if the next point
                     // of B is outside
-                    echo 'Crossing point! (B: '.$settings_one->crossings[$indexA].")\n";
+                    // echo 'Crossing point! (B: '.$settings_one->crossings[$indexA].")\n";
                     
                     $indexB = BinaryOperators::nextIndex($settings_one->crossings[$indexA], $dirB, $no->size());
-                    echo 'index B: '.$indexB.' ';
+                    // echo 'index B: '.$indexB.' ';
                     while($indexB >= 0 && $indexB < $no->size() && $settings_other->outside[$indexB] && $settings_other->crossings[$indexB] < 0 ) // && $settings_other->processed[$indexB] < 0) 
                     {
                         $pt = $no->getPoint($indexB);
-                        echo $pt."\n";
+                        // echo $pt."\n";
                         $shape->addPoint($pt);
                         $settings_other->processed[$indexB] = count($results);
                         $indexB = BinaryOperators::nextIndex($indexB, $dirB, $nt->size());
-                        echo 'index B: '.$indexB." ";
+                        // echo 'index B: '.$indexB." ";
                     }
                     echo "\nCrossing point! (A: ".$settings_other->crossings[$indexB].")\n";
                     if ($settings_other->crossings[$indexB] < 0) {
@@ -310,55 +310,109 @@ class BinaryOperators
         $settings_one = BinaryOperators::calculatePreconditions($nt, $no);
         $settings_other = BinaryOperators::calculatePreconditions($no, $nt);
         
+        
         $dirA = ($nt->direction() == Polygon::DIRECTION_CLOCKWISE);
         $dirB = ($no->direction() == Polygon::DIRECTION_CLOCKWISE);
         
+        /*
+        echo "ONE: \n";
+        echo $settings_one;
+        echo "OTHER: \n";
+        echo $settings_other;
+        echo "DIR one  : ".$dirA."\n";
+        echo "DIR other: ".$dirB."\n\n";
+        // */
+
         $results = [];
         
-        $indexB = -1;
         $indexA = BinaryOperators::findNextUnusedCrossing(
             $settings_one->crossings,
             $settings_one->processed,
             $nt->getPoints()
             );
-        
-        $cnt = count($nt->getPoints());
-        $cno = count($no->getPoints());
+        $indexB = ($indexA >= 0) ? $settings_one->crossings[$indexA] : -1;
         
         $output = new Polygon();
-        while($indexA >= 0) {
-            $pt = $nt->getPoints()[$indexA];
+        while($indexA >= 0 && $indexB >= 0) {
+            // INV 1: $settings_one->crossings[$indexA] = $indexB
+            
+            // echo 'index A: '.$indexA."\n";
+            // echo 'index B: '.$indexB."\n";
+                        
+            $pt = $nt->getPoint($indexA);
 
-            if (count($output->getPoints()) > 1 && $output->getOrigin()->equals($pt)) {
+            if (count($output->getPoints()) > 0 && $output->getOrigin()->equals($pt)) {
                 $results[] = $output->simplify();
                 $indexA = BinaryOperators::findNextUnusedCrossing(
                     $settings_one->crossings,
                     $settings_one->processed,
                     $nt->getPoints()
                     );
+                $indexB = ($indexA >= 0) ? $settings_one->crossings[$indexA] : -1;
+                
                 $output = new Polygon();
+                /*
+                echo "CLOSE figure\n";
+                echo "ONE: \n";
+                echo $settings_one;
+                echo "\nOTHER\n";
+                echo $settings_other;
+                */
             } else {
                 $output->addPoint($pt);
-                $settings_one->processed[$indexA] = count($results) + 1;
+                $settings_one->processed[$indexA] = count($results);
                 
-                // determine next point
-                $sameB = $settings_one->crossings[$indexA];
-                // if nextA is inside, add those points, until the next crossing
-                $indexA = BinaryOperators::nextIndex($indexA, $dirA, $cnt);
-                if (!$settings_one->outside[$indexA]) {
-                    // it is inside, add points until next crossing!
-                    while(!$settings_one->outside[$indexA] && $settings_one->crossings[$indexA] < 0) {
-                        $output->addPoint($nt->getPoints()[$indexA]);
-                        $indexA = BinaryOperators::nextIndex($indexA, $dirA, $cnt);
+                
+                $nextA = BinaryOperators::nextIndex($indexA, $dirA, $nt->size());
+                $nextB = BinaryOperators::nextIndex($indexB, $dirB, $no->size());
+                // we know that nextA and nextB are no crossings, because of expand();
+                
+                // echo 'next A: '.$nextA."\n";
+                // echo 'next B: '.$nextB."\n";
+                
+                if (!$settings_one->outside[$nextA] && $settings_one->processed[$nextA] < 0 ) {
+                    // we know that $nextA is inside B, so let's add points of A
+                    // until we are at the next crossing!
+                    
+                    // echo "Continue with A\n";
+                    
+                    while($nextA >= 0 && $nextA < $nt->size() && $settings_one->crossings[$nextA] < 0 )
+                    {
+                        $pt = $nt->getPoint($nextA);
+                        $output->addPoint($pt);
+                        $settings_one->processed[$nextA] = count($results);
+                        $nextA = BinaryOperators::nextIndex($nextA, $dirA, $nt->size());
+                        // echo "next A: ".$nextA."\n";
                     }
+                    // we are at the next crossing!
+                    $indexA = $nextA;
+                    $indexB = $settings_one->crossings[$indexA];
                 } else {
-                    // else, if nextB is inside, add those points, until the next crossing
-                    $nextB = BinaryOperators::nextIndex($sameB, $dirB, $cno);
-                    while(!$settings_other->outside[$nextB] && $settings_other->crossings[$nextB] < 0) {
-                        $output->addPoint($no->getPoints()[$nextB]);
-                        $nextB = BinaryOperators::nextIndex($nextB, $dirB, $cno);
-                    }
-                    $indexA = $settings_other->crossings[$nextB];
+                    // we know that $nextA is outside, or already processed! 
+                    // so let's test B
+                    if (!$settings_other->outside[$nextB] && $settings_other->processed[$nextB] < 0) {
+                        // we know that $nextB is inside A, so let's add points of B
+                        // until we are at the next crossing!
+                        // echo "Continue with B\n";
+                        
+                        while($nextB >= 0 && $nextB < $no->size() && $settings_other->crossings[$nextB] < 0 )
+                        {
+                            $pt = $no->getPoint($nextB);
+                            $output->addPoint($pt);
+                            $settings_other->processed[$nextB] = count($results);
+                            $nextB = BinaryOperators::nextIndex($nextB, $dirB, $no->size());
+                            // echo "next B: ".$nextB."\n";
+                        }
+                        // we are at the next crossing!
+                        $indexB = $nextB;
+                        $indexA = $settings_other->crossings[$indexB];
+                        
+                    } else {
+                        // hmm, B is also outside, let's just continue to the while,
+                        // since the invariant holds...
+                        // echo "Go back\n";
+                        continue;
+                    } 
                 }
             }
         }

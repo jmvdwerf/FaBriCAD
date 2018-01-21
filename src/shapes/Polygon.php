@@ -391,25 +391,34 @@ class Polygon extends Shape
      */
     public function simplify(): Polygon
     {
-        // remove redundant nodes;
-        $lines = $this->getLines();
-        $N = count($lines);
-        $rmNode = array();
-        
-        for($i = 0 ; $i < $N ; $i++) {
-            if (abs($lines[$i]->getAngle() - $lines[($i+1) % $N]->getAngle() ) < 0.001) {
-                // the two consecutive lines have the same angle, so the point
-                // in between can be removed!
-                $rmNode[] = ($i+1) % $N;
-            }
-        }
-        
         $p = new Polygon();
-        foreach($this->getPoints() as $index => $pt) {
-            if (!in_array($index, $rmNode)) {
-                $p->addPoint($pt);
-            }
+        foreach($this->getPoints() as $pt) {
+            $p->addPoint($pt);
         }
+        
+        do {
+        
+            // remove redundant nodes;
+            $lines = $p->getLines();
+            $N = count($lines);
+            $rmNode = array();
+            
+            for($i = 0 ; $i < $N ; $i++) {
+                if (abs($lines[$i]->getAngle() - $lines[($i+1) % $N]->getAngle() ) < 0.001) {
+                    // the two consecutive lines have the same angle, so the point
+                    // in between can be removed!
+                    $rmNode[] = ($i+1) % $N;
+                }
+            }
+            $pts = $p->getPoints();
+            
+            $p = new Polygon();
+            foreach($pts as $index => $pt) {
+                if (!in_array($index, $rmNode)) {
+                    $p->addPoint($pt);
+                }
+            }
+        } while (count($rmNode) > 0);
         
         return $p;
     }

@@ -11,7 +11,12 @@
                 "wall": {
                     "name": "wall",
                     "type": "brickwall",
-                    "config": [],
+                    "config": {
+                        "height": 10,
+                        "width": 20,
+                        "angle": 0,
+                        "type": "default"
+                    },
                     "shape": {
                         "type": "polygon",
                         "points": [
