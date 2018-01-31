@@ -14,8 +14,7 @@
                     "config": {
                         "height": 10,
                         "width": 20,
-                        "angle": 0,
-                        "type": "default"
+                        "angle": 0
                     },
                     "shape": {
                         "type": "polygon",
@@ -61,6 +60,11 @@
                 "wall": {
                     "name": "wall",
                     "type": "brickwall",
+                    "config": {
+                        "height": 10,
+                        "width": 20,
+                        "angle": 0
+                    },
                     "shape": {
                       "type": "polygon",
                       "points": [
@@ -92,6 +96,11 @@
                 "wall": {
                     "name": "wall",
                     "type": "brickwall",
+                    "config": {
+                        "height": 10,
+                        "width": 20,
+                        "angle": 0
+                    },
                     "shape": {
                       "type": "polygon",
                       "points": [
@@ -126,6 +135,11 @@
                 "wall": {
                     "name": "wall",
                     "type": "brickwall",
+                    "config": {
+                        "height": 10,
+                        "width": 20,
+                        "angle": 0
+                    },
                     "shape": {
                       "type": "polygon",
                       "points": [

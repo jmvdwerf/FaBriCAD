@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-
 namespace jmw\fabricad\shapes\test;
+
+require_once('AbstractShapeTest.php');
 
 use jmw\fabricad\shapes\Container;
 use jmw\fabricad\shapes\Rectangle;
@@ -148,6 +149,72 @@ final class ContainerTest extends AbstractShapeTest
             $this->assertPoint($r[$key]->getOrigin(), $p[$key]->getX(), $p[$key]->getY());
         }
         
+    }
+    
+    public function testFlatten()
+    {
+        $r = array();
+        $r[] = new Rectangle(5,5, new Point(10,10));
+        $r[] = new Rectangle(10,10, new Point(8,8));
+        $r[] = new Rectangle(3,3, new Point(-3, -3));
+        $c = new Container($r);
+        
+        $r2 = new Rectangle(20,20, new Point(15,15));
+        
+        $c2 = new Container([$r2]);
+        
+        $c->addShape($c2);
+        
+        $items = $c->flatten();
+        
+        $this->assertCount(4, $items);
+        
+    }
+    
+    public function jotestaddNonOverlappingPartsWithNoOverlappingItems()
+    {
+        $shape1 = new Rectangle(10, 10);
+        $shape2 = new Rectangle(10, 10, new Point(200,200));
+        
+        $c = new Container();
+        $c->addNonOverlappingParts($shape1);
+        $c->addNonOverlappingParts($shape2);
+        
+        $this->assertCount(2, $c->getShapes());
+        $this->assertContains($shape1, $c->getShapes());
+        $this->assertContains($shape2, $c->getShapes());
+    }
+    
+    public function testaddNonOverlappingPartsWithOverlappingSimple()
+    {
+        $shape1 = new Rectangle(100, 100);
+        $shape2 = new Rectangle(100, 100, new Point(50,50));
+        $shape3 = new Rectangle(40, 40, new Point(100, 50));
+        
+        $c = new Container();
+        $c->addNonOverlappingParts($shape1);
+        $c->addNonOverlappingParts($shape2);
+        $c->addNonOverlappingParts($shape3);
+        
+        $this->assertCount(3, $c->getShapes());
+        
+        $this->assertContains($shape1, $c->getShapes());
+        $this->assertNotContains($shape2, $c->getShapes());
+        
+        foreach($c->getShapes() as $s) {
+            if ($s->hasPoint(new Point(150,150))) {
+                $this->assertCount(6, $s->getPoints());
+                $this->assertTrue($s->hasPoint(new Point(100, 50)));
+                $this->assertTrue($s->hasPoint(new Point(150, 50)));
+                $this->assertTrue($s->hasPoint(new Point(150,150)));
+                $this->assertTrue($s->hasPoint(new Point( 50,150)));
+                $this->assertTrue($s->hasPoint(new Point( 50,100)));
+                $this->assertTrue($s->hasPoint(new Point(100,100)));
+            } elseif ($s === $shape1) {
+            } else {
+                echo $s;
+            }
+        }
     }
 }
 

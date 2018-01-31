@@ -13,30 +13,14 @@ final class ShapeTest extends AbstractShapeTest
     
     public function testIntersects()
     {
-        $r1 = new Rectangle(10, 5, new Point(2,3));
-        $r2 = new Rectangle(10, 5, new Point(10,0));
-        $r3 = new Rectangle(10, 5, new Point(12,5));
-        $r4 = new Rectangle(10, 3, new Point(-2,1));
-        $r5 = new Rectangle(10, 2, new Point(-2,1));
-        
-        
-        $this->assertTrue($r1->intersects($r1));
-        $this->assertTrue($r2->intersects($r2));
+        $r1 = new Rectangle(100, 100);
+        $r2 = new Rectangle(50,50, new Point(25, 25));
+        $r3 = new Rectangle(100, 100, new Point(50,50));
+        // $r2 fully in $r1
         $this->assertTrue($r1->intersects($r2));
-        $this->assertTrue($r2->intersects($r1));
         
-        // all true, because the borders are the same
+        // $r3 overlaps $R1
         $this->assertTrue($r1->intersects($r3));
-        $this->assertTrue($r3->intersects($r1));
-        
-        $this->assertTrue($r2->intersects($r3));
-        $this->assertTrue($r3->intersects($r2));
-        
-        $this->assertTrue($r1->intersects($r4));
-        $this->assertTrue($r4->intersects($r1));
-        
-        $this->assertTrue($r1->intersects($r5));
-        $this->assertTrue($r5->intersects($r1));
         
     }
     
