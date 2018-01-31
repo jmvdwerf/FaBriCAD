@@ -60,6 +60,49 @@ class Container extends Shape implements \Iterator
     }
     
     /**
+     * Adds Shape $s if it is not overlapping with any of the elements in the
+     * Container
+     * @param Shape $s
+     * @return Container
+     */
+    public function addNonOverlappingParts(Shape $s): Container
+    {
+        $toCheck = [$s];
+        
+        // echo 'I give: '.$s."\n";
+        
+        foreach($this->shapes as $item) {
+            $toAdd = array();
+            if (count($toCheck) == 0) { break; }
+            foreach($toCheck as $shape) {
+                 if($shape->isContainedIn($item)) {
+                     // remove shape!
+                     // echo 'I remove '.$shape."\n";
+                     $toCheck = array_diff($toCheck, [$shape]);
+                 } else if($item->intersects($shape)) {
+                     $toCheck = array_diff($toCheck, [$shape]);
+                     $splits = BinaryOperators::difference($shape, $item);
+                     foreach($splits as $sp) {
+                         // echo 'I got: '.$sp."\n";
+                         $toCheck[] = $sp;
+                     }
+                     
+                 } 
+            }
+        }
+        
+        // if (count($toCheck) == 0) { echo 'empty $toCheck'."\n"; }
+        
+        
+        foreach($toCheck as $shape) {
+            $this->addShape($shape);
+            // echo 'I added: '.$shape."\n";
+        }
+        
+        return $this;
+    }
+    
+    /**
      * Removes a shape from the collection.
      * 
      * @param Shape $s
@@ -130,22 +173,19 @@ class Container extends Shape implements \Iterator
     }
     
     /**
-     * This function returns an array of Shapes, such that all elements in the
-     * container are positioned relative to the origin of this container.
+     * This function returns an array of Shapes
      * 
      * @return Shape[]
      */
-    public function flatten(Point $origin = null): array
+    public function flatten(): array
     {
-        if ($origin == null) {
-            $origin = $this->getOrigin();
-        }
-        
         $list = array();
         
-        foreach($this as $shape) {
+        foreach($this->getShapes() as $shape) {
             if ($shape instanceof Container) {
-                $list = array_merge($list, $shape->flatten($origin));
+                $list = array_merge($list, $shape->flatten());
+            } else {
+                $list[] = $shape;
             }
         }
         

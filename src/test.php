@@ -40,9 +40,25 @@ $w = new Polygon([
 ]);
 // */
 
+//$p = new Rectangle(1000, 1000);
+//$w = new Rectangle(1000, 1000, new Point(500,500));
+//$w = new Rectangle(400, 400, new Point(800, 300));
 
-$p = new Rectangle(1000,1000);
-$w = new Rectangle(1000,1000, new Point(500,500));
+$p = new Polygon([
+    new Point(0, 0),
+    new Point(80, 0),
+    new Point(80,150),
+    new Point(0,120)
+]);
+$w = new Polygon([
+    new Point(30, 60),
+    new Point(30,100),
+    new Point(50,100),
+    new Point(50,60)
+]);
+
+//$p = new Rectangle(1000,1000);
+//$w = new Rectangle(1000,1000, new Point(500,500));
 /* $w = new Polygon([
     new Point(500, 0),
     new Point(1000, 500),
@@ -72,9 +88,9 @@ $a = $p->calculateIntersectionPointsWith($w)->expand();
 $b = $w->calculateIntersectionPointsWith($p)->expand();
 
 $diff = array();
-$diff = BinaryOperators::intersection($p, $w);
+//$diff = BinaryOperators::intersection($p, $w);
 //$diff = BinaryOperators::union($p, $w);
-//$diff = BinaryOperators::difference($p, $w);
+$diff = BinaryOperators::difference($p, $w);
 
 echo "Found ".count($diff)." shapes";
 echo '</pre>';

@@ -43,10 +43,17 @@ class Page extends BasicBuildingBlock implements \Iterator
         return $this->items;
     }
     
+    public function getItem(int $index): BasicBuildingBlock
+    {
+        return $this->items[$index];
+    }
+    
     public function render(): Shape
     {
         $c = new Container();
-        foreach($this->items as $block) {
+        
+        // we walk backwards!
+        for($i = $this->size() ; $i < 0 ; $i--) {
             $c->addShape($block->render());
         }
         

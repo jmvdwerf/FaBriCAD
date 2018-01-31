@@ -28,44 +28,50 @@ class Brickwall extends BasicBuildingBlock
         }
     }
     
-    public function getAngle(): float {
-        if (isset($this->config['angle'])) {
-            return $this->config['angle'];
-        } else {
-            return 0.0;
-        }
-    }
-    
-    public function render(): Shape
+    protected function renderLines(): array
     {
-        
         $bb = $this->getShape()->getBoundingBox();
         
         $totalheight = $bb->getTop()->getY();
+        $prevY = $bb->getOrigin()->getY();
         $startX = $bb->getOrigin()->getX();
         $endX = $bb->getTop()->getX();
         
         $lines = array();
         
-        for($y = $bb->getOrigin()->getY() ; $y < $totalheight ; $y += $this->getBrickHeight() ) {
-            $endY = $y + ( sin($this->getAngle()) * $y );
-            $lines[] = new Line(new Point($startX, $y), new Point($endX, $endY ));
+        $counter = 0;
+        for($y = $bb->getOrigin()->getY() ; $y <= $totalheight ; $y += $this->getBrickHeight() ) {
+            $lines[] = new Line(new Point($startX, $y), new Point($endX, $y ));
+            $start = $startX + (1-($counter % 2)/2) * $this->getBrickWidth();
+            for($x = $start ; $x < $endX ; $x += $this->getBrickWidth() ) {
+                $lines[] = new Line(new Point($x, $prevY), new Point($x, $y));
+            }
+            $prevY = $y;
+            $counter++;
         }
         
-        $c = new Container();
-
-        echo $this->getShape()->asPolygon();
+        return $lines;
+    }
+    
+    public function render(): Shape
+    {
         
-        // get the difference with the shape
+        $lines = $this->renderLines();
+        
+        $c = new Container();
+        //foreach($this->getShape()->asPolygon()->getLines() as $line) {
+        //    $c->addShape($line);
+        //}
         if ($this->getShape() instanceof Polygon) {
             foreach($lines as $l) {
-                echo $l;
+                // echo "I have: ".$l."\n";
                 
-                //$items = BinaryOperators::intersection($this->getShape()->asPolygon(), $l->asPolygon());
+                $items = BinaryOperators::intersection($this->getShape()->asPolygon(), $l);
                 
-                //var_dump(count($items));
-                
+                // echo "I get: \n";
+
                 foreach($items as $it) {
+                    // echo " - ".$it;
                     $c->addShape($it);
                 }
             }

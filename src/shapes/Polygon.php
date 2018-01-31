@@ -444,6 +444,12 @@ class Polygon extends Shape
         return $s;
     }
     
+    public function hasPoint(Point $pt) {
+        foreach($this->getPoints() as $point) {
+            if ($pt->equals($point)) return true;
+        }
+    }
+    
 }
 
 

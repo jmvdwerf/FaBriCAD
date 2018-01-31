@@ -33,11 +33,20 @@ class BO_Settings
 }
 
 class BinaryOperators 
-{
+{   
+    public static function debug($str)
+    {
+        // echo $str."\n";
+    }
+    
     public static function difference(Shape $one, Shape $other): array
     {
+        if (!($one->intersects($other))) {
+            return [$one];
+        }
+        
         if ($one instanceof Line) {
-            return BinaryOperators::differenceL($one, $other);
+            return BinaryOperators::differenceL($one, $other->asPolygon());
         } elseif($other instanceof Line) {
             return [$one];
         } else {
@@ -45,15 +54,35 @@ class BinaryOperators
         }
      }
      
-     public static function differenceL(Line $one, Shape $other): array
+     public static function differenceL(Line $one, Polygon $other): array
      {
-         return [];
+         BinaryOperators::debug('');
+         
+         $results = [];
+         BinaryOperators::debug('Line: '.$one);
+         $lines = BinaryOperators::calculateLineSegments($one, $other);
+         BinaryOperators::debug('Split into:');
+                  
+         foreach($lines as $line) {
+             // add the line if the middle point is outside the polygon
+             $str = $line.' - ';
+             if (!$other->contains($line->getMiddlePoint())) {
+                 $results[] = $line;
+                 $str .= 'added';
+             }
+             BinaryOperators::debug($str);
+         }
+         
+         return $results;
      }
      
      public static function differenceP(Polygon $one, Polygon $other): array
      {
          $nt = $one->calculateIntersectionPointsWith($other)->expand();
          $no = $other->calculateIntersectionPointsWith($one)->expand();
+         
+         BinaryOperators::debug($one);
+         BinaryOperators::debug($other);
          
          $settings_one = BinaryOperators::calculatePreconditions($nt, $no);
          $settings_other = BinaryOperators::calculatePreconditions($no, $nt);
@@ -66,16 +95,16 @@ class BinaryOperators
          // If one turns into direction A, than the direction of the other should 
          // turn the other way around to get a proper difference!
          
-          /*
-         echo "ONE: \n";
-         echo $settings_one;
-         echo "OTHER: \n";
-         echo $settings_other;
-         echo "DIR one  : ".$dirA."\n";
-         echo "DIR other: ".$dirB."\n\n";
+         
+         BinaryOperators::debug("ONE: \n".$settings_one);
+         BinaryOperators::debug("OTHER: \n".$settings_other);
+         BinaryOperators::debug("DIR one  : ".$dirA);
+         BinaryOperators::debug("DIR other: ".$dirB);
          // */
          
          $results = array();
+         
+         // return $results;
          
          $indexB =  -1;
          
@@ -85,22 +114,17 @@ class BinaryOperators
          
          while($indexA >= 0 && $indexA <= $nt->size())
          {
-            // echo "indexA: ".$indexA."\n";
             // current point of polygon one:
             $pt = $nt->getPoint($indexA);
             
-            // whatever happens, we use this point!
-            $settings_one->processed[$indexA] = count($results); 
+            BinaryOperators::debug("indexA: ".$indexA. '('.$pt.')');
             
-            if ($shape->size() > 0 && $pt->equals($shape->getOrigin())) {
+            if ($shape->size() > 0 && ($pt->equals($shape->getOrigin()) || $settings_one->processed[$indexA] >= 0)) {
                 
                 // the shape is closed!
-                /*
-                echo "CLOSE figure\n";
-                echo "ONE: \n";
-                echo $settings_one;
-                echo "\nOTHER\n";
-                echo $settings_other;
+                BinaryOperators::debug("CLOSE figure");
+                BinaryOperators::debug("ONE: \n".$settings_one);
+                BinaryOperators::debug("OTHER\n".$settings_other);
                 // */
                 
                 $results[] = $shape->simplify();
@@ -109,13 +133,14 @@ class BinaryOperators
             } else {
                 // the shape is not yet closed
                 $shape->addPoint($pt);
+                $settings_one->processed[$indexA] = count($results); 
                 // determine the next point, either on one or other
                 if ($settings_one->crossings[$indexA] < 0) {
                     // it is no crossing point, just give me the next index
                     $indexA = BinaryOperators::nextIndex($indexA, $dirA, $nt->size());
                 } else {
                     // it is a crossing point! 
-                    // echo "Index A is a crossing point! (in B: ".$settings_one->crossings[$indexA].")\n";
+                    BinaryOperators::debug("Index A is a crossing point! (in B: ".$settings_one->crossings[$indexA].")");
                     
                     $indexB = $settings_one->crossings[$indexA];
                     
@@ -125,7 +150,7 @@ class BinaryOperators
                     // we know that, because of Polygon::expand() that the next point of B
                     // will NOT be a crossing point with A
                     
-                    // echo "next B: ".$indexB."\n";
+                    BinaryOperators::debug("next B: ".$indexB);
                     
                     while ($indexB >= 0 && $indexB < $no->size() && $settings_other->crossings[$indexB] < 0 && !$settings_other->outside[$indexB]  && $settings_other->processed[$indexB] < 0 ) 
                     {
@@ -133,7 +158,7 @@ class BinaryOperators
                         $settings_other->processed[$indexB] = count($results);
                         $shape->addPoint($no->getPoint($indexB));
                         $indexB = BinaryOperators::nextIndex($indexB, $dirB, $no->size());
-                        // echo "next B: ".$indexB."\n";
+                        BinaryOperators::debug("next B: ".$indexB);
                     }
                     if ($settings_other->crossings[$indexB] >= 0) {
                         $indexA = $settings_other->crossings[$indexB];
@@ -181,6 +206,10 @@ class BinaryOperators
      */
     public static function union(Polygon $one, Polygon $other): array
     {
+        if (!($one->intersects($other))) {
+            return [$one, $other];
+        }
+        
         $nt = $one->calculateIntersectionPointsWith($other)->expand();
         $no = $other->calculateIntersectionPointsWith($one)->expand();
         
@@ -195,14 +224,13 @@ class BinaryOperators
         // If one turns into direction A, than the direction of the other should
         // turn the other way around to get a proper difference!
         
-        /*
-         echo "ONE: \n";
-         echo $settings_one;
-         echo "OTHER: \n";
-         echo $settings_other;
-         echo "DIR one  : ".$dirA."\n";
-         echo "DIR other: ".$dirB."\n\n";
-         // */
+        
+        BinaryOperators::debug("ONE: \n".$settings_one);
+        BinaryOperators::debug("OTHER: \n".$settings_other);
+        BinaryOperators::debug("DIR one  : ".$dirA);
+        BinaryOperators::debug("DIR other: ".$dirB);
+        
+        // return [];
         
         $results = array();
         
@@ -226,12 +254,9 @@ class BinaryOperators
             if ($shape->size() > 0 && $pt->equals($shape->getOrigin())) {
                 
                 // the shape is closed!
-                /*
-                 echo "CLOSE figure\n";
-                 echo "ONE: \n";
-                 echo $settings_one;
-                 echo "\nOTHER\n";
-                 echo $settings_other;
+                BinaryOperators::debug("CLOSE figure");
+                BinaryOperators::debug("ONE: \n".$settings_one);
+                BinaryOperators::debug("\nOTHER\n".$settings_other);
                  // */
                 
                 $results[] = $shape->simplify();
@@ -247,20 +272,20 @@ class BinaryOperators
                 } else {
                     // it is a crossing point! We need to switch to B if the next point
                     // of B is outside
-                    // echo 'Crossing point! (B: '.$settings_one->crossings[$indexA].")\n";
+                    BinaryOperators::debug('Crossing point! (B: '.$settings_one->crossings[$indexA].")");
                     
                     $indexB = BinaryOperators::nextIndex($settings_one->crossings[$indexA], $dirB, $no->size());
-                    // echo 'index B: '.$indexB.' ';
+                    BinaryOperators::debug('index B: '.$indexB);
                     while($indexB >= 0 && $indexB < $no->size() && $settings_other->outside[$indexB] && $settings_other->crossings[$indexB] < 0 ) // && $settings_other->processed[$indexB] < 0) 
                     {
                         $pt = $no->getPoint($indexB);
-                        // echo $pt."\n";
+                        BinaryOperators::debug('is point: '.$pt);
                         $shape->addPoint($pt);
                         $settings_other->processed[$indexB] = count($results);
-                        $indexB = BinaryOperators::nextIndex($indexB, $dirB, $nt->size());
-                        // echo 'index B: '.$indexB." ";
+                        $indexB = BinaryOperators::nextIndex($indexB, $dirB, $no->size());
+                        BinaryOperators::debug('index B: '.$indexB);
                     }
-                    echo "\nCrossing point! (A: ".$settings_other->crossings[$indexB].")\n";
+                    BinaryOperators::debug("\nCrossing point! (A: ".$settings_other->crossings[$indexB].")");
                     if ($settings_other->crossings[$indexB] < 0) {
                         // the node is not inside!
                         $indexA = BinaryOperators::nextIndex($indexA, $dirA, $nt->size());
@@ -292,6 +317,71 @@ class BinaryOperators
         }
     }
     
+    public static function intersection(Shape $one, Shape $two): array
+    {
+        if (!$one->intersects($two)) {
+            return [];
+        }
+        
+        $fstIsLine = false;
+        $sndIsLine = false;
+        
+        if ($one instanceof Line) {
+            $fstIsLine = true;
+        }
+        if ($two instanceof Line) {
+            $sndIsLine = true;
+        }
+        
+        if ($fstIsLine && $sndIsLine) {
+            return [];
+        } elseif($fstIsLine) {
+            return BinaryOperators::intersectionL($one, $two->asPolygon());   
+        } elseif($sndIsLine) {
+            return BinaryOperators::intersectionL($two, $one->asPolygon());
+        } else {
+            return BinaryOperators::intersectionP($one->asPolygon(), $two->asPolygon());
+        }
+    }
+    
+    private static function intersectionL(Line $l, Polygon $p): array
+    {
+        $results = [];
+        
+        $lines = BinaryOperators::calculateLineSegments($l, $p);
+        
+        /** @var Line */
+        foreach($lines as $line) {
+            // add the line if the middle point is inside the polygon
+            if ($p->contains($line->getMiddlePoint())) {
+                $results[] = $line;
+            }
+        }
+        
+        return $results;
+    }
+    
+    private static function calculateLineSegments(Line $l, Polygon $p): array
+    {
+
+        
+        $results = [];
+        
+        $points = $p->intersectionPoints($l);
+        $first = $l->getOrigin();
+        
+        foreach($points as $pt) {
+            if ($pt->equals($first)) {
+                continue;
+            }
+            $results[] = new Line($first, $pt);
+            $first = $pt;
+        }
+        $results[] = new Line($first, $l->getEndPoint());
+        
+        return $results;
+    }
+    
     
     /**
      * Calculates the intersection of Polygon $one with Polygon $other.
@@ -301,7 +391,7 @@ class BinaryOperators
      * @param Polygon $other
      * @return array
      */
-    public static function intersection(Polygon $one, Polygon $other): array
+    private static function intersectionP(Polygon $one, Polygon $other): array
     {
         // $nt is the extended polygon
         $nt = $one->calculateIntersectionPointsWith($other)->expand();
@@ -314,14 +404,11 @@ class BinaryOperators
         $dirA = ($nt->direction() == Polygon::DIRECTION_CLOCKWISE);
         $dirB = ($no->direction() == Polygon::DIRECTION_CLOCKWISE);
         
-        /*
-        echo "ONE: \n";
-        echo $settings_one;
-        echo "OTHER: \n";
-        echo $settings_other;
-        echo "DIR one  : ".$dirA."\n";
-        echo "DIR other: ".$dirB."\n\n";
-        // */
+        
+        BinaryOperators::debug("ONE: \n".$settings_one);
+        BinaryOperators::debug("OTHER: \n".$settings_other);
+        BinaryOperators::debug("DIR one  : ".$dirA);
+        BinaryOperators::debug("DIR other: ".$dirB."\n");
 
         $results = [];
         
@@ -333,15 +420,20 @@ class BinaryOperators
         $indexB = ($indexA >= 0) ? $settings_one->crossings[$indexA] : -1;
         
         $output = new Polygon();
+        $prevA = -1;
+        
         while($indexA >= 0 && $indexB >= 0) {
             // INV 1: $settings_one->crossings[$indexA] = $indexB
-            
-            // echo 'index A: '.$indexA."\n";
-            // echo 'index B: '.$indexB."\n";
-                        
             $pt = $nt->getPoint($indexA);
+            
+            BinaryOperators::debug('index A: '.$indexA.' ('.$pt.')');
+            BinaryOperators::debug('index B: '.$indexB);
+                        
+            
+            
+            BinaryOperators::debug($output);
 
-            if (count($output->getPoints()) > 0 && $output->getOrigin()->equals($pt)) {
+            if (count($output->getPoints()) > 0 && ($output->getOrigin()->equals($pt)|| $prevA == $indexA ) ) {
                 $results[] = $output->simplify();
                 $indexA = BinaryOperators::findNextUnusedCrossing(
                     $settings_one->crossings,
@@ -351,30 +443,29 @@ class BinaryOperators
                 $indexB = ($indexA >= 0) ? $settings_one->crossings[$indexA] : -1;
                 
                 $output = new Polygon();
-                /*
-                echo "CLOSE figure\n";
-                echo "ONE: \n";
-                echo $settings_one;
-                echo "\nOTHER\n";
-                echo $settings_other;
-                */
+                
+                BinaryOperators::debug("CLOSE figure\n");
+                BinaryOperators::debug("ONE: \n".$settings_one);
+                BinaryOperators::debug("\nOTHER\n".$settings_other);
+                
             } else {
                 $output->addPoint($pt);
                 $settings_one->processed[$indexA] = count($results);
                 
+                $prevA = $indexA;
                 
                 $nextA = BinaryOperators::nextIndex($indexA, $dirA, $nt->size());
                 $nextB = BinaryOperators::nextIndex($indexB, $dirB, $no->size());
                 // we know that nextA and nextB are no crossings, because of expand();
                 
-                // echo 'next A: '.$nextA."\n";
-                // echo 'next B: '.$nextB."\n";
+                BinaryOperators::debug('next A: '.$nextA);
+                BinaryOperators::debug('next B: '.$nextB);
                 
                 if (!$settings_one->outside[$nextA] && $settings_one->processed[$nextA] < 0 ) {
                     // we know that $nextA is inside B, so let's add points of A
                     // until we are at the next crossing!
                     
-                    // echo "Continue with A\n";
+                    BinaryOperators::debug("Continue with A");
                     
                     while($nextA >= 0 && $nextA < $nt->size() && $settings_one->crossings[$nextA] < 0 )
                     {
@@ -382,7 +473,7 @@ class BinaryOperators
                         $output->addPoint($pt);
                         $settings_one->processed[$nextA] = count($results);
                         $nextA = BinaryOperators::nextIndex($nextA, $dirA, $nt->size());
-                        // echo "next A: ".$nextA."\n";
+                        BinaryOperators::debug("next A: ".$nextA);
                     }
                     // we are at the next crossing!
                     $indexA = $nextA;
@@ -393,7 +484,7 @@ class BinaryOperators
                     if (!$settings_other->outside[$nextB] && $settings_other->processed[$nextB] < 0) {
                         // we know that $nextB is inside A, so let's add points of B
                         // until we are at the next crossing!
-                        // echo "Continue with B\n";
+                        BinaryOperators::debug("Continue with B");
                         
                         while($nextB >= 0 && $nextB < $no->size() && $settings_other->crossings[$nextB] < 0 )
                         {
@@ -401,7 +492,7 @@ class BinaryOperators
                             $output->addPoint($pt);
                             $settings_other->processed[$nextB] = count($results);
                             $nextB = BinaryOperators::nextIndex($nextB, $dirB, $no->size());
-                            // echo "next B: ".$nextB."\n";
+                            BinaryOperators::debug("next B: ".$nextB);
                         }
                         // we are at the next crossing!
                         $indexB = $nextB;
@@ -410,7 +501,7 @@ class BinaryOperators
                     } else {
                         // hmm, B is also outside, let's just continue to the while,
                         // since the invariant holds...
-                        // echo "Go back\n";
+                        BinaryOperators::debug("Go back");
                         continue;
                     } 
                 }
