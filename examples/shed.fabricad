@@ -12,8 +12,8 @@
                     "name": "wall",
                     "type": "brickwall",
                     "config": {
-                        "height": 10,
-                        "width": 20,
+                        "height": 5,
+                        "width": 10,
                         "angle": 0
                     },
                     "shape": {
@@ -61,8 +61,8 @@
                     "name": "wall",
                     "type": "brickwall",
                     "config": {
-                        "height": 10,
-                        "width": 20,
+                        "height": 5,
+                        "width": 10,
                         "angle": 0
                     },
                     "shape": {
@@ -97,8 +97,8 @@
                     "name": "wall",
                     "type": "brickwall",
                     "config": {
-                        "height": 10,
-                        "width": 20,
+                        "height": 5,
+                        "width": 10,
                         "angle": 0
                     },
                     "shape": {
@@ -136,8 +136,8 @@
                     "name": "wall",
                     "type": "brickwall",
                     "config": {
-                        "height": 10,
-                        "width": 20,
+                        "height": 5,
+                        "width": 10,
                         "angle": 0
                     },
                     "shape": {
