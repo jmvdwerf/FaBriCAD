@@ -132,9 +132,26 @@ class Blueprint implements \Iterator
     
     public function render(): Container {
         $c = new Container();
-        foreach($this->getBlocks() as $block) {
-            $c->addShape($block->render());
+        
+        echo "\nstart".date('U')."\n";
+
+        // we walk backward!
+        for($i = $this->size() -1; $i >= 0 ; $i--) {
+            $shape = $this->blocks[$i]->render();
+            if ($shape instanceof Container) {
+                $items = $shape->flatten();
+            } else {
+                $items = [$shape];
+            }
+            
+            foreach($items as $item) {
+                echo 'a';
+                $c->addNonOverlappingParts($item);
+                echo 'b';
+                //$c->addShape($item);
+            }
         }
+        echo "\nend".date('U')."\n";
         
         return $c;
     }

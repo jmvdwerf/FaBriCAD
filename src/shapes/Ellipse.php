@@ -8,6 +8,11 @@ class Ellipse extends Shape
     private $a = 0.0;
     private $b = 0.0;
     
+    const NORTHEAST = 0;
+    const NORTHWEST = 1;
+    const SOUTHWEST = 2;
+    const SOUTHEAST = 3;
+    
     public function __construct(float $a = 0,float $b = 0, $origin = null)
     {
         parent::__construct($origin);
@@ -69,6 +74,38 @@ class Ellipse extends Shape
         $ycomp = $ycomp / ($this->getYFactor() * $this->getYFactor());
         
         return (($xcomp + $ycomp) < 1);
+    }
+    
+    /**
+     * 
+     * @param float $angle
+     * @return Point
+     */
+    public function getCrossingPoint(float $angle = 0.0): Point
+    {
+        return new Point( 
+            $this->getOrigin()->getX() + $this->getXFactor() * cos($angle), 
+            $this->getOrigin()->getY() + $this->getYFactor() * sin($angle));
+    }
+    
+    
+    /**
+     * 
+     * {@inheritDoc}
+     * @see \jmw\fabricad\shapes\Shape::asPolygon()
+     */
+    public function asPolygon(): Polygon
+    {
+        $p = new Polygon();
+        
+        $steps = 100;
+        
+        for($i = 0 ; $i < $steps ; $i++) {
+            $angle = $i * (2 * M_PI / $steps);
+            $p->addPoint($this->getCrossingPoint($angle));
+        }
+        
+        return $p;
     }
     
 }

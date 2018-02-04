@@ -79,6 +79,11 @@ class Polygon extends Shape
         return $this->points;
     }
     
+    public function getPoint(int $index): Point
+    {
+        return $this->points[$index];
+    }
+    
     /**
      * returns true if the polygon does not contain any points
      * 
@@ -104,7 +109,7 @@ class Polygon extends Shape
      */
     public function addPoint(Point $pt) {
         if (count($this->points) > 0) {
-            if ($this->points[count($this->points)-1]->equals($pt)) {
+            if ($this->points[count($this->points)-1]->equals($pt)|| $this->points[0]->equals($pt)) {
                 return; 
             }
         }
@@ -152,6 +157,10 @@ class Polygon extends Shape
      */
     public function getLines(): array
     {
+        if (count($this->getPoints()) == 2) {
+            $l = new Line($this->points[0], $this->points[1]);
+            return [$l];
+        }
         $lines = array();
         if (count($this->points) > 1) {
             $prev = $this->points[0];
@@ -230,14 +239,23 @@ class Polygon extends Shape
      */
     public function contains(Point $pt): bool
     {
-        if (!parent::contains($pt)) return false;
+//         if (!parent::contains($pt)) return false;
         
-        $max = $this->getBoundingBox()->getTop();
-        $max->scalarMultiply(2);
+//         $max = $this->getBoundingBox()->getTop();
+//         $max->scalarMultiply(2);
         
-        $points = $this->intersectionPoints(new Line($pt, $max));
-        //var_dump($points);
-        return !((count($points) % 2) == 0);
+//         $points = $this->intersectionPoints(new Line($pt, $max));
+//         //var_dump($points);
+//         return !((count($points) % 2) == 0);
+
+        $c = false;
+        $pts = $this->getPoints();
+        for ($i = 0, $j = $this->size()-1; $i < $this->size(); $j = $i++) {
+            if ( (($pts[$i]->getY() > $pt->getY()) != ($pts[$j]->getY() > $pt->getY())) &&
+                ($pt->getX() < ($pts[$j]->getX()-$pts[$i]->getX()) * ($pt->getY()-$pts[$i]->getY()) / ($pts[$j]->getY()-$pts[$i]->getY()) + $pts[$i]->getX()) )
+                $c = !$c;
+        }
+        return $c;
     }
     
     /**
@@ -293,6 +311,11 @@ class Polygon extends Shape
     }
     
     
+    /**
+     * Returns the direction of the Polygon (i.e. (counter) clockwise)
+     * 
+     * @return int
+     */
     public function direction(): int
     {
         $area = 0;
@@ -332,69 +355,99 @@ class Polygon extends Shape
             foreach($ips as $pt) {
                 $nt->addPoint($pt);
             }
+            
+            $nt->addPoint(Point::copyFrom($line->getEndPoint()));
         }
         return $nt;
     }
     
-    
+    /**
+     * Adds a point in the middle of each line
+     * 
+     * @return Polygon
+     */
     public function expand(): Polygon
     {
         $p = new Polygon();
-        $points = $this->getPoints();
-        if (count($points) < 1) {
+        
+        if ($this->size() == 0) {
             return $p;
         }
-        $p->addPoint($points[0]);
         
-        if (count($points) < 2) {
-            return $p;    
+        $p->addPoint($this->getPoint(0));
+        foreach($this->getLines() as $l) {
+            $p->addPoint($l->getMiddlePoint());
+            $p->addPoint($l->getEndPoint());
         }
-        $p->addPoint($points[1]);
-        for($i = 2 ; $i < count($points) ; $i++) {
-            $line1 = new Line($points[$i-2], $points[$i-1]);
-            $line2 = new Line($points[$i-1], $points[$i]);
-            
-            if (abs($line1->getAngle() - $line2->getAngle()) < 0.0001) {
-                $x = ($points[$i-1]->getX() + $points[$i]->getX()) / 2;
-                $y = ($points[$i-1]->getY() + $points[$i]->getY()) / 2;
                 
-                $pts = [new Point($x, $y), $points[$i] ];
-                $line2->orderPoints($pts);
-                foreach($pts as $pt) {
+        return $p;
+    }
+    
+    /**
+     * Simplifies the Polygon by removing in between points that are on the same
+     * line
+     * 
+     * @return Polygon
+     */
+    public function simplify(): Polygon
+    {
+        $p = new Polygon();
+        foreach($this->getPoints() as $pt) {
+            $p->addPoint($pt);
+        }
+        
+        do {
+        
+            // remove redundant nodes;
+            $lines = $p->getLines();
+            $N = count($lines);
+            $rmNode = array();
+            
+            for($i = 0 ; $i < $N ; $i++) {
+                if (abs($lines[$i]->getAngle() - $lines[($i+1) % $N]->getAngle() ) < 0.001) {
+                    // the two consecutive lines have the same angle, so the point
+                    // in between can be removed!
+                    $rmNode[] = ($i+1) % $N;
+                }
+            }
+            $pts = $p->getPoints();
+            
+            $p = new Polygon();
+            foreach($pts as $index => $pt) {
+                if (!in_array($index, $rmNode)) {
                     $p->addPoint($pt);
                 }
-            } else {
-                $p->addPoint($points[$i]);
             }
-        }
-        
+        } while (count($rmNode) > 0);
         
         return $p;
     }
     
-    public function simplify(): Polygon
+    /**
+     * 
+     * {@inheritDoc}
+     * @see \jmw\fabricad\shapes\Shape::asPolygon()
+     */
+    public function asPolygon(): Polygon
     {
-        // remove redundant nodes;
-        $lines = $this->getLines();
-        $N = count($lines);
-        $rmNode = array();
-        
-        for($i = 0 ; $i < $N ; $i++) {
-            if (abs($lines[$i]->getAngle() - $lines[($i+1) % $N]->getAngle() ) < 0.001) {
-                // the two consecutive lines have the same angle, so the point
-                // in between can be removed!
-                $rmNode[] = ($i+1) % $N;
-            }
+        return $this;
+    }
+    
+    public function __tostring(): string
+    {
+        $s = "Polygon [";
+        foreach($this->getPoints() as $pt) {
+            $s .= "\n\t".$pt;
         }
+        $s.= "\n]\n";
         
-        $p = new Polygon();
-        foreach($this->getPoints() as $index => $pt) {
-            if (!in_array($index, $rmNode)) {
-                $p->addPoint($pt);
-            }
+        return $s;
+    }
+    
+    public function hasPoint(Point $pt) {
+        foreach($this->getPoints() as $point) {
+            if ($pt->equals($point)) return true;
         }
-        
-        return $p;
     }
     
 }

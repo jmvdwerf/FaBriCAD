@@ -4,7 +4,7 @@ namespace jmw\fabricad\config\test;
 
 use PHPUnit\Framework\TestCase;
 use jmw\fabricad\config\Blueprint;
-use jmw\fabricad\blocks\BasicBlock;
+use jmw\fabricad\blocks\BasicBuildingBlock;
 
 final class BlueprintTest extends TestCase
 {
@@ -30,7 +30,7 @@ final class BlueprintTest extends TestCase
     
     public function testAddBlock()
     {
-        $s = new BasicBlock();
+        $s = new BasicBuildingBlock();
         $bp = new Blueprint();
         
         $r = $bp->addBlock($s);
@@ -42,7 +42,7 @@ final class BlueprintTest extends TestCase
     
     public function testSetBlocks()
     {
-        $s = [ new BasicBlock(), new BasicBlock(), new BasicBlock()];
+        $s = [ new BasicBuildingBlock(), new BasicBuildingBlock(), new BasicBuildingBlock()];
         $bp = new Blueprint();
         
         $r = $bp->setBlocks($s);
@@ -58,7 +58,7 @@ final class BlueprintTest extends TestCase
         $d = 'Description';
         $c = [ 'setting1' => 'value1', 'setting2' => 'value2'];
         
-        $s = [ new BasicBlock(), new BasicBlock()];
+        $s = [ new BasicBuildingBlock(), new BasicBuildingBlock()];
         
         $bp = new Blueprint($n, $d, $c, $s);
         
@@ -70,7 +70,7 @@ final class BlueprintTest extends TestCase
     
     public function testIterator()
     {
-        $s = [ new BasicBlock(), new BasicBlock(), new BasicBlock()];
+        $s = [ new BasicBuildingBlock(), new BasicBuildingBlock(), new BasicBuildingBlock()];
         $bp = new Blueprint();
         
         for($i = 0 ; $i < count($s) ; $i++) {

@@ -98,7 +98,7 @@ class SVGConverter extends AbstractConverter
     
     protected function processLine(Line $l)
     {
-        $style = 'stroke:black;stroke-width:1';
+        $style = 'stroke:red;stroke-width:1';
         
         $str = '<line x1="'.$l->getOrigin()->getX().'" y1="'.($this->top - $l->getOrigin()->getY()).'" x2="'.$l->getEndPoint()->getX().'" y2="'.($this->top - $l->getEndPoint()->getY()).'" style="'.$style.'" />';
         
