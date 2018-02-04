@@ -18,10 +18,8 @@ use jmw\fabricad\shapes\Point;
  */
 class SVGConverter extends AbstractConverter
 {
-    private $page = '';
-    
     private $current = '';
-    private $top = 0;
+    private $files = array();
     
     /**
      * 
@@ -33,46 +31,32 @@ class SVGConverter extends AbstractConverter
         // export shape to SVG.
         $shape = $print->render();
         
-        $this->current = '<svg height="'.$shape->getBoundingBox()->getTop()->getY().'" width="'.$shape->getBoundingBox()->getTop()->getX().'">';
+        $this->current = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'."\n";
+        
+        $this->current .= '<svg height="'.$shape->getBoundingBox()->getTop()->getY().'" width="'.$shape->getBoundingBox()->getTop()->getX().'">';
         $this->top = $shape->getBoundingBox()->getTop()->getY();
         
         $this->processShape($shape);
         $this->current .= "\n".'</svg>';
         
-        $text  = '<h2>'.$print->getName().'</h2>'."\n\n";
-        $text .= $this->current. "\n\n";
-        $text .= '<table><tr><th>Name</th><td>'.$print->getName().'</td></tr>';
-        $text .= '<tr><th>Description</th><td>'.$print->getDescription().'</td></tr>';
-        $text .= '</table>';
-        
-        $this->page .= $text;
-        
-        $this->current = '';
+        $this->files[$print->getId()] = $this->current;
     }
 
     public function preprocessor()
     {
-        $this->page = '<html><body><h1>'.$this->getProject()->getName().'</h1>'
-            . '<table>'
-            . '<tr><th>Description</th><td>'.$this->getProject()->getDescription().'</td></tr>'
-            . '<tr><th>Author</th><td>'.$this->getProject()->getAuthor().'</td></tr>'
-            . '<tr><th>Version</th><td>'.$this->getProject()->getVersion().'</td></tr>'
-            . '<tr><th>License</th><td>'.$this->getProject()->getLicense().'</td></tr>'
-            . '</table>';
-        
-        $this->counter = 0;
         $this->files = array();
     }
 
     public function export($filename)
     {
-        file_put_contents($filename, $this->page);
+        foreach($this->files as $fname => $content) {
+            $file = basename($filename)."_".$fname.".svg";
+            
+            file_put_contents($file, $content);
+        }
     }
 
-    public function postprocessor()
-    {
-        $this->page .= '</body></html>';
-    }
+    public function postprocessor() {}
     
     protected function processPolygon(Polygon $p)
     {

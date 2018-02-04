@@ -13,6 +13,13 @@ class Blueprint implements \Iterator
      */
     private $name = '';
     
+
+    /**
+     * 
+     * @var string
+     */    
+    private $id = '';
+    
     /**
      *
      * @var string
@@ -55,6 +62,28 @@ class Blueprint implements \Iterator
         $this->name = $name;
         return $this;
     }
+    
+    /**
+     * Gets the id
+     * 
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+    
+    /**
+     * Sets the id
+     * 
+     * @param string $id
+     * @return Blueprint
+     */
+    public function setId(string $id): Blueprint
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     /**
      * 
@@ -78,7 +107,7 @@ class Blueprint implements \Iterator
 
     /**
      * 
-     * @return AbstractBuildingBlock[]
+     * @return BasicBuildingBlock[]
      */
     public function getBlocks(): array
     {
@@ -155,8 +184,6 @@ class Blueprint implements \Iterator
         
         return $c;
     }
-    
-    
     
     // -------------------------------------------------------------------------
     // Iterator implementation

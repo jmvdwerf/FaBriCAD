@@ -47,8 +47,8 @@ class JSONReader
                     $p->setVersion($val);
                     break;
                 case 'blueprints':
-                    foreach($val as $blueprint) {
-                        $p->addBlueprint(JSONReader::parseBlueprint($blueprint));
+                    foreach($val as $key => $blueprint) {
+                        $p->addBlueprint($key, JSONReader::parseBlueprint($blueprint));
                     }
                     break;
             }

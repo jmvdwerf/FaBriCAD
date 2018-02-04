@@ -209,8 +209,9 @@ class Project implements \Iterator
         return $this;
     }
     
-    public function addBlueprint(Blueprint $print): Project
+    public function addBlueprint(string $key, Blueprint $print): Project
     {
+        $print->setId($key);
         $this->blueprints[] = $print;
         
         return $this;
