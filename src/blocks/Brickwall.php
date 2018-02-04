@@ -12,6 +12,15 @@ use jmw\fabricad\shapes\Point;
 class Brickwall extends BasicBuildingBlock
 {
     
+    public function getStart(): int
+    {
+        if (isset($this->config['start'])) {
+            return $this->config['start'];
+        } else {
+            return 0;
+        }
+    }
+    
     public function getBrickHeight(): float {
         if (isset($this->config['height'])) {
             return $this->config['height'];
@@ -39,7 +48,7 @@ class Brickwall extends BasicBuildingBlock
         
         $lines = array();
         
-        $counter = 0;
+        $counter = $this->getStart();
         for($y = $bb->getOrigin()->getY() ; $y <= $totalheight ; $y += $this->getBrickHeight() ) {
             $lines[] = new Line(new Point($startX, $y), new Point($endX, $y ));
             $start = $startX + (1-($counter % 2)/2) * $this->getBrickWidth();
