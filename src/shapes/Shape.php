@@ -92,4 +92,6 @@ abstract class Shape
         return $str;
     }
     
+    public abstract function flip(): Shape;
+    
 }

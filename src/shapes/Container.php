@@ -192,6 +192,17 @@ class Container extends Shape implements \Iterator
         return $list;
     }
     
+    public function flip(): Shape
+    {
+        $cc = array();
+        
+        foreach($this->getShapes() as $s) {
+            $cc[] = $s->flip();
+        }
+        
+        return new Container($cc, $this->getOrigin()->flip());
+    }
+    
     
     
     // -------------------------------------------------------------------------
@@ -253,5 +264,6 @@ class Container extends Shape implements \Iterator
     {
         return $this->it_counter;
     }
-
+    
+    
 }

@@ -41,7 +41,8 @@ class Brickwall extends BasicBuildingBlock
     public function isHorizontal(): bool
     {
         if (isset($this->config['vertical'])) {
-            return ($this->config['vertical'] > 0);
+            var_dump($this->config);
+            return ($this->config['vertical'] == 0);
         } else {
             return true;
         }
@@ -52,8 +53,10 @@ class Brickwall extends BasicBuildingBlock
      * @param Rectangle $bb
      * @return array
      */
-    protected function renderBricks(Rectangle $bb): array
+    protected function renderBricks(Shape $s): array
     {
+        $bb = $s->getBoundingBox();
+        
         $totalheight = $bb->getTop()->getY() + $this->getBrickHeight();
         $prevY = $bb->getOrigin()->getY();
         $startX = $bb->getOrigin()->getX();
@@ -63,10 +66,10 @@ class Brickwall extends BasicBuildingBlock
         
         $counter = $this->getStart();
         for($y = $bb->getOrigin()->getY() ; $y <= $totalheight ; $y += $this->getBrickHeight() ) {
-            $lines['horizontal'][] = new Line(new Point($startX, $y), new Point($endX, $y ));
+            $lines[] = new Line(new Point($startX, $y), new Point($endX, $y ));
             $start = $startX + (1-($counter % 2)/2) * $this->getBrickWidth();
             for($x = $start ; $x < $endX ; $x += $this->getBrickWidth() ) {
-                $lines['vertical'][] = new Line(new Point($x, $prevY), new Point($x, $y));
+                $lines[] = new Line(new Point($x, $prevY), new Point($x, $y));
             }
             $prevY = $y;
             $counter++;
@@ -81,12 +84,22 @@ class Brickwall extends BasicBuildingBlock
         
         if ($this->isHorizontal()) {
             
-            $bricks = $this->renderBricks($bb);
+            $lines = $this->renderBricks($bb);
+
+        } else {
+            $bricks = $this->renderBricks($bb->flip());
+            // now, we need to flip the end point's X and Y's!
             
-            $lines = array_merge($bricks['vertical'], $bricks['horizontal']);
+            $lines = array();
             
-        } 
-        
+            // For the horizontal lines, we simply switch the X and Y of the end point
+            foreach($bricks as $l) {
+                $lines[] = new Line($l->getOrigin()->flip(), $l->getEndPoint()->flip());
+            }
+            
+            
+        }
+            
         $c = new Container();
         //foreach($this->getShape()->asPolygon()->getLines() as $line) {
         //    $c->addShape($line);

@@ -108,4 +108,9 @@ class Ellipse extends Shape
         return $p;
     }
     
+    public function flip(): Shape
+    {
+        return new Ellipse($this->getYFactor(), $this->getXFactor(), $this->getOrigin()->flip());
+    }
+    
 }
