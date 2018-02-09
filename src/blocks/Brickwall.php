@@ -8,6 +8,7 @@ use jmw\fabricad\shapes\BinaryOperators;
 use jmw\fabricad\shapes\Polygon;
 use jmw\fabricad\shapes\Line;
 use jmw\fabricad\shapes\Point;
+use jmw\fabricad\shapes\Rectangle;
 
 class Brickwall extends BasicBuildingBlock
 {
@@ -37,23 +38,35 @@ class Brickwall extends BasicBuildingBlock
         }
     }
     
-    protected function renderLines(): array
+    public function isHorizontal(): bool
     {
-        $bb = $this->getShape()->getBoundingBox();
-        
-        $totalheight = $bb->getTop()->getY();
+        if (isset($this->config['vertical'])) {
+            return ($this->config['vertical'] > 0);
+        } else {
+            return true;
+        }
+    }
+    
+    /**
+     * 
+     * @param Rectangle $bb
+     * @return array
+     */
+    protected function renderBricks(Rectangle $bb): array
+    {
+        $totalheight = $bb->getTop()->getY() + $this->getBrickHeight();
         $prevY = $bb->getOrigin()->getY();
         $startX = $bb->getOrigin()->getX();
-        $endX = $bb->getTop()->getX();
+        $endX = $bb->getTop()->getX() + $this->getBrickWidth();
         
         $lines = array();
         
         $counter = $this->getStart();
         for($y = $bb->getOrigin()->getY() ; $y <= $totalheight ; $y += $this->getBrickHeight() ) {
-            $lines[] = new Line(new Point($startX, $y), new Point($endX, $y ));
+            $lines['horizontal'][] = new Line(new Point($startX, $y), new Point($endX, $y ));
             $start = $startX + (1-($counter % 2)/2) * $this->getBrickWidth();
             for($x = $start ; $x < $endX ; $x += $this->getBrickWidth() ) {
-                $lines[] = new Line(new Point($x, $prevY), new Point($x, $y));
+                $lines['vertical'][] = new Line(new Point($x, $prevY), new Point($x, $y));
             }
             $prevY = $y;
             $counter++;
@@ -64,8 +77,15 @@ class Brickwall extends BasicBuildingBlock
     
     public function render(): Shape
     {
+        $bb = $this->getShape()->getBoundingBox();
         
-        $lines = $this->renderLines();
+        if ($this->isHorizontal()) {
+            
+            $bricks = $this->renderBricks($bb);
+            
+            $lines = array_merge($bricks['vertical'], $bricks['horizontal']);
+            
+        } 
         
         $c = new Container();
         //foreach($this->getShape()->asPolygon()->getLines() as $line) {
