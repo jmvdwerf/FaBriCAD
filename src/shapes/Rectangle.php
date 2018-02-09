@@ -156,6 +156,11 @@ class Rectangle extends Quadrangle
         return new Rectangle($w, $h, new Point($x,$y) );
     }
     
+    public function flip(): Shape
+    {
+        return new Rectangle($this->getHeight(), $this->getWidth(), $this->getOrigin()->flip());
+    }
+    
 }
 
 

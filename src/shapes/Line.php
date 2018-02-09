@@ -218,4 +218,9 @@ class Line extends Shape
     {
         return new Polygon([$this->getOrigin(), $this->getEndPoint()]);
     }
+    
+    public function flip(): Shape
+    {
+        return new Line($this->getOrigin()->flip(), $this->getEndPoint()->flip());
+    }
 }

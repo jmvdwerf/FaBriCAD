@@ -100,5 +100,16 @@ class Quadrangle extends Polygon
                 
         return $this;
     }
+    
+    public function flip(): Shape
+    {
+        // $sw = null, Point $nw = null, Point $ne = null, Point $se 
+        return new Quadrangle(
+            $this->getSouthWest()->flip().
+            $this->getSouthEast()->flip(),
+            $this->getNorthEast()->flip(),
+            $this->getNorthWest()->flip()
+        );
+    }
 }
     

@@ -450,6 +450,17 @@ class Polygon extends Shape
         }
     }
     
+    public function flip(): Shape
+    {
+        $pp = array();
+        
+        foreach($this->getPoints() as $pt) {
+            $pp[] = $pt->flip();
+        }
+        
+        return new Polygon($pp);
+    }
+    
 }
 
 

@@ -232,6 +232,11 @@ class Point {
         && (abs($y - $this->getY()) < 0.0001);
     }
     
+    public function flip(): Point
+    {
+        return new Point($this->getY(), $this->getX());
+    }
+    
     public static function copyFrom(Point $pt): Point
     {
         return new Point($pt->getX(), $pt->getY());

@@ -8,6 +8,7 @@ use jmw\fabricad\shapes\BinaryOperators;
 use jmw\fabricad\shapes\Polygon;
 use jmw\fabricad\shapes\Line;
 use jmw\fabricad\shapes\Point;
+use jmw\fabricad\shapes\Rectangle;
 
 class Brickwall extends BasicBuildingBlock
 {
@@ -37,14 +38,29 @@ class Brickwall extends BasicBuildingBlock
         }
     }
     
-    protected function renderLines(): array
+    public function isHorizontal(): bool
     {
-        $bb = $this->getShape()->getBoundingBox();
+        if (isset($this->config['vertical'])) {
+            var_dump($this->config);
+            return ($this->config['vertical'] == 0);
+        } else {
+            return true;
+        }
+    }
+    
+    /**
+     * 
+     * @param Rectangle $bb
+     * @return array
+     */
+    protected function renderBricks(Shape $s): array
+    {
+        $bb = $s->getBoundingBox();
         
-        $totalheight = $bb->getTop()->getY();
+        $totalheight = $bb->getTop()->getY() + $this->getBrickHeight();
         $prevY = $bb->getOrigin()->getY();
         $startX = $bb->getOrigin()->getX();
-        $endX = $bb->getTop()->getX();
+        $endX = $bb->getTop()->getX() + $this->getBrickWidth();
         
         $lines = array();
         
@@ -64,9 +80,26 @@ class Brickwall extends BasicBuildingBlock
     
     public function render(): Shape
     {
+        $bb = $this->getShape()->getBoundingBox();
         
-        $lines = $this->renderLines();
-        
+        if ($this->isHorizontal()) {
+            
+            $lines = $this->renderBricks($bb);
+
+        } else {
+            $bricks = $this->renderBricks($bb->flip());
+            // now, we need to flip the end point's X and Y's!
+            
+            $lines = array();
+            
+            // For the horizontal lines, we simply switch the X and Y of the end point
+            foreach($bricks as $l) {
+                $lines[] = new Line($l->getOrigin()->flip(), $l->getEndPoint()->flip());
+            }
+            
+            
+        }
+            
         $c = new Container();
         //foreach($this->getShape()->asPolygon()->getLines() as $line) {
         //    $c->addShape($line);
