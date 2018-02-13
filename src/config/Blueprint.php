@@ -141,10 +141,36 @@ class Blueprint implements \Iterator
         $this->settings = $settings;
         return $this;
     }
+    
+    /**
+     * 
+     * @param string $key
+     * @return mixed
+     */
+    public function getSetting(string $key) 
+    {
+        if (isset($this->settings[$key])) {
+            return $this->settings[$key];
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * 
+     * @param string $key
+     * @param mixed $value
+     * @return Blueprint
+     */
+    public function setSetting(string $key, $value): Blueprint
+    {
+        $this->settings[$key] = $value;
+        return $this;
+    }
 
     /**
      * 
-     * @param AbstractBuildingBlock[] $blocks
+     * @param BasicBuildingBlock[] $blocks
      * @return Blueprint
      */
     public function setBlocks(array $blocks): Blueprint

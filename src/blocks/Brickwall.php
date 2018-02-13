@@ -41,7 +41,6 @@ class Brickwall extends BasicBuildingBlock
     public function isHorizontal(): bool
     {
         if (isset($this->config['vertical'])) {
-            var_dump($this->config);
             return ($this->config['vertical'] == 0);
         } else {
             return true;

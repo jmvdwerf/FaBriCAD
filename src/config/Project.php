@@ -188,6 +188,32 @@ class Project implements \Iterator
         $this->settings = $settings;
         return $this;
     }
+    
+    /**
+     *
+     * @param string $key
+     * @return mixed
+     */
+    public function getSetting(string $key)
+    {
+        if (isset($this->settings[$key])) {
+            return $this->settings[$key];
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return Project
+     */
+    public function setSetting(string $key, $value): Project
+    {
+        $this->settings[$key] = $value;
+        return $this;
+    }
 
     /**
      * 

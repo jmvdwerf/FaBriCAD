@@ -30,10 +30,17 @@ class SVGConverter extends AbstractConverter
     {
         // export shape to SVG.
         $shape = $print->render();
+        $bb = $shape->getBoundingBox();
         
+        $unit = !empty($print->getSetting('unit')) ? $print->getSetting('unit') : $this->unit;
+                
         $this->current = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'."\n";
         
-        $this->current .= '<svg height="'.$shape->getBoundingBox()->getTop()->getY().'" width="'.$shape->getBoundingBox()->getTop()->getX().'">';
+        $this->current .= '<svg height="'.$bb->getTop()->getY().$unit.'" width="'.$bb->getTop()->getX().$unit.'" ';
+        $this->current .= ' viewBox="'.$bb->getOrigin()->getX().' '.$bb->getOrigin()->getY().' '.$bb->getTop()->getX().' '.$bb->getTop()->getY().'"';
+        $this->current .= '>';
+        
+        //$this->current .= '<svg height="'.$shape->getBoundingBox()->getTop()->getY().'" width="'.$shape->getBoundingBox()->getTop()->getX().'">';
         $this->top = $shape->getBoundingBox()->getTop()->getY();
         
         $this->processShape($shape);
@@ -45,6 +52,13 @@ class SVGConverter extends AbstractConverter
     public function preprocessor()
     {
         $this->files = array();
+        
+        $this->unit = $this->getProject()->getSetting('unit');
+        if (empty($this->unit)) {
+            $this->unit = 'mm';
+        }
+        
+        
     }
 
     public function export($filename)

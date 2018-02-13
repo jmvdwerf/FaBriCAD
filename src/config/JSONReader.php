@@ -46,6 +46,9 @@ class JSONReader
                 case 'version':
                     $p->setVersion($val);
                     break;
+                case 'settings':
+                    $p->setSettings($val);
+                    break;
                 case 'blueprints':
                     foreach($val as $key => $blueprint) {
                         $p->addBlueprint($key, JSONReader::parseBlueprint($blueprint));

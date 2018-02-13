@@ -32,17 +32,20 @@ class HTMLConverter extends AbstractConverter
         // export shape to SVG.
         $shape = $print->render();
         
-        $this->current = '<svg height="'.$shape->getBoundingBox()->getTop()->getY().'" width="'.$shape->getBoundingBox()->getTop()->getX().'">';
+        $bb = $shape->getBoundingBox();
+        
+        $this->current = '<svg height="'.$bb->getTop()->getY().'" width="'.$bb->getTop()->getX().'" ';
+        $this->current .= '>';
         $this->top = $shape->getBoundingBox()->getTop()->getY();
         
         $this->processShape($shape);
         $this->current .= "\n".'</svg>';
         
         $text  = '<h2>'.$print->getName().'</h2>'."\n\n";
-        $text .= $this->current. "\n\n";
         $text .= '<table><tr><th>Name</th><td>'.$print->getName().'</td></tr>';
         $text .= '<tr><th>Description</th><td>'.$print->getDescription().'</td></tr>';
         $text .= '</table>';
+        $text .= $this->current. "\n\n";
         
         $this->page .= $text;
         
@@ -51,16 +54,18 @@ class HTMLConverter extends AbstractConverter
     
     public function preprocessor()
     {
+        
         $this->page = '<html><body><h1>'.$this->getProject()->getName().'</h1>'
             . '<table>'
-                . '<tr><th>Description</th><td>'.$this->getProject()->getDescription().'</td></tr>'
-                    . '<tr><th>Author</th><td>'.$this->getProject()->getAuthor().'</td></tr>'
-                        . '<tr><th>Version</th><td>'.$this->getProject()->getVersion().'</td></tr>'
-                            . '<tr><th>License</th><td>'.$this->getProject()->getLicense().'</td></tr>'
-                                . '</table>';
-                                
-                                $this->counter = 0;
-                                $this->files = array();
+            . '<tr><th>Description</th><td>'.$this->getProject()->getDescription().'</td></tr>'
+            . '<tr><th>Author</th><td>'.$this->getProject()->getAuthor().'</td></tr>'
+            . '<tr><th>Version</th><td>'.$this->getProject()->getVersion().'</td></tr>'
+            . '<tr><th>License</th><td>'.$this->getProject()->getLicense().'</td></tr>'
+            . '<tr><th>Settings</th><td><pre>'.var_export($this->getProject()->getSettings(), true).'</pre></td></tr>'
+            . '</table>';
+            
+            $this->counter = 0;
+            $this->files = array();
     }
     
     public function export($filename)

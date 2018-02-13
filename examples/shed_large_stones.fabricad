@@ -4,6 +4,9 @@
     "author": "J.M.E.M. van der Werf",
     "version": "1.0",
     "license": "MIT",
+    "settings": {
+        "unit": "mm"
+    },
     "blueprints": {
         "front": {
             "name": "Front",
