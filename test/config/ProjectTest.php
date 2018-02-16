@@ -98,12 +98,12 @@ final class ProjectTest extends TestCase
         $bp = [new Blueprint(), new Blueprint() ];
         $p = new Project();
         
-        $r = $p->addBlueprint($bp[0]);
+        $r = $p->addBlueprint('1', $bp[0]);
         
         $this->assertEquals($p, $r);
         $this->assertEquals(1, $p->size());
         
-        $r = $p->addBlueprint($bp[1]);
+        $r = $p->addBlueprint('2', $bp[1]);
         
         $this->assertEquals(2, $p->size());
         

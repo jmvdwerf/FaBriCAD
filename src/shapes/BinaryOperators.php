@@ -36,7 +36,7 @@ class BinaryOperators
 {   
     public static function debug($str)
     {
-        // echo $str."\n";
+         // echo $str."\n";
     }
     
     public static function difference(Shape $one, Shape $other): array
@@ -305,18 +305,7 @@ class BinaryOperators
         
         return $results;
     }
-    
-    private static function giveuniondir(int $index, Polygon $p, BO_Settings $settings): bool
-    {
-        $dir = $p->direction();
-        $next = BinaryOperators::nextIndex($index, $dir, $p->size());
-        if ($settings->outside[$next]) {
-            return $dir;
-        } else {
-            return !$dir;
-        }
-    }
-    
+        
     public static function intersection(Shape $one, Shape $two): array
     {
         if (!$one->intersects($two)) {
@@ -511,33 +500,7 @@ class BinaryOperators
         
         return $results;
     }
-    
-    /**
-     * Given an index, this function tries to determine which direction to follow
-     * in the binary operations. 
-     * Return value:
-     *   - True:   next index is upwards
-     *   - False:  next index is downwards
-     *   
-     * If inside is set, it looks for the direction inwards, if it is false, the
-     * other way around.
-     * $outside is an array such that $outside[index] = true iff the node is outside
-     * 
-     * @param int $index
-     * @param array $points
-     * @param array $outside
-     * @param string $inside
-     * @return bool
-     */
-    private static function determineDirection(int $index, $outside = array(), $inside = true): bool
-    {
-        $next = ($index+1) % count($outside);
-        if ($inside)
-            return !$outside[$next];
-        else
-            return $outside[$next];
-    }
-    
+        
     private static function calculatePreconditions(Polygon $nt, Polygon $no): BO_Settings
     {
         $res = new BO_Settings();

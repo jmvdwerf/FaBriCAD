@@ -209,8 +209,15 @@ class Line extends Shape
     {
         if ($this->getEndPoint()->getX() < $this->getOrigin()->getX()) {
             usort($points, function(Point $p1, Point $p2) { return $p2->getX() - $p1->getX();} );
-        } else {
+        } elseif ($this->getEndPoint()->getX() > $this->getOrigin()->getX()) {
             usort($points, function(Point $p1, Point $p2) { return $p1->getX() - $p2->getX();} );
+        } else {
+            // sort on the Y -axis
+            if ($this->getEndPoint()->getY() < $this->getOrigin()->getY()) {
+                usort($points, function(Point $p1, Point $p2) { return $p2->getY() - $p1->getY();} );
+            } else {
+                usort($points, function(Point $p1, Point $p2) { return $p1->getY() - $p2->getY();} );
+            }
         }
     }
     

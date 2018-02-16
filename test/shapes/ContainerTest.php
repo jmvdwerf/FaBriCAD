@@ -171,7 +171,7 @@ final class ContainerTest extends AbstractShapeTest
         
     }
     
-    public function jotestaddNonOverlappingPartsWithNoOverlappingItems()
+    public function testaddNonOverlappingPartsWithNoOverlappingItems()
     {
         $shape1 = new Rectangle(10, 10);
         $shape2 = new Rectangle(10, 10, new Point(200,200));
@@ -189,7 +189,7 @@ final class ContainerTest extends AbstractShapeTest
     {
         $shape1 = new Rectangle(100, 100);
         $shape2 = new Rectangle(100, 100, new Point(50,50));
-        $shape3 = new Rectangle(40, 40, new Point(100, 50));
+        $shape3 = new Rectangle(40, 40, new Point(80, 30));
         
         $c = new Container();
         $c->addNonOverlappingParts($shape1);
@@ -212,7 +212,11 @@ final class ContainerTest extends AbstractShapeTest
                 $this->assertTrue($s->hasPoint(new Point(100,100)));
             } elseif ($s === $shape1) {
             } else {
-                echo $s;
+                $this->assertCount(4, $s->getPoints());
+                $this->assertTrue($s->hasPoint(new Point(120, 30)));
+                $this->assertTrue($s->hasPoint(new Point(100, 30)));
+                $this->assertTrue($s->hasPoint(new Point(100,50)));
+                $this->assertTrue($s->hasPoint(new Point(120,50)));
             }
         }
     }
