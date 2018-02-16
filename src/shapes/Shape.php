@@ -19,7 +19,7 @@ abstract class Shape
      */
     public function setOrigin(Point $orig): Shape
     {
-        $this->setOriginXY($orig);
+        $this->setOriginXY($orig->getX(), $orig->getY());
         
         return $this;
     }

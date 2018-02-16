@@ -28,11 +28,9 @@ class Container extends Shape implements \Iterator
         $this->bb_min = new Point();
         $this->bb_max = new Point();
         
-        foreach($items as $s) {
-            $this->addShape($s);
-        }
+        $this->addShapes($items);
     }
-    
+        
     /**
      * Returns the shape of this Container
      * @return Shape[]
@@ -40,6 +38,15 @@ class Container extends Shape implements \Iterator
     public function getShapes(): array
     {
         return $this->shapes;
+    }
+    
+    public function addShapes($shapes = []): Container 
+    {
+        foreach($shapes as $s) {
+            $this->addShape($s);
+        }
+        
+        return $this;
     }
     
     /**
