@@ -192,7 +192,7 @@ class Container extends Shape implements \Iterator
             if ($shape instanceof Container) {
                 $list = array_merge($list, $shape->flatten());
             } else {
-                $list[] = $shape;
+                $list[] = $shape->clone();
             }
         }
         

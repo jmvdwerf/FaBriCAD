@@ -156,11 +156,11 @@ final class ContainerTest extends AbstractShapeTest
     {
         $r = array();
         $r[] = new Rectangle(5,5, new Point(10,10));
-        $r[] = new Rectangle(10,10, new Point(8,8));
-        $r[] = new Rectangle(3,3, new Point(-3, -3));
+        $r[] = new Rectangle(10,10, new Point(20,20));
+        $r[] = new Rectangle(3,3, new Point(-30, -30));
         $c = new Container($r);
         
-        $r2 = new Rectangle(20,20, new Point(15,15));
+        $r2 = new Rectangle(20,20, new Point(100,100));
         
         $c2 = new Container([$r2]);
         
@@ -169,6 +169,20 @@ final class ContainerTest extends AbstractShapeTest
         $items = $c->flatten();
         
         $this->assertCount(4, $items);
+        
+        foreach($items as $shape) {
+            if ($shape->contains(new Point(10,10))) {
+                $this->assertFalse($shape === $r[0]);
+            } elseif ($shape->contains(new Point(20, 20))) {
+                $this->assertFalse($shape === $r[1]);
+            } elseif ($shape->contains(new Point(-30,-30))) {
+                $this->assertFalse($shape === $r[2]);
+            } elseif ($shape->contains(new Point(100,100))) {
+                $this->assertFalse($shape === $r2);
+            } else {
+                $this->assertFalse(true, 'Dit mag niet!');
+            }
+        }
         
         
     }
