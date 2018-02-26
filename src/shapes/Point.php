@@ -251,7 +251,28 @@ class Point {
         return -1;
     }
     
+    public function getLength(): float
+    {
+        return sqrt($this->getY() * $this->getY() + $this->getX() * $this->getX());
+    }
     
+    public function getAngle(): float
+    {
+        return atan2($this->getY(), $this->getX());
+    }
+    
+    public static function fromPolar(float $length, float $angle, Point $origin = null): Point
+    {
+        $x = $length * cos($angle);
+        $y = $length * sin($angle);
+        
+        if ($origin != null) {
+            $x += $origin->getX();
+            $y += $origin->getY();
+        }
+        
+        return new Point($x, $y);
+    }
     
 }
 
