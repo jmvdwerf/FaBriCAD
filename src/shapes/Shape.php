@@ -94,4 +94,6 @@ abstract class Shape
     
     public abstract function flip(): Shape;
     
+    public abstract function clone(): Shape;
+    
 }

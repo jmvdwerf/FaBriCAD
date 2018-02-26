@@ -210,7 +210,15 @@ class Container extends Shape implements \Iterator
         return new Container($cc, $this->getOrigin()->flip());
     }
     
-    
+    public function clone(): Shape
+    {
+        $cc = array();
+        foreach($this->getShapes() as $s) {
+            $cc[] = $s->clone();
+        }
+        
+        return new Container($cc, $this->getOrigin());
+    }
     
     // -------------------------------------------------------------------------
     // Functions for the iterator over the internal Shapes

@@ -239,6 +239,27 @@ final class PolygonTest extends AbstractShapeTest
     }
     
     
+    public function testClone()
+    {
+        $q = new Polygon([
+            new Point(1,1),
+            new Point(1,4),
+            new Point(4,4),
+            new Point(4,1)
+        ]);
+        
+        $c = $q->clone();
+        
+        $this->assertInstanceOf(Polygon::class, $c);
+        
+        $q->updatePointXY(1, 1, 3);
+        $q->updatePointXY(2, 4, 3);
+        
+        $this->assertBoundingBox($c, 1, 1, 3, 3);
+        $this->assertBoundingBox($q, 1, 1, 3, 2);
+    }
+    
+    
     protected function createRhombus(): Polygon
     {
         return new Polygon(

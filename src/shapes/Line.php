@@ -242,4 +242,9 @@ class Line extends Shape
         
         return new Line($start, new Point($x, $y));
     }
+    
+    public function clone(): Shape
+    {
+        return new Line($this->getOrigin(), $this->getEndPoint());
+    }
 }

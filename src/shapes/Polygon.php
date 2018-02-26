@@ -461,6 +461,11 @@ class Polygon extends Shape
         return new Polygon($pp);
     }
     
+    public function clone(): Shape
+    {
+        return new Polygon($this->getPoints());
+    }
+    
 }
 
 

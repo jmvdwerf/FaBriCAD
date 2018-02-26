@@ -107,7 +107,20 @@ final class EllipseTest extends AbstractShapeTest
         $this->assertTrue($e->contains(new Point(2,2)));
     }
     
-    
+    public function testClone()
+    {
+        $a = rand();
+        $b = rand();
+        
+        $e = new Ellipse($a, $b);
+        $c = $e->clone();
+        
+        $this->assertFalse($e === $c);
+        $this->assertInstanceOf(Ellipse::class, $c);
+        
+        $this->assertEquals($a, $c->getXFactor());
+        $this->assertEquals($b, $c->getYFactor());
+    }
 }
 
 

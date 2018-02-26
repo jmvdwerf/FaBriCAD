@@ -113,4 +113,9 @@ class Ellipse extends Shape
         return new Ellipse($this->getYFactor(), $this->getXFactor(), $this->getOrigin()->flip());
     }
     
+    public function clone(): Shape
+    {
+        return new Ellipse($this->getXFactor(), $this->getYFactor(), $this->getOrigin());
+    }
+    
 }

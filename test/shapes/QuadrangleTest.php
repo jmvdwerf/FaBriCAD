@@ -45,6 +45,28 @@ final class QuadrangleTest extends AbstractShapeTest
         $this->assertBoundingBox($s, 2,0,4,4);
     }
     
+    public function testClone()
+    {
+        $q = new Quadrangle(
+            new Point(1,1),
+            new Point(1,4),
+            new Point(4,4),
+            new Point(4,1)
+        );
+        
+        $c = $q->clone();
+        
+        $this->assertInstanceOf(Quadrangle::class, $c);
+        
+        
+        $q->setNorthEast(new Point(1,3));
+        $q->setNorthWest(new Point(4,3));
+        
+        $this->assertBoundingBox($c, 1, 1, 3, 3);
+        $this->assertBoundingBox($q, 1, 1, 3, 2);
+        
+    }
+    
     private function createRhombus()
     {
         return new Quadrangle(

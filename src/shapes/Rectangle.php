@@ -161,6 +161,11 @@ class Rectangle extends Quadrangle
         return new Rectangle($this->getHeight(), $this->getWidth(), $this->getOrigin()->flip());
     }
     
+    public function clone(): Shape
+    {
+        return new Rectangle($this->getWidth(), $this->getHeight(), $this->getOrigin());
+    }
+    
 }
 
 

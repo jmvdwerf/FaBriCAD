@@ -502,6 +502,17 @@ final class LineTest extends AbstractShapeTest
         $this->assertPoint($l2->getEndPoint(), 3+3, 3+4);
         $this->assertPoint($l2->getOrigin(), 3, 3);
     }
+    
+    public function testClone()
+    {
+        $l = new Line(new Point(1,1), new Point(4,5));
+        
+        $c = $l->clone();
+        
+        $this->assertInstanceOf(Line::class, $c);
+        
+        $this->assertFalse($l === $c);
+    }
 }
 
 

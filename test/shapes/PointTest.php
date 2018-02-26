@@ -202,6 +202,22 @@ final class PointTest extends TestCase
         $this->assertEquals(3, $p->getX(), $delta=0.00001);
         $this->assertEquals(4, $p->getY(), $delta=0.00001);
     }
+    
+    public function testClone()
+    {
+        $p = new Point(3,3);
+        $c = $p->clone();
+        
+        $this->assertInstanceOf(Point::class, $c);
+        
+        $p->setX(4);
+        
+        $this->assertEquals(4, $p->getX());
+        $this->assertEquals(3, $p->getY());
+        
+        $this->assertEquals(3, $c->getX());
+        $this->assertEquals(3, $c->getY());
+    }
 }
 
 

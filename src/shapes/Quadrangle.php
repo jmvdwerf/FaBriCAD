@@ -111,5 +111,16 @@ class Quadrangle extends Polygon
             $this->getNorthWest()->flip()
         );
     }
+    
+    public function clone(): Shape
+    {
+        // $sw = null, Point $nw = null, Point $ne = null, Point $se = null
+        return new Quadrangle(
+            $this->getSouthWest(),
+            $this->getNorthWest(),
+            $this->getNorthEast(),
+            $this->getSouthEast()
+        );
+    }
 }
     

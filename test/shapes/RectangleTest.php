@@ -206,6 +206,20 @@ final class RectangleTest extends AbstractShapeTest
         $this->assertRectangle($r, -5,-5, 5,5);
         
     }
+    
+    public function testClone()
+    {
+        $r = new Rectangle(3, 4, new Point(2,2));
+        
+        $c = $r->clone();
+        
+        $this->assertInstanceOf(Rectangle::class, $c);
+                
+        $r->setWidth(4);
+        
+        $this->assertRectangle($r, 2, 2, 4, 4);
+        $this->assertRectangle($c, 2, 2, 3, 4);
+    }
 }
 
 

@@ -24,12 +24,13 @@ final class ContainerTest extends AbstractShapeTest
         
         $c = new Container($r);
                
-        $this->assertCount(2, $c->getShapes());
-        $this->assertEquals(2, $c->size());
+        $this->assertCount(count($r), $c->getShapes());
+        $this->assertEquals(count($r), $c->size());
         
         $item = 0;
         foreach($c as $key => $val) {
             $this->assertEquals($r[$key], $val);
+            $this->assertTrue($r[$key] === $val);
             $item++;
         }
         
@@ -169,6 +170,25 @@ final class ContainerTest extends AbstractShapeTest
         
         $this->assertCount(4, $items);
         
+        
+    }
+    
+    public function testClone()
+    {
+        $r = array();
+        $r[] = new Rectangle(5,5, new Point(10,10));
+        $r[] = new Rectangle(10,10, new Point(8,8));
+        $r[] = new Rectangle(3,3, new Point(-3, -3));
+        $c = new Container($r);
+        
+        $clone = $c->clone();
+        
+        $this->assertFalse($clone === $c);
+        $this->assertInstanceOf(Container::class, $clone);
+        
+        foreach($clone as $key => $shape) {
+            $this->assertFalse($r[$key] === $shape);
+        }
     }
     
     public function testaddNonOverlappingPartsWithNoOverlappingItems()

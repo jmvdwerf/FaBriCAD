@@ -274,6 +274,11 @@ class Point {
         return new Point($x, $y);
     }
     
+    public function clone(): Point
+    {
+        return new Point($this->getX(), $this->getY());
+    }
+    
 }
 
 
