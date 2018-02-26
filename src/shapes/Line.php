@@ -230,4 +230,16 @@ class Line extends Shape
     {
         return new Line($this->getOrigin()->flip(), $this->getEndPoint()->flip());
     }
+    
+    public static function fromVector(float $length, float $angle, Point $start = null): Line
+    {
+        if ($start == null) {
+            $start = new Point();
+        }
+        
+        $x = $length * cos($angle) + $start->getX();
+        $y = $length * sin($angle) + $start->getY();
+        
+        return new Line($start, new Point($x, $y));
+    }
 }

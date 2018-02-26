@@ -187,6 +187,21 @@ final class PointTest extends TestCase
         
         $this->assertEquals(-1, Point::find(new Point(10,13), $arr));
     }
+    
+    public function testLengthAndAngle()
+    {
+        $p = new Point(3, 4);
+        $this->assertEquals(5, $p->getLength());
+        $this->assertEquals(4/3, tan($p->getAngle()));
+    }
+    
+    public function testPolar()
+    {
+        $p = Point::fromPolar(5, atan(4/3));
+        
+        $this->assertEquals(3, $p->getX(), $delta=0.00001);
+        $this->assertEquals(4, $p->getY(), $delta=0.00001);
+    }
 }
 
 

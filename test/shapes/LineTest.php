@@ -474,7 +474,8 @@ final class LineTest extends AbstractShapeTest
     }
     
     
-    public function testMeetLines2() {
+    public function testMeetLines2() 
+    {
         $l1 = new Line(new Point(150,50), new Point(50,50));
         $l2 = new Line(new Point(100,100), new Point(100,0));
         
@@ -483,6 +484,23 @@ final class LineTest extends AbstractShapeTest
         
         $this->assertTrue($l1->intersects($l2));
         $this->assertTrue($l2->intersects($l1));
+    }
+    
+    
+    public function testVector()
+    {
+        $angle = atan(4/3);
+        $length = 5;
+        
+        $l = Line::fromVector($length, $angle);
+        
+        $this->assertEquals($angle, $l->getAngle()  , $delta=0.0001);
+        $this->assertEquals($length, $l->getLength(), $delta=0.0001);
+        
+        $l2 = Line::fromVector($length, $angle, new Point(3,3));
+        
+        $this->assertPoint($l2->getEndPoint(), 3+3, 3+4);
+        $this->assertPoint($l2->getOrigin(), 3, 3);
     }
 }
 
