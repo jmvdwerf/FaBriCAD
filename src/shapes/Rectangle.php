@@ -11,13 +11,11 @@ class Rectangle extends Quadrangle
      */
     public function __construct(float $w = 0.0, float $h = 0.0, Point $origin = null)
     {
-        if ($origin == null) { $origin = new Point(); }
-        
-        $nw = new Point($origin->getX(), $origin->getY() + $h);
-        $ne = new Point($origin->getX() + $w, $origin->getY() + $h);
-        $se = new Point($origin->getX() + $w, $origin->getY());
-        
-        parent::__construct($origin, $nw, $ne, $se);
+        if ($origin == null) {
+            $origin = new Point();
+        }
+        parent::__construct(new Point(), new Point(), new Point(), new Point());
+        $this->updateRectangle($w, $h, $origin->getX(), $origin->getY());
     }
     
     /**
@@ -72,10 +70,10 @@ class Rectangle extends Quadrangle
     
     protected function updateRectangle(float $width, float $height, float $x, float $y): Rectangle
     {
-        $this->updatePointXY(Quadrangle::SOUTHWEST, $x, $y);
-        $this->updatePointXY(Quadrangle::NORTHWEST, $x, $y + $height);
+        $this->updatePointXY(Quadrangle::SOUTHWEST, $x         , $y          );
+        $this->updatePointXY(Quadrangle::NORTHWEST, $x         , $y + $height);
         $this->updatePointXY(Quadrangle::NORTHEAST, $x + $width, $y + $height);
-        $this->updatePointXY(Quadrangle::SOUTHEAST, $x + $width, $y);
+        $this->updatePointXY(Quadrangle::SOUTHEAST, $x + $width, $y          );
         
         return $this;
     }

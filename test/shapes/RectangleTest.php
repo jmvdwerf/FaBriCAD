@@ -251,6 +251,16 @@ final class RectangleTest extends AbstractShapeTest
         
         $this->assertRectangle($r, $x, $y, $sx * $w, $sy * $h);
     }
+    
+    public function testRectanglePoints()
+    {
+        $r1 = new Rectangle(3, 4, new Point(6,6));
+        
+        $this->assertPoint($r1->getSouthWest(), 6, 6);
+        $this->assertPoint($r1->getNorthWest(), 6, 10);
+        $this->assertPoint($r1->getNorthEast(), 9, 10);
+        $this->assertPoint($r1->getSouthEast(), 9, 6);
+    }
 }
 
 

@@ -64,5 +64,11 @@ class Canvas extends Container
         
         return $results;
     }
+    
+    public function move(float $x = 0, float $y = 0): Shape
+    {
+        $this->origin->addXY($x, $y);
+        return $this;
+    }
 }
 

@@ -42,4 +42,25 @@ class CanvasTest extends AbstractShapeTest
             }
         }
     }
+    
+    public function testFlattenAfterMove()
+    {
+        $r = array();
+        $r[] = new Rectangle(3,4, new Point(2,2));
+        $r[] = new Rectangle(5,5, new Point(7,9));
+        $c = new Canvas($r, new Point(4,4));
+        $c->move(-1, 2);
+        
+        $items = $c->flatten();
+        
+        $this->assertCount(2, $items);
+        
+        foreach($items as $it) {
+            if ($it->contains(new Point(5,8))) {
+                $this->assertRectangle($it, 5, 8, 3, 4);
+            } else {
+                $this->assertRectangle($it, 10, 15, 5, 5);
+            }
+        }
+    }
 }
