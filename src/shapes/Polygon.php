@@ -28,42 +28,11 @@ class Polygon extends Shape
     }
     
     /**
-     * Sets the origin, being the first point of the polygon
-     * 
-     * {@inheritDoc}
-     * @see \jmw\fabricad\shapes\Shape::setOrigin()
-     */
-    public function setOrigin(Point $orig): Shape
-    {
-        $update = new Point(
-            -1 * $this->getOrigin()->getX() + $orig->getX(), 
-            -1 * $this->getOrigin()->getY() + $orig->getY()
-        );
-        
-        $this->points[0] = $orig;
-        
-        for($i = 1 ; $i < count($this->points); $i++)
-        {
-            $this->points[$i]->add($update);
-        }
-        
-        return $this;
-    }
-    
-    /**
      * If set, the first point in the array is considered to be the origin.
      * @param array $points
      */
     public function __construct($points = array())
     {
-        $origin = null;
-        if (count($points)>0) {
-            $origin = $points[0];
-        } else {
-            $origin = new Point(0,0);
-        }
-        parent::__construct($origin);
-        
         foreach($points as $pt) {
             $this->addPoint($pt);
         }
@@ -132,14 +101,6 @@ class Polygon extends Shape
     public function updatePointXY(int $index, float $x, float $y): bool
     {
         if (isset($this->points[$index])) {
-            // check if the update is allowed: 
-            //(1) the previous should not equal this one
-            $prev = (($index - 1) + $this->size()) % $this->size();
-            if ($this->points[$prev]->equalsXY($x, $y)) return false;
-            
-            //(2) the next should not equal this one
-            $next = (($index + 1) + $this->size()) % $this->size();
-            if ($this->points[$next]->equalsXY($x, $y)) return false;
             
             $this->points[$index]->setX($x);
             $this->points[$index]->setY($y);
@@ -239,15 +200,6 @@ class Polygon extends Shape
      */
     public function contains(Point $pt): bool
     {
-//         if (!parent::contains($pt)) return false;
-        
-//         $max = $this->getBoundingBox()->getTop();
-//         $max->scalarMultiply(2);
-        
-//         $points = $this->intersectionPoints(new Line($pt, $max));
-//         //var_dump($points);
-//         return !((count($points) % 2) == 0);
-
         $c = false;
         $pts = $this->getPoints();
         for ($i = 0, $j = $this->size()-1; $i < $this->size(); $j = $i++) {
@@ -461,11 +413,70 @@ class Polygon extends Shape
         return new Polygon($pp);
     }
     
+    /**
+     * Calculates the Centroid, or center of gravity of a polygon
+     * @see https://math.stackexchange.com/questions/3177/why-doesnt-a-simple-mean-give-the-position-of-a-centroid-in-a-polygon
+     * @return \jmw\fabricad\shapes\Point
+     */
+    public function getCentroid(): Point
+    {
+        if ($this->size() == 0) {
+            return new Point();
+        }
+        
+        $cx = 0;
+        $cy = 0;
+        $a = 0;
+        
+        for($i = 0 ; $i < $this->size() ; $i++) {
+            $prev = $this->points[$i];
+            $cur = $this->points[(($i+1) % ($this->size()))];
+            $factor = ($prev->getX() * $cur->getY() - $cur->getX()* $prev->getY());
+            $cx += ( $prev->getX() + $cur->getX() ) * $factor;
+            $cy += ( $prev->getY() + $cur->getY() ) * $factor;
+            $a += $factor;
+        }
+        
+        $a = $a / 2;
+        
+        $cx = (1 / ( 6 * $a)) * $cx;
+        $cy = (1 / ( 6 * $a)) * $cy;
+        
+        return new Point($cx, $cy);
+    }
+    
     public function clone(): Shape
     {
         return new Polygon($this->getPoints());
     }
     
+    public function move(float $x = 0, float $y = 0): Shape
+    {
+        for($i = 0 ; $i < count($this->points) ; $i++) {
+            $this->points[$i]->addXY($x, $y);
+        }
+        
+        return $this;
+    }
+
+    /**
+     * Scaling is performed by taking the Centroid, and scale each point from 
+     * this centroid.
+     * {@inheritDoc}
+     * @see \jmw\fabricad\shapes\Shape::scale()
+     */
+    public function scale(float $x = 1, float $y = 1): Shape
+    {
+        $centroid = $this->getCentroid();
+        
+        for($i = 0 ; $i < $this->size(); $i++) {
+            $l = new Line($centroid, $this->getPoint($i));
+            $l->scale($x, $y);
+            $this->updatePoint($i, $l->getEndPoint());
+        }
+        
+        return $this;
+    }
 }
 
 

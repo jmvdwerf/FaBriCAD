@@ -224,11 +224,13 @@ final class ContainerTest extends AbstractShapeTest
         $shape1 = new Rectangle(100, 100);
         $shape2 = new Rectangle(100, 100, new Point(50,50));
         $shape3 = new Rectangle(40, 40, new Point(80, 30));
+        $shape4 = new Rectangle(20, 20, new Point(10, 10));
         
         $c = new Container();
         $c->addNonOverlappingParts($shape1);
         $c->addNonOverlappingParts($shape2);
         $c->addNonOverlappingParts($shape3);
+        $c->addNonOverlappingParts($shape4);
         
         $this->assertCount(3, $c->getShapes());
         
@@ -253,6 +255,28 @@ final class ContainerTest extends AbstractShapeTest
                 $this->assertTrue($s->hasPoint(new Point(120,50)));
             }
         }
+    }
+    
+    public function testOrigin()
+    {
+        $c = new Container();
+        $this->assertPoint($c->getOrigin(), 0, 0);
+    }
+    
+    public function testFlip()
+    {
+        $x = rand();
+        $y = rand();
+        $h = rand();
+        $w = rand();
+        
+        $r = new Rectangle($w, $h, new Point($x, $y));
+        $c = new Container([$r]);
+        
+        $flipped = $c->flip();
+        
+        $this->assertCount(1, $flipped->getShapes());
+        $this->assertRectangle($flipped->getShapes()[0], $y, $x, $h, $w);
     }
 }
 

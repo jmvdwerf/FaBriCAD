@@ -3,41 +3,11 @@ namespace jmw\fabricad\shapes;
 
 abstract class Shape
 {
-    protected $origin = null;
-    
-    public function __construct(Point $origin = null)
-    {
-        if (empty($origin)) $origin = new Point(0,0);
-        $this->origin = $origin;
-    }
-    
-    /**
-     * Sets the origin of the shape
-     * 
-     * @param Point $orig
-     * @return Shape
-     */
-    public function setOrigin(Point $orig): Shape
-    {
-        $this->setOriginXY($orig->getX(), $orig->getY());
-        
-        return $this;
-    }
-    
-    public function setOriginXY(float $x, float $y)
-    {
-        $this->origin->setX($x);
-        $this->origin->setY($y);
-    }
-    
     /**
      * Returns the origin of this shape
      * @return Point
      */
-    public function getOrigin(): Point
-    {
-        return Point::copyFrom($this->origin);
-    }
+    public abstract function getOrigin(): Point;
     
     /**
      * Returns true if the shape $s intersects with this shape. 
@@ -96,4 +66,11 @@ abstract class Shape
     
     public abstract function clone(): Shape;
     
+    // -------------------------------------------------------------------------
+    // Operations on a shape
+        
+    public abstract function scale(float $x = 1, float $y = 1): Shape;
+    
+    public abstract function move(float $x = 0, float $y = 0): Shape;
+        
 }

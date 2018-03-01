@@ -22,16 +22,8 @@ class Quadrangle extends Polygon
      * @param Point $ne
      * @param Point $se
      */
-    public function __construct(Point $sw = null, Point $nw = null, Point $ne = null, Point $se = null) {
+    public function __construct(Point $sw, Point $nw, Point $ne, Point $se) {
         // check if these elements are not null. If so, create a new point for them.
-        
-        if ($sw == null) { $sw = new Point(); }
-        if ($nw == null) { $nw = new Point(); }
-        if ($ne == null) { $ne = new Point(); }
-        if ($se == null) { $se = new Point(); }
-        
-        parent::__construct();
-        
         $this->points = array($sw, $nw, $ne, $se);
     }
     
@@ -103,9 +95,9 @@ class Quadrangle extends Polygon
     
     public function flip(): Shape
     {
-        // $sw = null, Point $nw = null, Point $ne = null, Point $se 
+        // $sw = null, Point $nw = null, Point $ne = null, Point $se
         return new Quadrangle(
-            $this->getSouthWest()->flip().
+            $this->getSouthWest()->flip(),
             $this->getSouthEast()->flip(),
             $this->getNorthEast()->flip(),
             $this->getNorthWest()->flip()

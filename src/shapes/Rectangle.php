@@ -70,6 +70,28 @@ class Rectangle extends Quadrangle
         return $this;
     }
     
+    protected function updateRectangle(float $width, float $height, float $x, float $y): Rectangle
+    {
+        $this->updatePointXY(Quadrangle::SOUTHWEST, $x, $y);
+        $this->updatePointXY(Quadrangle::NORTHWEST, $x, $y + $height);
+        $this->updatePointXY(Quadrangle::NORTHEAST, $x + $width, $y + $height);
+        $this->updatePointXY(Quadrangle::SOUTHEAST, $x + $width, $y);
+        
+        return $this;
+    }
+    
+    /**
+     * Sets the new origin. It moves the whole thing, ensuring that the height
+     * and width remain the same.
+     *
+     * @param Point $pt
+     * @return Rectangle
+     */
+    public function setOrigin(Point $pt): Rectangle
+    {
+        return $this->updateRectangle($this->getWidth(), $this->getHeight(), $pt->getX(), $pt->getY());
+    }
+    
     /**
      * Sets the new top point. It moves the whole thing down, i.e., it ensures
      * that the height and width remain the same.
@@ -82,10 +104,7 @@ class Rectangle extends Quadrangle
         $width = $this->getWidth();
         $height = $this->getHeight();
         
-        $orig = new Point($pt->getX() - $width, $pt->getY() - $height);
-        $this->setOrigin($orig);
-        
-        return $this;
+        return $this->updateRectangle($width, $height, $pt->getX() - $width, $pt->getY() - $height);
     }
     
     /**
@@ -96,28 +115,6 @@ class Rectangle extends Quadrangle
     {
         return $this->getNorthEast();
     }
-    
-    /*
-     * Mirrors the rectangle over the Y-axis
-     * 
-     * @return Rectangle
-     *
-    public function mirrorOnX(): Shape
-    {
-        $this->origin->setX(-1* $this->origin->getX() - $this->width);
-        return $this;
-    }
-    
-    /**
-     * Mirrors the rectangle over the X-axis
-     * 
-     * @return Rectangle
-     *
-    public function mirrorOnY(): Shape
-    {
-        $this->origin->setY(-1* $this->origin->getY() - $this->height);
-        return $this;
-    }*/
     
     /**
      * Returns the bounding box of the object. As this is the rectangle itself,
@@ -164,6 +161,14 @@ class Rectangle extends Quadrangle
     public function clone(): Shape
     {
         return new Rectangle($this->getWidth(), $this->getHeight(), $this->getOrigin());
+    }
+    
+    public function scale(float $x = 1, float $y = 1): Shape
+    {
+        $w = $x * $this->getWidth();
+        $h = $y * $this->getHeight();
+        
+        return $this->updateRectangle($w, $h, $this->getOrigin()->getX(), $this->getOrigin()->getY());
     }
     
 }

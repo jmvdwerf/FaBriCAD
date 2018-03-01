@@ -21,10 +21,8 @@ class Container extends Shape implements \Iterator
     private $bb_min = null;
     private $bb_max = null;
     
-    public function __construct($items = [], Point $origin = null)
+    public function __construct($items = [])
     {
-        parent::__construct($origin);
-        
         $this->bb_min = new Point();
         $this->bb_max = new Point();
         
@@ -207,7 +205,7 @@ class Container extends Shape implements \Iterator
             $cc[] = $s->flip();
         }
         
-        return new Container($cc, $this->getOrigin()->flip());
+        return new Container($cc);
     }
     
     public function clone(): Shape
@@ -217,8 +215,32 @@ class Container extends Shape implements \Iterator
             $cc[] = $s->clone();
         }
         
-        return new Container($cc, $this->getOrigin());
+        return new Container($cc);
     }
+    
+    public function move(float $x = 0, float $y = 0): Shape
+    {
+        foreach($this->shapes as $s) {
+            $s->move($x, $y);
+        }
+        return $this;
+    }
+    
+    public function getOrigin(): Point
+    {
+        return new Point();
+    }
+    
+    public function scale(float $x = 1, float $y = 1): Shape
+    {
+        foreach($this->shapes as $s) {
+            $s->scale($x, $y);
+        }
+        
+        return $this;
+    }
+    
+    
     
     // -------------------------------------------------------------------------
     // Functions for the iterator over the internal Shapes
@@ -279,6 +301,5 @@ class Container extends Shape implements \Iterator
     {
         return $this->it_counter;
     }
-    
-    
+            
 }

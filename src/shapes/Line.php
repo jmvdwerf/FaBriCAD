@@ -6,13 +6,31 @@ class Line extends Shape
 {
     
     private $end = null;
+    private $origin = null;
     
-    public function __construct(Point $origin = null, Point $end = null)
+    public function __construct(Point $start, Point $end)
     {
-        parent::__construct($origin);
         $this->end = new Point();
+        $this->origin = new Point();
         
+        $this->setOrigin($start);
         $this->setEndPoint($end);
+    }
+    
+    public function setOrigin(Point $start): Point
+    {
+        return $this->setOriginXY($start->getX(), $start->getY()); 
+    }
+    
+    public function setOriginXY(float $x, float $y): Point
+    {
+        $this->origin->setXY($x, $y);
+        return $this->origin;
+    }
+    
+    public function getOrigin(): Point
+    {
+        return Point::copyFrom($this->origin);
     }
     
     public function getEndPoint(): Point
@@ -20,18 +38,14 @@ class Line extends Shape
         return Point::copyFrom($this->end);
     }
     
-    public function setEndPoint(Point $end = null): Line
+    public function setEndPoint(Point $end): Line
     {
-        if ($end == null) return $this;
-        
         return $this->setEndPointXY($end->getX(), $end->getY());
     }
     
     public function setEndPointXY(float $x = 0.0, float $y=0.0): Line
     {
-        $this->end->setX($x);
-        $this->end->setY($y);
-        
+        $this->end->setXY($x, $y);
         return $this;
     }
     
@@ -247,4 +261,18 @@ class Line extends Shape
     {
         return new Line($this->getOrigin(), $this->getEndPoint());
     }
+    
+    public function move(float $x = 0, float $y = 0): Shape
+    {
+        $this->origin->addXY($x, $y);
+        $this->end->addXY($x, $y);
+        return $this;
+    }
+
+    public function scale(float $x = 1, float $y = 1): Shape
+    {
+        $this->end->multiplyXY($x, $y);
+        return $this;
+    }
+
 }

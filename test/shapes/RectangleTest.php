@@ -220,6 +220,37 @@ final class RectangleTest extends AbstractShapeTest
         $this->assertRectangle($r, 2, 2, 4, 4);
         $this->assertRectangle($c, 2, 2, 3, 4);
     }
+    
+    public function testFlip()
+    {
+        $x = 1;
+        $y = 2;
+        $h = 4;
+        $w = 3;
+        
+        $r = new Rectangle($w, $h, new Point($x,$y));
+        
+        $flipped = $r->flip();
+        
+        $this->assertRectangle($flipped, $y, $x, $h, $w);
+    }
+    
+    public function testScale()
+    {
+        $x = rand();
+        $y = rand();
+        $h = rand();
+        $w = rand();
+        
+        $r = new Rectangle($w, $h, new Point($x,$y));
+        
+        $sx = rand();
+        $sy = rand();
+        
+        $r->scale($sx, $sy);
+        
+        $this->assertRectangle($r, $x, $y, $sx * $w, $sy * $h);
+    }
 }
 
 
