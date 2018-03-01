@@ -210,34 +210,35 @@ final class ContainerTest extends AbstractShapeTest
         $shape1 = new Rectangle(10, 10);
         $shape2 = new Rectangle(10, 10, new Point(200,200));
         
-        $c = new Container();
-        $c->addNonOverlappingParts($shape1);
-        $c->addNonOverlappingParts($shape2);
+        $c = new Container([$shape1, $shape2]);
         
-        $this->assertCount(2, $c->getShapes());
-        $this->assertContains($shape1, $c->getShapes());
-        $this->assertContains($shape2, $c->getShapes());
+        $items = $c->flatten(true);
+        
+        $this->assertCount(2, $items);
+        
+        foreach($items as $it) {
+            if ($it->contains(new Point(0, 0))) {
+                $this->assertRectangle($it, 0, 0, 10, 10);
+            } else {
+                $this->assertRectangle($it, 200, 200, 10, 10);
+            }
+        }
     }
     
-    public function testaddNonOverlappingPartsWithOverlappingSimple()
+    public function notestaddNonOverlappingPartsWithOverlappingSimple()
     {
         $shape1 = new Rectangle(100, 100);
         $shape2 = new Rectangle(100, 100, new Point(50,50));
         $shape3 = new Rectangle(40, 40, new Point(80, 30));
         $shape4 = new Rectangle(20, 20, new Point(10, 10));
         
-        $c = new Container();
-        $c->addNonOverlappingParts($shape1);
-        $c->addNonOverlappingParts($shape2);
-        $c->addNonOverlappingParts($shape3);
-        $c->addNonOverlappingParts($shape4);
+        $c = new Container([$shape1, $shape2, $shape3, $shape4]);
         
-        $this->assertCount(3, $c->getShapes());
+        $items = $c->flatten(true);
         
-        $this->assertContains($shape1, $c->getShapes());
-        $this->assertNotContains($shape2, $c->getShapes());
+        $this->assertCount(3, $items);
         
-        foreach($c->getShapes() as $s) {
+        foreach($items as $s) {
             if ($s->hasPoint(new Point(150,150))) {
                 $this->assertCount(6, $s->getPoints());
                 $this->assertTrue($s->hasPoint(new Point(100, 50)));
@@ -246,7 +247,8 @@ final class ContainerTest extends AbstractShapeTest
                 $this->assertTrue($s->hasPoint(new Point( 50,150)));
                 $this->assertTrue($s->hasPoint(new Point( 50,100)));
                 $this->assertTrue($s->hasPoint(new Point(100,100)));
-            } elseif ($s === $shape1) {
+            } elseif ($s->hasPoint(new Point(100, 100))) {
+                $this->assertRectangle($s, 0, 0, 100, 100);
             } else {
                 $this->assertCount(4, $s->getPoints());
                 $this->assertTrue($s->hasPoint(new Point(120, 30)));

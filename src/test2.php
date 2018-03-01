@@ -34,44 +34,20 @@ use jmw\fabricad\shapes\Container;
 //$r = new Rectangle(100,100, new Point(0,100));
 //$l = new Line(new Point(50,0), new Point(50,250));
 
-$r = new Polygon([
-new Point(100,0),
-new Point(200,0),
-new Point(200,300),
-new Point(300,300),
-new Point(300,0),
-new Point(400,0),
-new Point(400,500),
-new Point(100,500)
-]);
+$r = array();
+$r[] = new Rectangle(100,200, new Point(100, 100));
+$r[] = new Rectangle(100,200, new Point(700, 100));
+$r[] = new Rectangle(100,200, new Point(300, 200));
+$r[] = new Rectangle(100,200, new Point(350, 300));
 
-$l = new Line(new Point(0,200), new Point(500,200));
-
-$c =new Container();
-
-$items = BinaryOperators::difference($l, $r);
-var_dump($items);
-$c->addShapes($items);
 
 ?>
 </pre>
 <?php 
 $v1 = new SVGVisualizer();
-$v1->addShape($r, 'gray');
-$v1->addShape($l, 'blue');
-//$v1->addShape($shape3, 'red');
+foreach($r as $s) {
+    $v1->addShape($s, 'gray');
+}
 
 echo $v1->render();
-
-$colors = array('red','green', 'blue', 'pink', 'gray' ,'yellow');
-
-$v2 = new SVGVisualizer();
-$counter = 0;
-foreach($c->getShapes() as $s) {
-    $v2->addShape($s, $colors[$counter]);
-    $counter++;
-    echo $counter;
-}
-echo $v2->render();
-
 ?>

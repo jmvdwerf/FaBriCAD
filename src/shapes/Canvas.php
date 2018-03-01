@@ -47,16 +47,9 @@ class Canvas extends Container
      * {@inheritDoc}
      * @see \jmw\fabricad\shapes\Container::flatten()
      */
-    public function flatten(): array
+    public function flatten(bool $removeOverlap = false): array
     {
-        $results = array();
-        foreach($this->getShapes() as $shape) {
-            if ($shape instanceof Container) {
-                $results = array_merge($results, $shape->flatten());
-            } else {
-                $results[] = $shape->clone();
-            }
-        }
+        $results = parent::flatten($removeOverlap);
         
         foreach($results as $s) {
             $s->move($this->getOrigin()->getX(), $this->getOrigin()->getY());
