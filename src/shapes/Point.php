@@ -114,6 +114,7 @@ class Point {
      */
     public function __tostring(): string
     {
+        //return "new Point(".$this->printAsString(3).")";
         return $this->printAsString(3);
     }
     

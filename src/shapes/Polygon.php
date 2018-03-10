@@ -387,11 +387,11 @@ class Polygon extends Shape
     
     public function __tostring(): string
     {
-        $s = "Polygon [";
+        $s = "new Polygon([";
         foreach($this->getPoints() as $pt) {
-            $s .= "\n\t".$pt;
+            $s .= "\n\t".$pt.",";
         }
-        $s.= "\n]\n";
+        $s.= "\n]);\n";
         
         return $s;
     }

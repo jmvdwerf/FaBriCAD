@@ -91,7 +91,9 @@ abstract class Shape
             while(count($q) > 0) {
                 $second = array_shift($q);
                 if ($second->intersects($first)) {
+
                     $items = BinaryOperators::difference($second, $first);
+
                     $newQ = array_merge($newQ, $items);
                 } else {
                     $newQ[] = $second;
@@ -102,5 +104,22 @@ abstract class Shape
                 
         return $result;
     }
+    
+    public static function removeOverlapFrom(Shape $s, $items = []): array
+    {
+        $toCheck = [$s];
+        foreach($items as $i) {
+            $toAdd = [];
+            foreach($toCheck as $shape) {
+                if ($i->intersects($shape)) {
+                    $toAdd = array_merge($toAdd, BinaryOperators::difference($shape, $i));
+                } else {
+                    $toAdd[] = $shape;
+                }
+            }
+            $toCheck = $toAdd;
+        }
         
+        return $toCheck;
+    }
 }

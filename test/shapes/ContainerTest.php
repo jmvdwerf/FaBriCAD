@@ -49,59 +49,33 @@ final class ContainerTest extends AbstractShapeTest
         $c = new Container($r);
         
         $rNew = new Rectangle(3,3, new Point(-3, -3));
-        $r[] = $rNew;
+        $cc = new Container([$rNew]); 
         
-        $c->addShape($rNew);
+        $c->addShape($cc);
         
         $this->assertCount(3, $c->getShapes());
         $this->assertEquals(3, $c->size());
         
-        $item = 0;
-        foreach($c as $key => $val) {
-            $this->assertEquals($r[$key], $val);
-            $item++;
+        $a = [false, false, false];
+        foreach($c as $val) {
+            if ($val->getBoundingBox()->hasPoint(new Point(10, 10))) {
+                $this->assertRectangle($val, 10, 10, 5, 5);
+                $a[0] = true;
+            } elseif ($val->getBoundingBox()->hasPoint(new Point(8,8))) {
+                $this->assertRectangle($val, 8, 8, 10, 10);
+                $a[1] = true;
+            } elseif ($val->getBoundingBox()->hasPoint(new Point(-3, -3))) {
+                $this->assertInstanceOf(Container::class, $val);
+                $a[2] = true;
+            } else {
+                $this->assertTrue(false, 'should not happen!');
+            }
         }
-        
-        $this->assertEquals($c->size(), $item);
-        
+        for($i = 0; $i < 3 ; $i++) {
+            $this->assertTrue($a[$i]);
+        }
     }
     
-    /**
-     * Tests removing a shape from the con
-     */
-    public function testRemoveShape()
-    {
-        $r = array();
-        $r[] = new Rectangle(5,5, new Point(10,10));
-        $r[] = new Rectangle(10,10, new Point(8,8));
-        
-        $c = new Container();
-        
-        $rNew = new Rectangle(3,3, new Point(-3, -3));
-        $r[] = $rNew;
-        
-        $c->addShape($r[0]);
-        $c->addShape($rNew);
-        $c->addShape($r[1]);
-        
-        $this->assertCount(3, $c->getShapes());
-        $this->assertEquals(3, $c->size());
-        
-        $c->removeShape($rNew);
-        
-        $this->assertCount(2, $c->getShapes());
-        $this->assertEquals(2, $c->size());
-        
-        
-        $item = 0;
-        foreach($c as $key => $val) {
-            $this->assertEquals($r[$key], $val);
-            $item++;
-        }
-        
-        $this->assertEquals($c->size(), $item);
-    }
-
     public function testBoundingBox()
     {
         $r = array();

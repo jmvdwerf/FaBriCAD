@@ -2,7 +2,78 @@
 
 namespace jmw\fabricad\shapes;
 
-class ShapeList implements \Iterator 
+class ShapeList implements \Iterator
+{
+    private $shapes = array();
+    
+    public function size(): int
+    {
+        return count($this->shapes);
+    }
+    
+    public function empty(): bool
+    {
+        return ($this->size() == 0);
+    }
+    
+    public function addAll($shapes = array(), bool $nonOverlappingPartsOnly = false): ShapeList
+    {
+        foreach($shapes as $s) {
+            $this->add($s, $nonOverlappingPartsOnly);
+        }
+        return $this;
+    }
+    
+    public function add(Shape $s, bool $nonOverlappingPartsOnly = false): ShapeList
+    {
+        if ($nonOverlappingPartsOnly) {
+            $toAdd = Shape::removeOverlapFrom($s, $this->shapes);
+            $this->shapes = array_merge($this->shapes, $toAdd);
+        } else {
+            $this->shapes[] = $s;
+        }
+        return $this;
+    }
+    
+    public function flatten(bool $removeOverlap = false): array
+    {
+        if ($removeOverlap) {
+            return Shape::removeOverlap($this->shapes);
+        } else {
+            return $this->shapes;
+        }
+    }
+    
+    private $ptr = 0;
+    
+    public function next()
+    {
+        return $this->ptr++;        
+    }
+
+    public function valid()
+    {
+        return (isset($this->shapes[$this->ptr]));
+    }
+
+    public function current()
+    {
+        return $this->shapes[$this->ptr];
+    }
+
+    public function rewind()
+    {
+        $this->ptr = 0;
+    }
+
+    public function key()
+    {
+        return $this->ptr;
+    }
+    
+}
+
+class ShapeList2 implements \Iterator 
 {
     private $count = 0;
     private $root = null;
@@ -19,15 +90,15 @@ class ShapeList implements \Iterator
         return ($this->count == 0);
     }
     
-    public function addAll($shapes = array()): ShapeList
+    public function addAll($shapes = array(), bool $nonOverlappingPartsOnly = false): ShapeList
     {
         foreach($shapes as $s) {
-            $this->add($s);
+            $this->add($s, $nonOverlappingPartsOnly);
         }
         return $this;
     }
     
-    public function add(Shape $s): ShapeList
+    public function add(Shape $s, bool $nonOverlappingPartsOnly = false): ShapeList
     {
         $this->count++;
         if ($this->root == null) {
@@ -35,7 +106,7 @@ class ShapeList implements \Iterator
             return $this;
         } 
         
-        $this->root->insert($s);
+        $this->root->insert($s, $nonOverlappingPartsOnly);
         
         $this->updated = true;
         
@@ -55,13 +126,6 @@ class ShapeList implements \Iterator
         
         return $this->cur_list;
     }
-    
-    public function getRoot()
-    {
-        return $this->root;
-    }
-    
-    
     
     private $cur_list = array();
     private $cur_cnt = 0;
@@ -137,7 +201,7 @@ class ShapeNode
     }
     
     
-    public function insert(Shape $s)
+    public function insert(Shape $s, bool $nonOverlappingPartsOnly = false)
     {
         $bb = $s->getBoundingBox();
         $smin = $bb->getOrigin()->getX();
@@ -148,18 +212,23 @@ class ShapeNode
             if ($this->left == null) {
                 $this->left = new ShapeNode($s);
             } else {
-                $this->left->insert($s);
+                $this->left->insert($s, $nonOverlappingPartsOnly);
             }
         } elseif ($smin > $this->max) {
             // insert into the right
             if ($this->right == null) {
                 $this->right = new ShapeNode($s);
             } else {
-                $this->right->insert($s);
+                $this->right->insert($s, $nonOverlappingPartsOnly);
             }
         } else {
             // it overlaps, so add it to our shapes
-            $this->shapes[] = $s;
+            if (!$nonOverlappingPartsOnly) {
+                $this->shapes[] = $s;
+            } else {
+                $toAdd = Shape::removeOverlapFrom($s, $this->shapes);
+                $this->shapes = array_merge($this->shapes, $toAdd);
+            }
         }
     }
     
