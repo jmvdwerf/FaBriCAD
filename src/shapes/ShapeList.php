@@ -42,13 +42,13 @@ class ShapeList implements \Iterator
         return $this;
     }
     
-    public function flatten(): array
+    public function flatten(bool $removeOverlap = false): array
     {
         if ($this->updated) {
             if ($this->root == null) {
                 $this->cur_list = [];
             } else {
-                $this->cur_list = $this->root->flatten();
+                $this->cur_list = $this->root->flatten($removeOverlap);
             }
             $this->updated = false;
         }
@@ -163,18 +163,22 @@ class ShapeNode
         }
     }
     
-    public function flatten(): array
+    public function flatten(bool $removeOverlap = false): array
     {
         $result = array();
         
         if ($this->left != null) {
-            $result = $this->left->flatten();
+            $result = $this->left->flatten($removeOverlap);
         }
 
-        $result = array_merge($result, $this->shapes);
+        if (!$removeOverlap) {
+            $result = array_merge($result, $this->shapes);
+        } else {
+            $result = array_merge($result, Shape::removeOverlap($this->shapes));
+        }
         
         if ($this->right != null) {        
-            $result = array_merge($result, $this->right->flatten());
+            $result = array_merge($result, $this->right->flatten($removeOverlap));
         }
         return $result;
     }

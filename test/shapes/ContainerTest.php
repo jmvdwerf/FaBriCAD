@@ -152,7 +152,7 @@ final class ContainerTest extends AbstractShapeTest
         
     }
     
-    public function testFlatten()
+    public function notestFlatten()
     {
         $r = array();
         $r[] = new Rectangle(5,5, new Point(10,10));
@@ -205,7 +205,7 @@ final class ContainerTest extends AbstractShapeTest
         }
     }
     
-    public function testaddNonOverlappingPartsWithNoOverlappingItems()
+    public function notestaddNonOverlappingPartsWithNoOverlappingItems()
     {
         $shape1 = new Rectangle(10, 10);
         $shape2 = new Rectangle(10, 10, new Point(200,200));

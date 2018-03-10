@@ -72,5 +72,35 @@ abstract class Shape
     public abstract function scale(float $x = 1, float $y = 1): Shape;
     
     public abstract function move(float $x = 0, float $y = 0): Shape;
+    
+    
+    public static function removeOverlap($shapes = array()):  array
+    {
+        $q = [];
+        foreach($shapes as $s) {
+            $q[] = $s;
+        }
+        
+        $result = array();
+        
+        while(count($q) > 0) {
+            $first = array_shift($q);
+            $result[] = $first;
+            
+            $newQ = array();
+            while(count($q) > 0) {
+                $second = array_shift($q);
+                if ($second->intersects($first)) {
+                    $items = BinaryOperators::difference($second, $first);
+                    $newQ = array_merge($newQ, $items);
+                } else {
+                    $newQ[] = $second;
+                }
+            }
+            $q = $newQ;
+        }
+                
+        return $result;
+    }
         
 }
