@@ -245,7 +245,9 @@ class Point {
     
     public function flip(): Point
     {
-        return new Point($this->getY(), $this->getX());
+        $pt = new Point($this->getY(), $this->getX());
+        $this->set($pt);
+        return $this;
     }
     
     public static function copyFrom(Point $pt): Point

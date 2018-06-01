@@ -76,6 +76,12 @@ class Singleton extends Shape
         $this->pt->flip();
         return $this;
     }
+    
+    public function __tostring(): string
+    {
+        $s = get_class($this)."\n\t".$this->getOrigin()->__tostring()."\n";
+        return $s;
+    }
 
     
 }

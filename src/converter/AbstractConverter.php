@@ -10,6 +10,7 @@ use jmw\fabricad\shapes\Line;
 use jmw\fabricad\shapes\Polygon;
 use jmw\fabricad\shapes\Shape;
 use jmw\fabricad\shapes\Container;
+use jmw\fabricad\shapes\Singleton;
 
 abstract class AbstractConverter
 {
@@ -75,9 +76,11 @@ abstract class AbstractConverter
         } elseif($s instanceof Polygon) {
             $this->processPolygon($s);
         } elseif($s instanceof Container) {
-            foreach($s as $elem) {
+            foreach($s->flatten() as $elem) {
                 $this->processShape($elem);
             }
+        } elseif($s instanceof Singleton) {
+            $this->processEllipse(new Ellipse(10,10, $s->getOrigin()));
         }
     }
    
