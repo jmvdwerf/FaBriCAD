@@ -85,17 +85,38 @@ class Ellipse extends Shape
         return $this;
     }
 
-    public function contains(Point $pt): bool
+    public function contains(Point $pt, $onBorder = false): bool
     {
-        $xcomp = ($pt->getX() - $this->getOrigin()->getX());
-        $xcomp *= $xcomp;
-        $xcomp = $xcomp / ($this->getXFactor() * $this->getXFactor());
+        if ($onBorder) {
+            return abs($this->calculateFactor($pt) - 1) < 0.001;
+        } else {
+            return $this->calculateFactor($pt) < 1;
+        }
+    }
+    
+    public function calculateFactor(Point $pt): float
+    {
+        return $this->calculateFactorXY($pt->getX(), $pt->getY());        
+    }
+    
+    public function calculateFactorXY($x, $y): float
+    {
+        $xcomp = ($x - $this->getOrigin()->getX());
+        $x2 = $xcomp * $xcomp;
         
-        $ycomp = ($pt->getY() - $this->getOrigin()->getY());
-        $ycomp *= $ycomp;
-        $ycomp = $ycomp / ($this->getYFactor() * $this->getYFactor());
+        $factorX = $this->getXFactor();
+        $factorX = $factorX * $factorX;
         
-        return (($xcomp + $ycomp) < 1);
+        $xc = $x2 / $factorX;
+        
+        $ycomp = ($y - $this->getOrigin()->getY());
+        $ycomp = $ycomp * $ycomp;
+        $factorY = $this->getYFactor();
+        $factorY = $factorY * $factorY;
+        
+        $yc = $ycomp / $factorY;
+        
+        return $xc + $yc;
     }
     
     /**

@@ -85,10 +85,31 @@ final class PolygonTest extends AbstractShapeTest
         $this->assertPoint($points[1], 4,4);
         $this->assertPoint($points[2], 6,2);
         $this->assertPoint($points[3], 4,0);
+        
+        $r->setOrigin(new Point(3,3));
+        $this->assertPoint($r->getPoint(0), 3, 3);
+    }
+    
+    public function testToString()
+    {
+        $r = $this->createRhombus();
+        
+        $s = $r->__tostring();
+        
+        $this->assertEquals("new Polygon([\n\t2, 2,\n\t4, 4,\n\t6, 2,\n\t4, 0,\n]);\n", $s);
     }
     
     public function testGetLines()
     {
+        $p = new Polygon();
+        $lines = $p->getLines();
+        $this->assertEmpty($lines);
+        
+        $p = new Polygon([new Point(10, 10), new Point(20, 20)]);
+        $lines = $p->getLines();
+        $this->assertCount(1, $lines);
+        $this->assertLine($lines[0], 10, 10, 20, 20);
+        
         $r = $this->createRhombus();
         $lines = $r->getLines();
         $this->assertCount(4, $lines);
@@ -216,7 +237,12 @@ final class PolygonTest extends AbstractShapeTest
         
     }
     
-    
+    public function testEmptyExpand()
+    {
+        $p = new Polygon();
+        $pp = $p->expand();
+        $this->assertEquals(0, $pp->size());
+    }
     
     public function testSimplify()
     {
@@ -275,6 +301,10 @@ final class PolygonTest extends AbstractShapeTest
     
     public function testCentroid()
     {
+        $p = new Polygon();
+        $c = $p->getCentroid();
+        $this->assertPoint($c, 0, 0);
+        
         $r = $this->createRhombus();
         $c = $r->getCentroid();
         

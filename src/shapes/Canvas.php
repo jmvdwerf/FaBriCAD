@@ -64,5 +64,19 @@ class Canvas extends Container
         return $this;
     }
     
+    public function contains(Point $pt): bool
+    {
+        $movedPoint = $pt->add( $this->getOrigin()->multiplyXY(-1, -1) );
+        
+        return parent::contains($movedPoint);
+    }
+    
+    public function getBoundingBox(): Rectangle
+    {
+        $bb = parent::getBoundingBox();
+        $bb->move($this->getOrigin()->getX(), $this->getOrigin()->getY());
+        
+        return $bb;
+    }
 }
 

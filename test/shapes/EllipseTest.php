@@ -102,7 +102,7 @@ final class EllipseTest extends AbstractShapeTest
     {
         $e = new Ellipse(4,4, new Point(2,2));
         
-        $this->assertFalse($e->contains(new Point(6,6)));
+        $this->assertTrue($e->contains(new Point(6,2), true));
         $this->assertTrue($e->contains(new Point(2,2)));
         $this->assertTrue($e->contains(new Point(4,4)));
     }
@@ -167,6 +167,16 @@ final class EllipseTest extends AbstractShapeTest
         $this->assertFalse($e->contains(new Point(6,7)));
         $this->assertTrue($e->contains(new Point(2,3)));
         $this->assertTrue($e->contains(new Point(4,5)));
+    }
+    
+    public function testAsPolygon()
+    {
+        $e = new Ellipse(3, 3);
+        $poly = $e->asPolygon();
+        
+        foreach($poly->getPoints() as $pt) {
+            $this->assertTrue($e->contains($pt, true), 'Point not on Ellipse: '.$pt);
+        }
     }
     
 }

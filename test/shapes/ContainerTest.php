@@ -76,15 +76,22 @@ final class ContainerTest extends AbstractShapeTest
         }
     }
     
-    public function testBoundingBox()
+    public function testBoundingBoxComplex()
     {
         $r = array();
         $r[] = new Rectangle(5,5, new Point(10,10));
         $r[] = new Rectangle(10,10, new Point(8,8));
         $r[] = new Rectangle(3,3, new Point(-3, -3));
         $c = new Container($r);
-
         $this->assertBoundingBox($c, -3, -3, 21, 21);
+        
+        $r2 = new Rectangle(12, 12, new Point(100, 100));
+        $c2 = new Container([$r2]);
+        $this->assertBoundingBox($c2, 100, 100, 12, 12);
+        
+        $c->addShape($c2);
+        
+        $this->assertBoundingBox($c, -3, -3, 115, 115);
     }
 
     public function testMirrorOnX()
@@ -294,6 +301,47 @@ final class ContainerTest extends AbstractShapeTest
                 $this->assertFalse(true, 'should not happen!');
             }
         }
+    }
+    
+    public function testContains()
+    {
+        $r = array();
+        $r[] = new Rectangle(5,5, new Point(10,10));
+        $r[] = new Rectangle(10,10, new Point(20,20));
+        $r[] = new Rectangle(3,3, new Point(-30, -30));
+        $c = new Container($r);
+        
+        $r2 = new Rectangle(20,20, new Point(100,100));
+        
+        $c2 = new Container([$r2]);
+        
+        $c->addShape($c2);
+        
+        $this->assertTrue($c->contains(new Point(12, 12)));
+        $this->assertFalse($c->contains(new Point(70, 70)));
+    }
+    
+    public function testAsPolygon()
+    {
+        $r = array();
+        $r[] = new Rectangle(5,5, new Point(10,10));
+        $r[] = new Rectangle(10,10, new Point(20,20));
+        $r[] = new Rectangle(3,3, new Point(-30, -30));
+        $c = new Container($r);
+        
+        $this->assertBoundingBox($c, -30, -30, 60, 60);
+        
+        $r2 = new Rectangle(20,20, new Point(100,100));
+        
+        $c2 = new Container([$r2]);
+        $c->addShape($c2);
+        
+        $this->assertBoundingBox($c2, 100, 100, 20, 20);
+        
+        $poly = $c->asPolygon();
+
+        $this->assertInstanceOf(Rectangle::class, $poly);
+        $this->assertRectangle($poly, -30, -30, 150, 150);
     }
 }
 

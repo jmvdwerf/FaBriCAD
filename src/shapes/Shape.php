@@ -38,10 +38,7 @@ abstract class Shape
         return $s->contains($bb->getOrigin()) && $s->contains($bb->getTop());
     }
     
-    public function asPolygon(): Polygon
-    {
-        return $this->getBoundingBox();
-    }
+    public abstract function asPolygon(): Polygon;
     
     
     /**
@@ -53,14 +50,11 @@ abstract class Shape
     public abstract function mirrorOnX(): Shape;
     public abstract function mirrorOnY(): Shape;
     
-    public function contains(Point $pt): bool
-    {
-        return $this->getBoundingBox()->contains($pt);
-    }
+    public abstract function contains(Point $pt): bool;
     
     public function __tostring()
     {
-        $str = __CLASS__;
+        $str = get_class($this);
         return $str;
     }
     

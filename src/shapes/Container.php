@@ -12,22 +12,10 @@ class Container extends Shape implements \Iterator
      */
     private $shapes = null;
     
-    /**
-     * Internal representation of the bounding box of this Shape. The bounding
-     * box $bb is *relative* to the origin of this container!
-     *  
-     * @var Rectangle
-     */
-    private $bb_min = null;
-    private $bb_max = null;
-    
     public function __construct($items = [])
     {
         $this->shapes = new ShapeList();
-        
-        $this->bb_min = new Point();
-        $this->bb_max = new Point();
-        
+
         $this->addShapes($items);
     }
         
@@ -62,9 +50,6 @@ class Container extends Shape implements \Iterator
     public function addShape(Shape $s, bool $nonOverlappingPartsOnly = false): Container
     {
         $this->shapes->add($s, $nonOverlappingPartsOnly);
-        
-        $this->updateInternalBox($s);
-        
         return $this;
     }
     
@@ -73,7 +58,6 @@ class Container extends Shape implements \Iterator
         $this->bb = new Rectangle();
         foreach($this->getShapes() as $s) {
             $s->mirrorOnX();
-            $this->updateInternalBox($s);
         }
         
         return $this;
@@ -84,25 +68,11 @@ class Container extends Shape implements \Iterator
         $this->bb = new Rectangle();
         foreach($this->getShapes() as $s) {
             $s->mirrorOnY();
-            $this->updateInternalBox($s);
         }
         
         return $this;
     }
 
-    /**
-     * This function updates the bounding box with the bounding box of the Shape
-     * added.
-     *
-     * @param Shape $s
-     */
-    private function updateInternalBox(Shape $s)
-    {
-        $r = $s->getBoundingBox();
-        $this->bb_min->min($r->getOrigin());
-        $this->bb_max->max($r->getTop());
-    }
-    
     /**
      * Returns the bounding box of this Shape
      * 
@@ -113,7 +83,23 @@ class Container extends Shape implements \Iterator
     {
        // As $bb keeps the internal bounding box, relative to our own origin,
        // we need to translate the bounding box with our origin.
-       return Rectangle::fromPoints($this->bb_min, $this->bb_max);
+       $first = true;
+       $min = new Point();
+       $max = new Point();
+       
+       foreach($this->shapes as $s) {
+           $b = $s->getBoundingBox();
+           if ($first) {
+               $min = $b->getOrigin();
+               $max = $b->getTop();
+               $first = false;
+           } else {
+               $min->min($b->getOrigin());
+               $max->max($b->getTop());
+           }
+       }
+       
+       return Rectangle::fromPoints($min, $max);
     }
     
     /**
@@ -186,6 +172,22 @@ class Container extends Shape implements \Iterator
         }
         
         return $this;
+    }
+    
+    public function contains(Point $pt): bool
+    {
+        foreach($this->shapes as $shape) {
+            if ($shape->contains($pt)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    public function asPolygon(): Polygon
+    {
+        return $this->getBoundingBox();
     }
     
     

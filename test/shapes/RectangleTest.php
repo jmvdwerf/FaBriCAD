@@ -244,8 +244,8 @@ final class RectangleTest extends AbstractShapeTest
         
         $r = new Rectangle($w, $h, new Point($x,$y));
         
-        $sx = rand();
-        $sy = rand();
+        $sx = 3;
+        $sy = 4;
         
         $r->scale($sx, $sy);
         

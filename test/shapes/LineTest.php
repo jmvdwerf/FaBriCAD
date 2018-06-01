@@ -554,6 +554,21 @@ final class LineTest extends AbstractShapeTest
         $this->assertPoint($l->getOrigin() , $x1,  $y1);
         $this->assertPoint($l->getEndPoint(), $x2 * $mx, $y2 * $my);
     }
+    
+    public function testGiveFunction()
+    {
+        $l = new Line(new Point(1, 1), new Point(3,2));
+        
+        $this->assertEquals("LINE: Y = 0.5 * X + 0.5\n", $l->giveFunction());
+    }
+    
+    public function testAsPolygon()
+    {
+        $l = new Line(new Point(1, 1), new Point(3,2));
+        $p = $l->asPolygon();
+        $this->assertPoint($p->getPoint(0), 1, 1);
+        $this->assertPoint($p->getPoint(1), 3, 2);
+    }
 }
 
 
