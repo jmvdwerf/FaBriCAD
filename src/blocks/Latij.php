@@ -88,11 +88,12 @@ class Latij extends BasicBuildingBlock
         
         $starthoek = atan2(-1 * $this->getPorringPunt()->getY(), $this->getWidth() / 2);
         $maxhoek = atan2(-1 * $this->getPorringPunt()->getY() + $this->getHeight(), $this->getBrickWidth() / 2);
+        
         $step = ($maxhoek - $starthoek) / ($this->getNrOfStones()+1);
         
         $maxX = 0;
         
-        for($hoek = $starthoek ; $hoek <= $maxhoek ; $hoek += $step) { 
+        for($hoek = $starthoek ; $hoek < M_PI_2 ; $hoek += $step) { 
         
             $line = Line::fromVector(100, $hoek, $this->getPorringPunt());
         
@@ -105,6 +106,8 @@ class Latij extends BasicBuildingBlock
         
         $brickline = [];
         
+        $odd = ($this->getNrOfStones() % 2);
+        
         for($i = 0 ; $i < count($vlijn) - 1 ; $i++ ) {
             $nr = count($vlijn) - 1 - $i;
             
@@ -115,7 +118,7 @@ class Latij extends BasicBuildingBlock
             $brickline[] = new Line(new Point($x1, 0), new Point($x2, 0));
             
             if ($this->getHeight() > $this->getBrickHeight()) {
-                $height = ($nr % 2 == 1) ? $this->getBrickHeight() : $this->getBrickHeight() / 2;
+                $height = ($nr % 2 == $odd) ? $this->getBrickHeight() : $this->getBrickHeight() / 2;
                         
                 for($y = $height ; $y < $this->getHeight(); $y += $this->getBrickHeight() ) {
                     $x1 = $vlijn[$nr]->calculateX($y);

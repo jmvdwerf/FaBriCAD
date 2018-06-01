@@ -10,10 +10,11 @@
             "blocks": {
                 "wall": {
                     "name": "wall",
-                    "type": "Cutout",
+                    "type": "StaandVerband",
                     "config": {
-                        "height": 5,
+                        "height": 4,
                         "width": 10,
+			"start": 1,
                         "actual": "StaandVerband"
                     },
                     "shape": {
@@ -219,20 +220,17 @@
                 },
                 "deurlatij": {
                     "name": "Deurlatij",
-                    "type": "brickwall",
+                    "type": "latij",
                     "config": {
-                        "height": 5,
-                        "width": 10,
-                        "vertical": 1
+                        "width": 55,
+                        "height": 15,
+                        "stones": 6,
+                        "brickheight": 10,
+                        "brickwidth": 5
                     },
                     "shape": {
-                        "type": "polygon",
-                        "points": [
-                            { "x": 170, "y": 130},
-                            { "x": 165, "y": 145},
-                            { "x": 230, "y": 145},
-                            { "x": 225, "y": 130}
-                        ]
+                        "type": "singleton",
+                        "point": { "x": 170, "y": 130 }
                     }
                 },
                 "deur": {
@@ -302,20 +300,17 @@
                 },
                 "raamlatij": {
                     "name": "Raamlatij",
-                    "type": "brickwall",
+                    "type": "latij",
                     "config": {
-                        "height": 5,
-                        "width": 10,
-                        "vertical": 1
+                        "width": 65,
+                        "height": 15,
+                        "stones": 8,
+                        "brickheight": 10,
+                        "brickwidth": 5
                     },
                     "shape": {
-                        "type": "polygon",
-                        "points": [
-                            { "x": 55, "y": 130},
-                            { "x": 50, "y": 145},
-                            { "x": 125, "y": 145},
-                            { "x": 120, "y": 130}
-                        ]
+                        "type": "singleton",
+                        "point": { "x": 55, "y": 130 }
                     }
                 },
                 "raamboven1": {
@@ -484,9 +479,9 @@
                     "name": "Muur",
                     "type": "StaandVerband",
                     "config": {
-                        "height": 5,
+                        "height": 4,
                         "width": 10,
-                        "start":  0,
+                        "start":  1,
                         "actual": "StaandVerband"
                     },
                     "shape": {
@@ -516,7 +511,7 @@
                     "name": "Latij boven raam",
                     "type": "Brickwall",
                     "config": {
-                        "width": 5,
+                        "width": 4,
                         "height": 10,
                         "start": 1
                     },
@@ -537,11 +532,11 @@
              "blocks": {       
                 "wall": {
                     "name": "wall",
-                    "type": "cutout",
+                    "type": "StaandVerband",
                     "config": {
-                        "height": 5,
+                        "height": 4,
                         "width": 10,
-                        "start": 1,
+                        "start": 0,
                         "actual": "StaandVerband"
                     },
                     "shape": {
