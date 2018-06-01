@@ -23,6 +23,21 @@ class CanvasTest extends AbstractShapeTest
         $this->assertCount(2, $c->getShapes());
     }
     
+    public function testCreationEmpytOrigin()
+    {
+        $r = array();
+        $r[] = new Rectangle(3,4, new Point(2,2));
+        $r[] = new Rectangle(5,5, new Point(7,7));
+        $c = new Canvas($r);
+        
+        $this->assertPoint($c->getOrigin(), 0, 0);
+        
+        $c->setOrigin(new Point(4,3));
+        $this->assertPoint($c->getOrigin(), 4, 3);
+        
+        $this->assertCount(2, $c->getShapes());
+    }
+    
     public function testFlatten()
     {
         $r = array();

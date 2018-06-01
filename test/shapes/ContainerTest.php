@@ -126,7 +126,7 @@ final class ContainerTest extends AbstractShapeTest
         
     }
     
-    public function notestFlatten()
+    public function testFlatten()
     {
         $r = array();
         $r[] = new Rectangle(5,5, new Point(10,10));
@@ -145,14 +145,14 @@ final class ContainerTest extends AbstractShapeTest
         $this->assertCount(4, $items);
         
         foreach($items as $shape) {
-            if ($shape->contains(new Point(10,10))) {
-                $this->assertFalse($shape === $r[0]);
-            } elseif ($shape->contains(new Point(20, 20))) {
-                $this->assertFalse($shape === $r[1]);
-            } elseif ($shape->contains(new Point(-30,-30))) {
-                $this->assertFalse($shape === $r[2]);
-            } elseif ($shape->contains(new Point(100,100))) {
-                $this->assertFalse($shape === $r2);
+            if ($shape->getOrigin()->equalsXY(10,10)) {
+                $this->assertRectangle($shape, 10, 10, 5, 5);
+            } elseif ($shape->getOrigin()->equalsXY(20,20)) {
+                $this->assertRectangle($shape, 20, 20, 10, 10);
+            } elseif ($shape->getOrigin()->equalsXY(-30,-30)) {
+                $this->assertRectangle($shape, -30, -30, 3, 3);
+            } elseif ($shape->getOrigin()->equalsXY(100,100)) {
+                $this->assertRectangle($shape, 100, 100, 20, 20);
             } else {
                 $this->assertFalse(true, 'Dit mag niet!');
             }
@@ -179,7 +179,7 @@ final class ContainerTest extends AbstractShapeTest
         }
     }
     
-    public function notestaddNonOverlappingPartsWithNoOverlappingItems()
+    public function testaddNonOverlappingPartsWithNoOverlappingItems()
     {
         $shape1 = new Rectangle(10, 10);
         $shape2 = new Rectangle(10, 10, new Point(200,200));
@@ -191,15 +191,17 @@ final class ContainerTest extends AbstractShapeTest
         $this->assertCount(2, $items);
         
         foreach($items as $it) {
-            if ($it->contains(new Point(0, 0))) {
+            if ($it->getOrigin()->equals($shape1->getOrigin()) ) {
                 $this->assertRectangle($it, 0, 0, 10, 10);
-            } else {
+            } elseif ($it->getOrigin()->equals($shape2->getOrigin())) {
                 $this->assertRectangle($it, 200, 200, 10, 10);
+            } else {
+                $this->assertFalse(true, 'this should not happen!');
             }
         }
     }
     
-    public function notestaddNonOverlappingPartsWithOverlappingSimple()
+    public function testaddNonOverlappingPartsWithOverlappingSimple()
     {
         $shape1 = new Rectangle(100, 100);
         $shape2 = new Rectangle(100, 100, new Point(50,50));
@@ -253,6 +255,45 @@ final class ContainerTest extends AbstractShapeTest
         
         $this->assertCount(1, $flipped->getShapes());
         $this->assertRectangle($flipped->getShapes()[0], $y, $x, $h, $w);
+    }
+    
+    
+    public function testMove() {
+        $r[] = new Rectangle(4, 6, new Point(2,2));
+        $r[] = new Rectangle(6, 6, new Point(10,10));
+        
+        $c = new Container($r);
+        $c->setOrigin(new Point(3,3));
+        $c->move(3, 5);
+        
+        foreach($c->getShapes() as $shape) {
+            if ($shape === $r[0]) {
+                $this->assertRectangle($shape, 5, 7, 4, 6);
+            } elseif ($shape === $r[1]) {
+                $this->assertRectangle($shape, 13, 15, 6, 6);
+            } else {
+                $this->assertFalse(true, 'should not happen!');
+            }
+        }
+    }
+    
+    public function testScale() {
+        $r[] = new Rectangle(4, 6, new Point(2,3));
+        $r[] = new Rectangle(6, 6, new Point(10,12));
+        
+        $c = new Container($r);
+        
+        $c->scale(1/2, 1/3);
+        
+        foreach($c->getShapes() as $shape) {
+            if ($shape === $r[0]) {
+                $this->assertRectangle($shape, 1, 1, 2, 2);
+            } elseif ($shape === $r[1]) {
+                $this->assertRectangle($shape, 5, 4, 3, 2);
+            } else {
+                $this->assertFalse(true, 'should not happen!');
+            }
+        }
     }
 }
 

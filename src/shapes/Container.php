@@ -170,10 +170,19 @@ class Container extends Shape implements \Iterator
         return new Point();
     }
     
+    public function setOrigin(Point $orig): Shape
+    {
+        return $this;
+    }
+    
     public function scale(float $x = 1, float $y = 1): Shape
     {
         foreach($this->getShapes() as $s) {
+            // scale the element
             $s->scale($x, $y);
+            // also scale the origin!
+            $orig = $s->getOrigin();
+            $s->setOrigin( $orig->multiplyXY($x, $y));
         }
         
         return $this;

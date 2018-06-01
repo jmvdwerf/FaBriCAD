@@ -17,15 +17,16 @@ class Line extends Shape
         $this->setEndPoint($end);
     }
     
-    public function setOrigin(Point $start): Point
+    public function setOrigin(Point $start): Shape
     {
-        return $this->setOriginXY($start->getX(), $start->getY()); 
+        $this->setOriginXY($start->getX(), $start->getY());
+        return $this;
     }
     
-    public function setOriginXY(float $x, float $y): Point
+    public function setOriginXY(float $x, float $y): Shape
     {
         $this->origin->setXY($x, $y);
-        return $this->origin;
+        return $this;
     }
     
     public function getOrigin(): Point

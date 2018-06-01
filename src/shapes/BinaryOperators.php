@@ -146,26 +146,38 @@ class BinaryOperators
                     
                     // determine the direction we should walk in Other
                     $dir = BinaryOperators::givedir($indexB, $no, $settings_other);
-                    $indexB = BinaryOperators::nextIndex($indexB, $dir, $no->size());
+                    
+                    BinaryOperators::debug("Direction B (".($dirB? '1': '0')."): ".($dir ? '1' : '0'));
+                    
+                    $nextB = BinaryOperators::nextIndex($indexB, $dirB, $no->size());
+                    
                     // we know that, because of Polygon::expand() that the next point of B
                     // will NOT be a crossing point with A
+                    if (!$settings_other->outside[$nextB]) {
+                        $indexB = $nextB;
                     
-                    BinaryOperators::debug("next B: ".$indexB);
-                    
-                    while ($indexB >= 0 && $indexB < $no->size() && $settings_other->crossings[$indexB] < 0 && !$settings_other->outside[$indexB]  && $settings_other->processed[$indexB] < 0 ) 
-                    {
-                        // the node is not a crossing point, and inside one, so just add the node to Settings
-                        $settings_other->processed[$indexB] = count($results);
-                        $shape->addPoint($no->getPoint($indexB));
-                        $indexB = BinaryOperators::nextIndex($indexB, $dirB, $no->size());
                         BinaryOperators::debug("next B: ".$indexB);
-                    }
-                    if ($settings_other->crossings[$indexB] >= 0) {
-                        $indexA = $settings_other->crossings[$indexB];
-                     //   $shape->addPoint($nt->getPoint($indexA));
-                     //   $settings_one->processed[$indexA] = count($results);
+                    
+                        while ($indexB >= 0 && $indexB < $no->size() && $settings_other->crossings[$indexB] < 0 && !$settings_other->outside[$indexB]  && $settings_other->processed[$indexB] < 0 ) 
+                        {
+                            // the node is not a crossing point, and inside one, so just add the node to Settings
+                            $settings_other->processed[$indexB] = count($results);
+                            $shape->addPoint($no->getPoint($indexB));
+                            $indexB = BinaryOperators::nextIndex($indexB, $dirB, $no->size());
+                            BinaryOperators::debug("next B: ".$indexB);
+                        }
+                        
+                        if ($settings_other->crossings[$indexB] >= 0) {
+                            $indexA = $settings_other->crossings[$indexB];
+                        }
                     } else {
+                    
+                        BinaryOperators::debug("current B: ".$indexB);
+                        BinaryOperators::debug("current A: ".$indexA);
+                        BinaryOperators::debug("next A: ".BinaryOperators::nextIndex($indexA, $dirA, $nt->size()));
+                        
                         $indexA = BinaryOperators::nextIndex($indexA, $dirA, $nt->size());
+                        
                     }
                 }
                 

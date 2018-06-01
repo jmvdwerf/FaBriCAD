@@ -27,6 +27,12 @@ class Polygon extends Shape
         }
     }
     
+    public function setOrigin(Point $orig): Shape
+    {
+        $this->updatePoint(0, $orig);
+        return $this;
+    }
+    
     /**
      * If set, the first point in the array is considered to be the origin.
      * @param array $points

@@ -9,6 +9,8 @@ abstract class Shape
      */
     public abstract function getOrigin(): Point;
     
+    public abstract function setOrigin(Point $pt): Shape;
+    
     /**
      * Returns true if the shape $s intersects with this shape. 
      * Just touching is sufficient!

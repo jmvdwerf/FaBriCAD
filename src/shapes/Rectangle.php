@@ -85,7 +85,7 @@ class Rectangle extends Quadrangle
      * @param Point $pt
      * @return Rectangle
      */
-    public function setOrigin(Point $pt): Rectangle
+    public function setOrigin(Point $pt): Shape
     {
         return $this->updateRectangle($this->getWidth(), $this->getHeight(), $pt->getX(), $pt->getY());
     }

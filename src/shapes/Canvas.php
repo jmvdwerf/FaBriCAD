@@ -25,12 +25,12 @@ class Canvas extends Container
         parent::__construct($shapes);
     }
     
-    public function setOrigin(Point $pt): Canvas
+    public function setOrigin(Point $pt): Shape
     {
         return $this->setOriginXY($pt->getX(), $pt->getY());
     }
     
-    public function setOriginXY(float $x, float $y): Canvas
+    public function setOriginXY(float $x, float $y): Shape
     {
         $this->origin->setXY($x, $y);
         return $this;
@@ -63,5 +63,6 @@ class Canvas extends Container
         $this->origin->addXY($x, $y);
         return $this;
     }
+    
 }
 

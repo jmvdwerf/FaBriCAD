@@ -27,7 +27,7 @@ class Ellipse extends Shape
         }
     }
     
-    public function setOrigin(Point $pt): Ellipse
+    public function setOrigin(Point $pt): Shape
     {
         return $this->setOriginXY($pt->getX(), $pt->getY());
     }
