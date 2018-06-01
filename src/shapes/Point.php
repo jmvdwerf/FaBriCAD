@@ -71,6 +71,13 @@ class Point {
         return $this;
     }
     
+    public function setXY(float $x, float $y): Point
+    {
+        $this->setX($x);
+        $this->setY($y);
+        return $this;
+    }
+    
     /**
      * Creates a new /Point mirrored on the Y-axis.
      * @return /Point
@@ -107,6 +114,7 @@ class Point {
      */
     public function __tostring(): string
     {
+        //return "new Point(".$this->printAsString(3).")";
         return $this->printAsString(3);
     }
     
@@ -155,8 +163,13 @@ class Point {
      */
     public function add(Point $pt): Point
     {
-        $this->setX($this->getX() + $pt->getX());
-        $this->setY($this->getY() + $pt->getY());
+        return $this->addXY($pt->getX(), $pt->getY());
+    }
+    
+    public function addXY(float $x = 0, float $y = 0): Point
+    {
+        $this->setX($this->getX() + $x);
+        $this->setY($this->getY() + $y);
         return $this;
     }
     
@@ -168,15 +181,13 @@ class Point {
      */
     public function multiply(Point $pt): Point
     {
-        $this->setX($this->getX() * $pt->getX());
-        $this->setY($this->getY() * $pt->getY());
-        return $this;
+        return $this->multiplyXY($pt->getX(), $pt->getY());
     }
     
-    public function scalarMultiply(float $scalar): Point
+    public function multiplyXY(float $x = 1, float $y = 1): Point
     {
-        $this->setX($scalar * $this->getX());
-        $this->setY($scalar * $this->getY());
+        $this->setX($this->getX() * $x);
+        $this->setY($this->getY() * $y);
         return $this;
     }
     

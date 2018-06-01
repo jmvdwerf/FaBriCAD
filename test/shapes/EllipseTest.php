@@ -100,11 +100,11 @@ final class EllipseTest extends AbstractShapeTest
     
     public function testContains()
     {
-        $e = new Ellipse(4,4);
+        $e = new Ellipse(4,4, new Point(2,2));
         
-        $this->assertFalse($e->contains(new Point(4,4)));
-        $this->assertTrue($e->contains(new Point(0,0)));
+        $this->assertTrue($e->contains(new Point(6,2), true));
         $this->assertTrue($e->contains(new Point(2,2)));
+        $this->assertTrue($e->contains(new Point(4,4)));
     }
     
     public function testClone()
@@ -121,6 +121,64 @@ final class EllipseTest extends AbstractShapeTest
         $this->assertEquals($a, $c->getXFactor());
         $this->assertEquals($b, $c->getYFactor());
     }
+    
+    public function testFlip()
+    {
+        $e = new Ellipse(3,2, new Point(1,2));
+        
+        $flipped = $e->flip();
+        
+        $this->assertPoint($flipped->getOrigin(), 2, 1);
+        $this->assertEquals(2, $flipped->getXFactor());
+        $this->assertEquals(3, $flipped->getYFactor());
+    }
+    
+    public function testSetOrigin()
+    {
+        $e = new Ellipse(4,4);
+        $e->setOrigin(new Point(2,3));
+        
+        $this->assertPoint($e->getOrigin(), 2, 3);
+        
+        $this->assertFalse($e->contains(new Point(6,7)));
+        $this->assertTrue($e->contains(new Point(2,3)));
+        $this->assertTrue($e->contains(new Point(4,5)));
+    }
+    
+    public function testMove()
+    {
+        $e = new Ellipse(4,4);
+        $e->move(2,3);
+        
+        $this->assertPoint($e->getOrigin(), 2, 3);
+                
+        $this->assertFalse($e->contains(new Point(6,7)));
+        $this->assertTrue($e->contains(new Point(2,3)));
+        $this->assertTrue($e->contains(new Point(4,5)));
+    }
+    
+    public function testScale()
+    {
+        $e = new Ellipse(8,2, new Point(2,3));
+        $e->scale(0.5, 2);
+        
+        $this->assertPoint($e->getOrigin(), 2, 3);
+        
+        $this->assertFalse($e->contains(new Point(6,7)));
+        $this->assertTrue($e->contains(new Point(2,3)));
+        $this->assertTrue($e->contains(new Point(4,5)));
+    }
+    
+    public function testAsPolygon()
+    {
+        $e = new Ellipse(3, 3);
+        $poly = $e->asPolygon();
+        
+        foreach($poly->getPoints() as $pt) {
+            $this->assertTrue($e->contains($pt, true), 'Point not on Ellipse: '.$pt);
+        }
+    }
+    
 }
 
 

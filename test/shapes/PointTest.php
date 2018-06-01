@@ -201,6 +201,11 @@ final class PointTest extends TestCase
         
         $this->assertEquals(3, $p->getX(), $delta=0.00001);
         $this->assertEquals(4, $p->getY(), $delta=0.00001);
+        
+        $p = Point::fromPolar(5, atan(4/3), new Point(2, 3));
+        
+        $this->assertEquals(5, $p->getX(), $delta=0.00001);
+        $this->assertEquals(7, $p->getY(), $delta=0.00001);
     }
     
     public function testClone()
@@ -218,6 +223,8 @@ final class PointTest extends TestCase
         $this->assertEquals(3, $c->getX());
         $this->assertEquals(3, $c->getY());
     }
+    
+    
 }
 
 

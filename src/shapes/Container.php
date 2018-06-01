@@ -10,40 +10,29 @@ class Container extends Shape implements \Iterator
      * Collection of shapes
      * @var array
      */
-    private $shapes = array();
+    private $shapes = null;
     
-    /**
-     * Internal representation of the bounding box of this Shape. The bounding
-     * box $bb is *relative* to the origin of this container!
-     *  
-     * @var Rectangle
-     */
-    private $bb_min = null;
-    private $bb_max = null;
-    
-    public function __construct($items = [], Point $origin = null)
+    public function __construct($items = [])
     {
-        parent::__construct($origin);
-        
-        $this->bb_min = new Point();
-        $this->bb_max = new Point();
-        
+        $this->shapes = new ShapeList();
+
         $this->addShapes($items);
     }
         
     /**
      * Returns the shape of this Container
+     * @param bool $removeOverlap if false, all shapes are adjusted, such that no 2 shapes overlap.
      * @return Shape[]
      */
-    public function getShapes(): array
+    public function getShapes(bool $removeOverlap = false): array
     {
-        return $this->shapes;
+        return $this->shapes->flatten($removeOverlap);
     }
     
-    public function addShapes($shapes = []): Container 
+    public function addShapes($shapes = [], bool $nonOverlappingPartsOnly = false): Container 
     {
         foreach($shapes as $s) {
-            $this->addShape($s);
+            $this->addShape($s, $nonOverlappingPartsOnly);
         }
         
         return $this;
@@ -55,79 +44,12 @@ class Container extends Shape implements \Iterator
      */
     public function size(): int
     {
-        return count($this->shapes);
+        return $this->shapes->size();
     }
     
-    public function addShape(Shape $s): Container
+    public function addShape(Shape $s, bool $nonOverlappingPartsOnly = false): Container
     {
-        $this->shapes[] = $s;
-        $this->updateInternalBox($s);
-        
-        return $this;
-    }
-    
-    /**
-     * Adds Shape $s if it is not overlapping with any of the elements in the
-     * Container
-     * @param Shape $s
-     * @return Container
-     */
-    public function addNonOverlappingParts(Shape $s): Container
-    {
-        $toCheck = [$s];
-        
-        // echo 'I give: '.$s."\n";
-        
-        foreach($this->shapes as $item) {
-            $toAdd = array();
-            if (count($toCheck) == 0) { break; }
-            foreach($toCheck as $shape) {
-                 if($shape->isContainedIn($item)) {
-                     // remove shape!
-                     // echo 'I remove '.$shape."\n";
-                     $toCheck = array_diff($toCheck, [$shape]);
-                 } else if($item->intersects($shape)) {
-                     $toCheck = array_diff($toCheck, [$shape]);
-                     $splits = BinaryOperators::difference($shape, $item);
-                     foreach($splits as $sp) {
-                         // echo 'I got: '.$sp."\n";
-                         $toCheck[] = $sp;
-                     }
-                     
-                 } 
-            }
-        }
-        
-        // if (count($toCheck) == 0) { echo 'empty $toCheck'."\n"; }
-        
-        
-        foreach($toCheck as $shape) {
-            $this->addShape($shape);
-            // echo 'I added: '.$shape."\n";
-        }
-        
-        return $this;
-    }
-    
-    /**
-     * Removes a shape from the collection.
-     * 
-     * @param Shape $s
-     * @return Container $this
-     */
-    public function removeShape(Shape $s): Container
-    {
-        $index = -1;
-        foreach($this->shapes as $key => $value) {
-            if ($value == $s) {
-                $index = $key;
-                break;
-            }
-        }
-        if ($index >= 0) {
-            array_splice($this->shapes, $index, 1);
-        }
-        
+        $this->shapes->add($s, $nonOverlappingPartsOnly);
         return $this;
     }
     
@@ -136,7 +58,6 @@ class Container extends Shape implements \Iterator
         $this->bb = new Rectangle();
         foreach($this->getShapes() as $s) {
             $s->mirrorOnX();
-            $this->updateInternalBox($s);
         }
         
         return $this;
@@ -147,25 +68,11 @@ class Container extends Shape implements \Iterator
         $this->bb = new Rectangle();
         foreach($this->getShapes() as $s) {
             $s->mirrorOnY();
-            $this->updateInternalBox($s);
         }
         
         return $this;
     }
 
-    /**
-     * This function updates the bounding box with the bounding box of the Shape
-     * added.
-     *
-     * @param Shape $s
-     */
-    private function updateInternalBox(Shape $s)
-    {
-        $r = $s->getBoundingBox();
-        $this->bb_min->min($r->getOrigin());
-        $this->bb_max->max($r->getTop());
-    }
-    
     /**
      * Returns the bounding box of this Shape
      * 
@@ -176,7 +83,23 @@ class Container extends Shape implements \Iterator
     {
        // As $bb keeps the internal bounding box, relative to our own origin,
        // we need to translate the bounding box with our origin.
-       return Rectangle::fromPoints($this->bb_min, $this->bb_max);
+       $first = true;
+       $min = new Point();
+       $max = new Point();
+       
+       foreach($this->shapes as $s) {
+           $b = $s->getBoundingBox();
+           if ($first) {
+               $min = $b->getOrigin();
+               $max = $b->getTop();
+               $first = false;
+           } else {
+               $min->min($b->getOrigin());
+               $max->max($b->getTop());
+           }
+       }
+       
+       return Rectangle::fromPoints($min, $max);
     }
     
     /**
@@ -184,13 +107,13 @@ class Container extends Shape implements \Iterator
      * 
      * @return Shape[]
      */
-    public function flatten(): array
+    public function flatten(bool $removeOverlap = false): array
     {
         $list = array();
         
-        foreach($this->getShapes() as $shape) {
+        foreach($this->getShapes($removeOverlap) as $shape) {
             if ($shape instanceof Container) {
-                $list = array_merge($list, $shape->flatten());
+                $list = array_merge($list, $shape->flatten($removeOverlap));
             } else {
                 $list[] = $shape->clone();
             }
@@ -207,7 +130,7 @@ class Container extends Shape implements \Iterator
             $cc[] = $s->flip();
         }
         
-        return new Container($cc, $this->getOrigin()->flip());
+        return new Container($cc);
     }
     
     public function clone(): Shape
@@ -217,12 +140,56 @@ class Container extends Shape implements \Iterator
             $cc[] = $s->clone();
         }
         
-        return new Container($cc, $this->getOrigin());
+        return new Container($cc);
     }
     
-    // -------------------------------------------------------------------------
-    // Functions for the iterator over the internal Shapes
-    private $it_counter = 0;
+    public function move(float $x = 0, float $y = 0): Shape
+    {
+        foreach($this->getShapes() as $s) {
+            $s->move($x, $y);
+        }
+        return $this;
+    }
+    
+    public function getOrigin(): Point
+    {
+        return new Point();
+    }
+    
+    public function setOrigin(Point $orig): Shape
+    {
+        return $this;
+    }
+    
+    public function scale(float $x = 1, float $y = 1): Shape
+    {
+        foreach($this->getShapes() as $s) {
+            // scale the element
+            $s->scale($x, $y);
+            // also scale the origin!
+            $orig = $s->getOrigin();
+            $s->setOrigin( $orig->multiplyXY($x, $y));
+        }
+        
+        return $this;
+    }
+    
+    public function contains(Point $pt): bool
+    {
+        foreach($this->shapes as $shape) {
+            if ($shape->contains($pt)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    public function asPolygon(): Polygon
+    {
+        return $this->getBoundingBox();
+    }
+    
     
     /**
      * Increases the counter for the Iterator
@@ -232,7 +199,7 @@ class Container extends Shape implements \Iterator
      */
     public function next()
     {
-        $this->it_counter += 1;
+        $this->shapes->next();
     }
 
     /**
@@ -243,7 +210,7 @@ class Container extends Shape implements \Iterator
      */
     public function valid()
     {
-        return isset($this->shapes[$this->it_counter]);
+        return $this->shapes->valid();
     }
 
     /**
@@ -255,7 +222,7 @@ class Container extends Shape implements \Iterator
      */
     public function current()
     {
-        return $this->shapes[$this->it_counter];
+        return $this->shapes->current();
     }
 
     /**
@@ -266,7 +233,7 @@ class Container extends Shape implements \Iterator
      */
     public function rewind()
     {
-        $this->it_counter = 0;
+        $this->shapes->rewind();
     }
 
 
@@ -277,8 +244,7 @@ class Container extends Shape implements \Iterator
      */
     public function key()
     {
-        return $this->it_counter;
+        return $this->shapes->key();
     }
-    
-    
+            
 }

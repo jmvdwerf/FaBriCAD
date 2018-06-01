@@ -76,13 +76,6 @@ final class PolygonTest extends AbstractShapeTest
         $this->assertEquals(2, $r->getOrigin()->getY());
     }
     
-    public function testMoveOrigin()
-    {
-        $r = $this->createRhombus();
-        $r->setOrigin(new Point(-4,20));
-        $this->assertBoundingBox($r, -4, 18, 4,4);
-    }
-    
     public function testPointOrder()
     {
         $r = $this->createRhombus();
@@ -92,10 +85,31 @@ final class PolygonTest extends AbstractShapeTest
         $this->assertPoint($points[1], 4,4);
         $this->assertPoint($points[2], 6,2);
         $this->assertPoint($points[3], 4,0);
+        
+        $r->setOrigin(new Point(3,3));
+        $this->assertPoint($r->getPoint(0), 3, 3);
+    }
+    
+    public function testToString()
+    {
+        $r = $this->createRhombus();
+        
+        $s = $r->__tostring();
+        
+        $this->assertEquals("new Polygon([\n\t2, 2,\n\t4, 4,\n\t6, 2,\n\t4, 0,\n]);\n", $s);
     }
     
     public function testGetLines()
     {
+        $p = new Polygon();
+        $lines = $p->getLines();
+        $this->assertEmpty($lines);
+        
+        $p = new Polygon([new Point(10, 10), new Point(20, 20)]);
+        $lines = $p->getLines();
+        $this->assertCount(1, $lines);
+        $this->assertLine($lines[0], 10, 10, 20, 20);
+        
         $r = $this->createRhombus();
         $lines = $r->getLines();
         $this->assertCount(4, $lines);
@@ -223,7 +237,12 @@ final class PolygonTest extends AbstractShapeTest
         
     }
     
-    
+    public function testEmptyExpand()
+    {
+        $p = new Polygon();
+        $pp = $p->expand();
+        $this->assertEquals(0, $pp->size());
+    }
     
     public function testSimplify()
     {
@@ -258,6 +277,53 @@ final class PolygonTest extends AbstractShapeTest
         $this->assertBoundingBox($c, 1, 1, 3, 3);
         $this->assertBoundingBox($q, 1, 1, 3, 2);
     }
+    
+    public function testFlip()
+    {
+        $flipped = $this->createRhombus()->flip();
+        
+        $this->assertBoundingBox($flipped, 0, 2, 4, 4);
+    }
+    
+    public function testMove()
+    {
+        $r = $this->createRhombus();
+        $r->move(2, 3);
+        
+        $this->assertBoundingBox($r, 4, 3, 4,4);
+        
+        $r = $this->createStar();
+        $r->move(2, 3);
+        
+        $this->assertBoundingBox($r, 2, 0, 6, 6);
+        
+    }
+    
+    public function testCentroid()
+    {
+        $p = new Polygon();
+        $c = $p->getCentroid();
+        $this->assertPoint($c, 0, 0);
+        
+        $r = $this->createRhombus();
+        $c = $r->getCentroid();
+        
+        $this->assertPoint($c, 4, 2);
+    }
+    
+    public function testScale()
+    {
+        $r = $this->createRhombus();
+        $centroid = $r->getCentroid();
+        $r->scale(2, 3);
+        
+        $this->assertPoint($r->getPoint(0),  4, 6);
+        $this->assertPoint($r->getPoint(1),  8, 12);
+        $this->assertPoint($r->getPoint(2), 12, 6);
+        $this->assertPoint($r->getPoint(3),  8, 0);
+    }
+    
+   
     
     
     protected function createRhombus(): Polygon

@@ -44,8 +44,21 @@ use jmw\fabricad\shapes\Shape;
 //$r = new Rectangle(100,100, new Point(0,100));
 //$l = new Line(new Point(50,0), new Point(50,250));
 
+$a = new Polygon([
+    new Point(1135, 1790 ),
+    new Point(1135, 2220 ),
+    new Point(1565, 2220 ),
+    new Point(1565, 1790 )
+]);
 
 $r = array();
+
+for($i = 0 ; $i < 3 ; $i++) {
+    for ($j = 0 ; $j < 3 ; $j++) {
+        $r[] = new Rectangle(130, 130, new Point(1135+($i * 150) , 1790 + ($j * 150) ) );
+    }
+}
+
 /*
 $r['blue'] = new Rectangle(100,200, new Point(100, 100));
 $r['red'] = new Rectangle(100,200, new Point(700, 100));
@@ -53,68 +66,27 @@ $r['gray'] = new Rectangle(100,200, new Point(300, 200));
 $r['green'] = new Rectangle(100,200, new Point(350, 300));
 */
 
-$r['blue'] = new Rectangle(1000, 500, new Point(100, 200));
-$r['yellow'] = new Rectangle(50, 1000, new Point(0, 0));
-$r['red']  = new Rectangle(100, 1000, new Point(200, 100));
-$r['green'] = new Rectangle(250, 250, new Point(150, 150));
-$r['brown'] = new Rectangle(50, 1000, new Point(1200, 0));
+$v1 = new SVGVisualizer();
+$v1->addShape($a, "blue");
+foreach($r as $shape) {
+    $v1->addShape($shape, "red");
+}
+echo $v1->render();
 
-$list = new ShapeList();
-$cont = new Container();
+echo "<hr />";
+
+//$list = new Container();
+//$list->addShape($kapel, true);
+//$list->addShape($wall, true);
+$items = [];
+
+$items = BinaryOperators::difference($a, $r[2]);
 
 $v1 = new SVGVisualizer();
-foreach($r as $c => $s) {
-    $v1->addShape($s, $c);
-    $list->add($s, true);
-    $cont->addShape($s, true);
+foreach($items as $shape) {
+    $v1->addShape($shape, "red");
 }
-
 echo $v1->render();
-echo "<hr />";
-
-$v2 = new SVGVisualizer();
-$i = 0;
-foreach($list as $s) {
-    $v2->addShape($s, $colors[$i++]);
-}
-
-echo $v2->render();
-echo "<hr />";
-
-$v2 = new SVGVisualizer();
-$i = 0;
-foreach($cont->getShapes() as $s) {
-    $v2->addShape($s, $colors[$i++]);
-}
-
-echo $v2->render();
-echo "<hr />";
 
 
-$v3 = new SVGVisualizer();
-$i = 0;
-foreach($list->flatten(true) as $s) {
-    $v3->addShape($s, $colors[$i++]);
-}
-
-echo $v3->render();
-echo "<hr />";
-
-/*
-// $items = Shape::removeOverlap($r);
-$items = [];
-foreach($r as $c => $s) {
-    $p = Shape::removeOverlapFrom($s, $items);
-    $items = array_merge($items, $p);
-    
-    $v = new SVGVisualizer();
-    $i = 0;   
-    foreach($items as $s) {
-        $v->addShape($s, $colors[$i++]);
-    }
-    echo $v->render();
-    echo "<hr />";
-}
-
-*/
 ?>

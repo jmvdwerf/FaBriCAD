@@ -3,41 +3,13 @@ namespace jmw\fabricad\shapes;
 
 abstract class Shape
 {
-    protected $origin = null;
-    
-    public function __construct(Point $origin = null)
-    {
-        if (empty($origin)) $origin = new Point(0,0);
-        $this->origin = $origin;
-    }
-    
-    /**
-     * Sets the origin of the shape
-     * 
-     * @param Point $orig
-     * @return Shape
-     */
-    public function setOrigin(Point $orig): Shape
-    {
-        $this->setOriginXY($orig->getX(), $orig->getY());
-        
-        return $this;
-    }
-    
-    public function setOriginXY(float $x, float $y)
-    {
-        $this->origin->setX($x);
-        $this->origin->setY($y);
-    }
-    
     /**
      * Returns the origin of this shape
      * @return Point
      */
-    public function getOrigin(): Point
-    {
-        return Point::copyFrom($this->origin);
-    }
+    public abstract function getOrigin(): Point;
+    
+    public abstract function setOrigin(Point $pt): Shape;
     
     /**
      * Returns true if the shape $s intersects with this shape. 
@@ -66,10 +38,7 @@ abstract class Shape
         return $s->contains($bb->getOrigin()) && $s->contains($bb->getTop());
     }
     
-    public function asPolygon(): Polygon
-    {
-        return $this->getBoundingBox();
-    }
+    public abstract function asPolygon(): Polygon;
     
     
     /**
@@ -81,14 +50,11 @@ abstract class Shape
     public abstract function mirrorOnX(): Shape;
     public abstract function mirrorOnY(): Shape;
     
-    public function contains(Point $pt): bool
-    {
-        return $this->getBoundingBox()->contains($pt);
-    }
+    public abstract function contains(Point $pt): bool;
     
     public function __tostring()
     {
-        $str = __CLASS__;
+        $str = get_class($this);
         return $str;
     }
     
@@ -96,4 +62,60 @@ abstract class Shape
     
     public abstract function clone(): Shape;
     
+    // -------------------------------------------------------------------------
+    // Operations on a shape
+        
+    public abstract function scale(float $x = 1, float $y = 1): Shape;
+    
+    public abstract function move(float $x = 0, float $y = 0): Shape;
+    
+    
+    public static function removeOverlap($shapes = array()):  array
+    {
+        $q = [];
+        foreach($shapes as $s) {
+            $q[] = $s;
+        }
+        
+        $result = array();
+        
+        while(count($q) > 0) {
+            $first = array_shift($q);
+            $result[] = $first;
+            
+            $newQ = array();
+            while(count($q) > 0) {
+                $second = array_shift($q);
+                if ($second->intersects($first)) {
+
+                    $items = BinaryOperators::difference($second, $first);
+
+                    $newQ = array_merge($newQ, $items);
+                } else {
+                    $newQ[] = $second;
+                }
+            }
+            $q = $newQ;
+        }
+                
+        return $result;
+    }
+    
+    public static function removeOverlapFrom(Shape $s, $items = []): array
+    {
+        $toCheck = [$s];
+        foreach($items as $i) {
+            $toAdd = [];
+            foreach($toCheck as $shape) {
+                if ($i->intersects($shape)) {
+                    $toAdd = array_merge($toAdd, BinaryOperators::difference($shape, $i));
+                } else {
+                    $toAdd[] = $shape;
+                }
+            }
+            $toCheck = $toAdd;
+        }
+        
+        return $toCheck;
+    }
 }

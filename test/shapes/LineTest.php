@@ -251,8 +251,7 @@ final class LineTest extends AbstractShapeTest
         $x = 1;
         $y = 0;
         $ep = new Point($x,$y);
-        $l = new Line();
-        $l->setEndPoint($ep);
+        $l = new Line(new Point(0,0), $ep);
         
         $angle = $l->getAngle();
         
@@ -264,8 +263,7 @@ final class LineTest extends AbstractShapeTest
         $x = 1;
         $y = 1;
         $ep = new Point($x,$y);
-        $l = new Line();
-        $l->setEndPoint($ep);
+        $l = new Line(new Point(0,0), $ep);
         
         $angle = $l->getAngle();
         
@@ -277,8 +275,7 @@ final class LineTest extends AbstractShapeTest
         $x = 0;
         $y = 1;
         $ep = new Point($x,$y);
-        $l = new Line();
-        $l->setEndPoint($ep);
+        $l = new Line(new Point(0,0), $ep);
         
         $angle = $l->getAngle();
         
@@ -290,8 +287,7 @@ final class LineTest extends AbstractShapeTest
         $x = -1;
         $y = 1;
         $ep = new Point($x,$y);
-        $l = new Line();
-        $l->setEndPoint($ep);
+        $l = new Line(new Point(0,0), $ep);
         
         $angle = $l->getAngle();
         
@@ -303,8 +299,7 @@ final class LineTest extends AbstractShapeTest
         $x = -1;
         $y = 0;
         $ep = new Point($x,$y);
-        $l = new Line();
-        $l->setEndPoint($ep);
+        $l = new Line(new Point(0,0), $ep);
         
         $angle = $l->getAngle();
         
@@ -316,8 +311,7 @@ final class LineTest extends AbstractShapeTest
         $x = 1;
         $y = -1;
         $ep = new Point($x,$y);
-        $l = new Line();
-        $l->setEndPoint($ep);
+        $l = new Line(new Point(0,0), $ep);
         
         $angle = $l->getAngle();
         
@@ -329,8 +323,7 @@ final class LineTest extends AbstractShapeTest
         $x = 0;
         $y = -1;
         $ep = new Point($x,$y);
-        $l = new Line();
-        $l->setEndPoint($ep);
+        $l = new Line(new Point(0,0), $ep);
         
         $angle = $l->getAngle();
         
@@ -342,8 +335,7 @@ final class LineTest extends AbstractShapeTest
         $x = -1;
         $y = -1;
         $ep = new Point($x,$y);
-        $l = new Line();
-        $l->setEndPoint($ep);
+        $l = new Line(new Point(0,0), $ep);
         
         $angle = $l->getAngle();
         
@@ -512,6 +504,70 @@ final class LineTest extends AbstractShapeTest
         $this->assertInstanceOf(Line::class, $c);
         
         $this->assertFalse($l === $c);
+    }
+    
+    public function testFlip()
+    {
+        $x1 = rand();
+        $x2 = rand();
+        $y1 = rand();
+        $y2 = rand();
+        
+        $l = new Line(new Point($x1, $y1), new Point($x2, $y2));
+        
+        $flipped = $l->flip();
+        
+        $this->assertPoint($flipped->getOrigin(), $y1, $x1);
+        $this->assertPoint($flipped->getEndPoint(), $y2, $x2);
+    }
+    
+    public function testMove()
+    {
+        $x1 = rand();
+        $x2 = rand();
+        $y1 = rand();
+        $y2 = rand();
+        
+        $mx = rand();
+        $my = rand();
+        
+        $l = new Line(new Point($x1, $y1), new Point($x2, $y2));
+        $l->move($mx, $my);
+        
+        $this->assertPoint($l->getOrigin() , $x1 + $mx,  $y1 + $my);
+        $this->assertPoint($l->getEndPoint(), $x2 + $mx, $y2 + $my);
+    }
+    
+    public function testScale()
+    {
+        $x1 = rand();
+        $x2 = rand();
+        $y1 = rand();
+        $y2 = rand();
+        
+        $mx = rand();
+        $my = rand();
+        
+        $l = new Line(new Point($x1, $y1), new Point($x2, $y2));
+        $l->scale($mx, $my);
+        
+        $this->assertPoint($l->getOrigin() , $x1,  $y1);
+        $this->assertPoint($l->getEndPoint(), $x2 * $mx, $y2 * $my);
+    }
+    
+    public function testGiveFunction()
+    {
+        $l = new Line(new Point(1, 1), new Point(3,2));
+        
+        $this->assertEquals("LINE: Y = 0.5 * X + 0.5\n", $l->giveFunction());
+    }
+    
+    public function testAsPolygon()
+    {
+        $l = new Line(new Point(1, 1), new Point(3,2));
+        $p = $l->asPolygon();
+        $this->assertPoint($p->getPoint(0), 1, 1);
+        $this->assertPoint($p->getPoint(1), 3, 2);
     }
 }
 

@@ -79,6 +79,7 @@ class Brickwall extends BasicBuildingBlock
     
     public function render(): Shape
     {
+        
         $bb = $this->getShape()->getBoundingBox();
         
         if ($this->isHorizontal()) {
@@ -100,9 +101,7 @@ class Brickwall extends BasicBuildingBlock
         }
             
         $c = new Container();
-        //foreach($this->getShape()->asPolygon()->getLines() as $line) {
-        //    $c->addShape($line);
-        //}
+        
         if ($this->getShape() instanceof Polygon) {
             foreach($lines as $l) {
                 // echo "I have: ".$l."\n";
@@ -117,7 +116,8 @@ class Brickwall extends BasicBuildingBlock
                 }
             }
         }
-        
+        // add lines of the polygon
+        //$c->addShapes($this->getShape()->asPolygon()->getLines());
         $c->addShape($this->getShape());
         
         return $c;

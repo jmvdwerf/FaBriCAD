@@ -5,6 +5,8 @@ namespace jmw\fabricad\shapes;
 class Ellipse extends Shape
 {
     
+    protected $origin = null;
+    
     private $a = 0.0;
     private $b = 0.0;
     
@@ -15,10 +17,30 @@ class Ellipse extends Shape
     
     public function __construct(float $a = 0,float $b = 0, $origin = null)
     {
-        parent::__construct($origin);
+        $this->origin = new Point();
         
         $this->setXFactor($a);
         $this->setYFactor($b);
+        
+        if (!empty($origin)) {
+            $this->origin = $origin;
+        }
+    }
+    
+    public function setOrigin(Point $pt): Shape
+    {
+        return $this->setOriginXY($pt->getX(), $pt->getY());
+    }
+    
+    public function setOriginXY(float $x = 0, float $y = 0): Ellipse
+    {
+        $this->origin->setXY($x, $y);
+        return $this;
+    }
+    
+    public function getOrigin(): Point
+    {
+        return Point::copyFrom($this->origin);
     }
     
     public function getXFactor(): float
@@ -63,17 +85,38 @@ class Ellipse extends Shape
         return $this;
     }
 
-    public function contains(Point $pt): bool
+    public function contains(Point $pt, $onBorder = false): bool
     {
-        $xcomp = ($pt->getX() - $this->getOrigin()->getX());
-        $xcomp *= $xcomp;
-        $xcomp = $xcomp / ($this->getXFactor() * $this->getXFactor());
+        if ($onBorder) {
+            return abs($this->calculateFactor($pt) - 1) < 0.001;
+        } else {
+            return $this->calculateFactor($pt) < 1;
+        }
+    }
+    
+    public function calculateFactor(Point $pt): float
+    {
+        return $this->calculateFactorXY($pt->getX(), $pt->getY());        
+    }
+    
+    public function calculateFactorXY($x, $y): float
+    {
+        $xcomp = ($x - $this->getOrigin()->getX());
+        $x2 = $xcomp * $xcomp;
         
-        $ycomp = ($pt->getY() - $this->getOrigin()->getY());
-        $ycomp *= $ycomp;
-        $ycomp = $ycomp / ($this->getYFactor() * $this->getYFactor());
+        $factorX = $this->getXFactor();
+        $factorX = $factorX * $factorX;
         
-        return (($xcomp + $ycomp) < 1);
+        $xc = $x2 / $factorX;
+        
+        $ycomp = ($y - $this->getOrigin()->getY());
+        $ycomp = $ycomp * $ycomp;
+        $factorY = $this->getYFactor();
+        $factorY = $factorY * $factorY;
+        
+        $yc = $ycomp / $factorY;
+        
+        return $xc + $yc;
     }
     
     /**
@@ -117,5 +160,22 @@ class Ellipse extends Shape
     {
         return new Ellipse($this->getXFactor(), $this->getYFactor(), $this->getOrigin());
     }
+    
+    public function move(float $x = 0, float $y = 0): Shape
+    {
+        $this->origin->addXY($x, $y);
+        return $this;
+    }
+
+    public function scale(float $x = 1, float $y = 1): Shape
+    {
+        $this->setXFactor($this->getXFactor() * $x);
+        $this->setYFactor($this->getYFactor() * $y);
+        return $this;
+    }
+
+    
+    
+    
     
 }

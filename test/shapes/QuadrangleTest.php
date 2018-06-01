@@ -8,12 +8,6 @@ use jmw\fabricad\shapes\Point;
 
 final class QuadrangleTest extends AbstractShapeTest
 {
-    public function testSizeEmptiness()
-    {
-        $s = new Quadrangle();
-        $this->assertEquals(4, $s->size());
-    }
-    
     public function testBoundingBox()
     {
         $s = $this->createRhombus();
@@ -23,7 +17,7 @@ final class QuadrangleTest extends AbstractShapeTest
     
     public function testSetPoints()
     {
-        $s = new Quadrangle();
+        $s = new Quadrangle(new Point(), new Point(), new Point(), new Point());
         
         $s->setSouthEast(new Point(4,0));
         $this->assertPoint($s->getPoints()[3], 4, 0);
@@ -67,7 +61,18 @@ final class QuadrangleTest extends AbstractShapeTest
         
     }
     
-    private function createRhombus()
+    public function testFlip()
+    {
+        $flipped = $this->createRhombus()->flip();
+        
+        $this->assertPoint($flipped->getSouthWest(), 2, 2);
+        $this->assertPoint($flipped->getNorthWest(), 0, 4);
+        $this->assertPoint($flipped->getNorthEast(), 2, 6);
+        $this->assertPoint($flipped->getSouthEast(), 4, 4);
+        
+    }
+    
+    private function createRhombus(): Quadrangle
     {
         return new Quadrangle(
                 new Point(2,2),
@@ -76,4 +81,6 @@ final class QuadrangleTest extends AbstractShapeTest
                 new Point(4,0)
         );
     }
+    
+    
 }

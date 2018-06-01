@@ -200,9 +200,7 @@ class Blueprint implements \Iterator
             }
             
             foreach($items as $item) {
-                echo 'a';
-                $c->addNonOverlappingParts($item);
-                echo 'b';
+                $c->addShape($item, true);
                 //$c->addShape($item);
             }
         }
