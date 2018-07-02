@@ -1,0 +1,32 @@
+{
+  "name": "Dorpshuis",
+  "description": "Dorpshuis 1, naar voorbeeld van het voorbeeld op de Koestraat 6 in Oirschot. Dit wordt het hoekhuis in een rijtje van 3.",
+  "author": "J.M.E.M. van der Werf",
+  "version": "1.0",
+  "license": "MIT",
+  "blueprints": 
+  {
+    "binnen": 
+    {
+      "name": "Zijkant binnen",
+      "blocks": {       
+        "wall": {
+          "name": "wall",
+          "type": "cutout",
+          "shape": {
+            "type": "polygon",
+            "points": [
+              { "x": 0   , "y":   0 },
+              { "x": 0   , "y": 200 },
+              { "x": 110 , "y": 280 },
+              { "x": 220 , "y": 200 },
+              { "x": 220 , "y": 135 },
+              { "x": 320 , "y": 135 },
+              { "x": 320 , "y":   0 }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "name": "Dorpshuis",
+  "description": "Grondplan voor het huis",
+  "author": "J.M.E.M. van der Werf",
+  "version": "1.0",
+  "license": "MIT",
+  "blueprints": {
+    "oppervlak": {
+      "name": "Floor",
+      "blocks": {
+        "floor": {
+          "name": "wall",
+          "type": "BasicBuildingBlock",
+          "shape": {
+            "type": "polygon",
+            "points": [
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 275,
+                "y": 0
+              },
+              {
+                "x": 275,
+                "y": 285
+              },
+              {
+                "x": 180,
+                "y": 285
+              },
+              {
+                "x": 180,
+                "y": 185
+              },
+              {
+                "x": 0,
+                "y": 185
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
