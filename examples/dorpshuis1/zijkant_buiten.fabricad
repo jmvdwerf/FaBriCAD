@@ -1,18 +1,24 @@
 {
   "name": "Dorpshuis",
-  "description": "Dorpshuis 1, naar voorbeeld van het voorbeeld op de Koestraat 6 in Oirschot. Dit wordt het hoekhuis in een rijtje van 3.",
+  "description": "Hier komen nog 2 ramen op hoogte 160, gelijk dakkapelraam aan voorzijde",
   "author": "J.M.E.M. van der Werf",
   "version": "1.0",
   "license": "MIT",
   "blueprints":
   {
-    "binnen":
+    "buiten":
     {
-      "name": "Zijkant binnen",
+      "name": "Zijkant buiten",
       "blocks": {
         "wall": {
           "name": "wall",
-          "type": "cutout",
+          "type": "StaandVerband",
+          "config": {
+            "height": 4,
+            "width": 10,
+            "start": 0,
+            "actual": "StaandVerband"
+          },
           "shape": {
             "type": "polygon",
             "points": [
@@ -21,8 +27,7 @@
               { "x": 130 , "y": 280 },
               { "x": 260 , "y": 192 },
               { "x": 260 , "y": 135 },
-              { "x": 360 , "y": 135 },
-              { "x": 360 , "y":   0 }
+              { "x": 260 , "y":   0 }
             ]
           }
         }
