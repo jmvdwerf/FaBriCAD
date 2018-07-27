@@ -15,8 +15,8 @@
                     "name": "wall",
                     "type": "brickwall",
                     "config": {
-                        "height": 10,
-                        "width": 20,
+                        "height": 5,
+                        "width": 10,
                         "angle": 0
                     },
                     "shape": {
@@ -54,105 +54,20 @@
                             { "x": 40,  "y": 110 }
                         ]
                     }
-                }
-            }
-        },
-        "left": {
-            "name": "Left",
-            "blocks": {
-                "wall": {
-                    "name": "wall",
-                    "type": "brickwall",
-                    "config": {
-                        "height": 10,
-                        "width": 20,
-                        "angle": 0,
-                        "start": 1
-                    },
-                    "shape": {
-                      "type": "polygon",
-                      "points": [
-                         { "x":  0, "y":  0 },
-                         { "x": 80, "y":  0 },
-                         { "x": 80, "y": 125 },
-                         { "x":  0, "y": 150 }                      
-                      ]
-                    }
                 },
-                "window": {
-                    "name": "window",
-                    "type": "cutout",
-                    "shape": {
-                        "type": "rectangle",
-                        "width": 20,
-                        "height": 40,
-                        "origin": {
-                            "x": 30,
-                            "y": 60
-                        }
-                    }
-                }
-            }
-        },
-        "right": {
-            "name": "Right",
-            "blocks": {
-                "wall": {
-                    "name": "wall",
-                    "type": "brickwall",
+                "latij": {
+                    "name": "Latij boven raam",
+                    "type": "latij",
                     "config": {
+                        "width": 60,
                         "height": 10,
-                        "width": 20,
-                        "angle": 0,
-                        "start": 1
+                        "stones": 5,
+                        "brickheight": 10,
+                        "brickwidth": 5
                     },
                     "shape": {
-                      "type": "polygon",
-                      "points": [
-                         { "x":  0, "y":  0 },
-                         { "x": 80, "y":  0 },
-                         { "x": 80, "y": 150 },
-                         { "x":  0, "y": 125 }                      
-                      ]
-                    }
-                },
-                "window": {
-                    "name": "window",
-                    "type": "cutout",
-                    "config": {
-                        "style": "fill:red;stroke:black;stroke-width:1"
-                    },
-                    "shape": {
-                        "type": "rectangle",
-                        "width": 20,
-                        "height": 40,
-                        "origin": {
-                            "x": 30,
-                            "y": 60
-                        }
-                    }
-                }
-            }
-        },
-        "back": {
-            "name": "Back",
-            "blocks": {
-                "wall": {
-                    "name": "wall",
-                    "type": "brickwall",
-                    "config": {
-                        "height": 10,
-                        "width": 20,
-                        "vertical": 1
-                    },
-                    "shape": {
-                      "type": "polygon",
-                      "points": [
-                         { "x":   0, "y":  0 },
-                         { "x": 200, "y":  0 },
-                         { "x": 200, "y": 150 },
-                         { "x":   0, "y": 150 }                      
-                      ]
+                        "type": "singleton",
+                        "point": { "x": 40, "y": 110 }
                     }
                 }
             }

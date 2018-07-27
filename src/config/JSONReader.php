@@ -7,6 +7,7 @@ use jmw\fabricad\shapes\Ellipse;
 use jmw\fabricad\shapes\Point;
 use jmw\fabricad\shapes\Polygon;
 use jmw\fabricad\shapes\Rectangle;
+use jmw\fabricad\shapes\Singleton;
 
 class JSONReader
 {
@@ -118,6 +119,9 @@ class JSONReader
             foreach($arr['shape']['points'] as $pt) {
                 $shape->addPoint(new Point($pt['x'], $pt['y']));
             }
+        } elseif ($shape instanceof Singleton) {
+            $point = new Point($arr['shape']['point']['x'], $arr['shape']['point']['y']);
+            $shape->setOrigin($point);
         }
         
         $b->setShape($shape);

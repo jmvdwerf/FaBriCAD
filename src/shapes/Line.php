@@ -80,7 +80,7 @@ class Line extends Shape
         return new Point($x + $this->getOrigin()->getX(), $y + $this->getOrigin()->getY());
     }
     
-    public function getY($x): float 
+    public function calculateY($x): float 
     {
         $a = tan($this->getAngle());
         $b = $this->getConstant();
@@ -88,9 +88,21 @@ class Line extends Shape
         return $a * $x + $b;
     }
     
+    public function calculateX($y): float
+    {
+        $a = tan($this->getAngle());
+        $b = $this->getConstant();
+        
+        if ($a == 0) { 
+            return $this->getOrigin()->getX(); 
+        }
+        
+        return ($y - $b) / $a;
+    }
+    
     public function getPoint($x): Point
     {
-        return new Point($x, $this->getY($x));
+        return new Point($x, $this->calculateY($x));
     }
     
     public function mirrorOnX(): Shape
@@ -125,7 +137,7 @@ class Line extends Shape
                    && ($pt->getY() >= $this->getBoundingBox()->getOrigin()->getY());
         }
         
-        $y = $this->getY($pt->getX());
+        $y = $this->calculateY($pt->getX());
         return 
             (abs($y-$pt->getY()) < 0.001)
             && ($pt->getX() <= $this->getBoundingBox()->getTop()->getX())
@@ -151,10 +163,10 @@ class Line extends Shape
         
         if ($this->isPerpendicular()) {
             $x = $this->getOrigin()->getX();
-            $y = $s->getY($this->getOrigin()->getX()); 
+            $y = $s->calculateY($this->getOrigin()->getX()); 
         } elseif ($s->isPerpendicular()) {
             $x = $s->getOrigin()->getX();
-            $y = $this->getY($x);
+            $y = $this->calculateY($x);
         } else {
             $a = tan($this->getAngle());
             $b = $this->getConstant();
