@@ -10,10 +10,11 @@
             "blocks": {
                 "wall": {
                     "name": "wall",
-                    "type": "Cutout",
+                    "type": "StaandVerband",
                     "config": {
-                        "height": 5,
+                        "height": 4,
                         "width": 10,
+			"start": 1,
                         "actual": "StaandVerband"
                     },
                     "shape": {
@@ -219,20 +220,17 @@
                 },
                 "deurlatij": {
                     "name": "Deurlatij",
-                    "type": "brickwall",
+                    "type": "latij",
                     "config": {
-                        "height": 5,
-                        "width": 10,
-                        "vertical": 1
+                        "width": 55,
+                        "height": 15,
+                        "stones": 6,
+                        "brickheight": 10,
+                        "brickwidth": 5
                     },
                     "shape": {
-                        "type": "polygon",
-                        "points": [
-                            { "x": 170, "y": 130},
-                            { "x": 165, "y": 145},
-                            { "x": 230, "y": 145},
-                            { "x": 225, "y": 130}
-                        ]
+                        "type": "singleton",
+                        "point": { "x": 170, "y": 130 }
                     }
                 },
                 "deur": {
@@ -302,20 +300,17 @@
                 },
                 "raamlatij": {
                     "name": "Raamlatij",
-                    "type": "brickwall",
+                    "type": "latij",
                     "config": {
-                        "height": 5,
-                        "width": 10,
-                        "vertical": 1
+                        "width": 65,
+                        "height": 15,
+                        "stones": 8,
+                        "brickheight": 10,
+                        "brickwidth": 5
                     },
                     "shape": {
-                        "type": "polygon",
-                        "points": [
-                            { "x": 55, "y": 130},
-                            { "x": 50, "y": 145},
-                            { "x": 125, "y": 145},
-                            { "x": 120, "y": 130}
-                        ]
+                        "type": "singleton",
+                        "point": { "x": 55, "y": 130 }
                     }
                 },
                 "raamboven1": {
@@ -451,107 +446,6 @@
                             { "x":  55, "y": 45},
                             { "x": 120, "y": 45},
                             { "x": 120, "y": 35}
-                        ]
-                    }
-                }
-            }
-        },
-        "zijkant1": {
-             "name": "Zijkant binnen",
-             "blocks": {       
-                "wall": {
-                    "name": "wall",
-                    "type": "cutout",
-                    "shape": {
-                        "type": "polygon",
-                        "points": [
-                            { "x": 0   , "y":   0 },
-                            { "x": 0   , "y": 200 },
-                            { "x": 92.5, "y": 270 },
-                            { "x": 185 , "y": 200 },
-                            { "x": 185 , "y": 135 },
-                            { "x": 285 , "y": 135 },
-                            { "x": 285 , "y":   0 }
-                        ]
-                    }
-                }
-             }
-        },
-        "bergingachterkant": {
-            "name": "Achterkant van de berging",
-            "blocks": {
-                "wall": {
-                    "name": "Muur",
-                    "type": "StaandVerband",
-                    "config": {
-                        "height": 5,
-                        "width": 10,
-                        "start":  0,
-                        "actual": "StaandVerband"
-                    },
-                    "shape": {
-                        "type": "rectangle",
-                        "width": 95,
-                        "height": 135,
-                        "origin": {
-                            "x": 0,
-                            "y": 0
-                        }
-                    }
-                },
-                "raam": {
-                    "name": "klein raam badkamer",
-                    "type": "cutout",
-                    "shape": {
-                        "type": "rectangle",
-                        "width": 40,
-                        "height": 25,
-                        "origin": {
-                            "x": 20,
-                            "y": 70
-                        }
-                    }
-                },
-                "raamlatij": {
-                    "name": "Latij boven raam",
-                    "type": "Brickwall",
-                    "config": {
-                        "width": 5,
-                        "height": 10,
-                        "start": 1
-                    },
-                    "shape": {
-                        "type": "rectangle",
-                        "width": 40,
-                        "height": 10,
-                        "origin": {
-                            "x": 20,
-                            "y": 95
-                        }
-                    }
-                }
-            }
-        },
-        "zijkant2": {
-             "name": "Zijkant gemetseld",
-             "blocks": {       
-                "wall": {
-                    "name": "wall",
-                    "type": "cutout",
-                    "config": {
-                        "height": 5,
-                        "width": 10,
-                        "start": 1,
-                        "actual": "StaandVerband"
-                    },
-                    "shape": {
-                        "type": "polygon",
-                        "points": [
-                            { "x": 0, "y": 0 },
-                            { "x": 0, "y": 200 },
-                            { "x": 92.5, "y": 270 },
-                            { "x": 185, "y": 200 },
-                            { "x": 185, "y": 0 }
                         ]
                     }
                 }

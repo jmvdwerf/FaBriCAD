@@ -1,0 +1,117 @@
+{
+  "name": "Dorpshuis",
+  "description": "Grondplan voor het huis",
+  "author": "J.M.E.M. van der Werf",
+  "version": "1.0",
+  "license": "MIT",
+  "blueprints": {
+    "oppervlak": {
+      "name": "Floor",
+      "blocks": {
+        "floor": {
+          "name": "wall",
+          "type": "BasicBuildingBlock",
+          "shape": {
+            "type": "polygon",
+            "points": [
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 275,
+                "y": 0
+              },
+              {
+                "x": 275,
+                "y": 360
+              },
+              {
+                "x": 170,
+                "y": 360
+              },
+              {
+                "x": 170,
+                "y": 260
+              },
+              {
+                "x": 0,
+                "y": 260
+              }
+            ]
+          }
+        },
+        "woonkamer": {
+          "name": "woonkamer",
+          "type": "BasicBuildingBlock",
+          "shape": {
+            "type": "rectangle",
+            "height": 120,
+            "width": 157,
+            "origin": { "x": 8, "y": 8}
+          }
+        },
+        "eetkamer": {
+          "name": "eetkamer",
+          "type": "BasicBuildingBlock",
+          "shape": {
+            "type": "rectangle",
+            "height": 119,
+            "width": 157,
+            "origin": { "x": 8, "y":133}
+          }
+        },
+        "hal": {
+          "name": "hal",
+          "type": "BasicBuildingBlock",
+          "shape": {
+            "type": "rectangle",
+            "height": 120,
+            "width": 97,
+            "origin": { "x": 170, "y": 8}
+          }
+        },
+        "keuken": {
+          "name": "keuken",
+          "type": "BasicBuildingBlock",
+          "shape": {
+            "type": "rectangle",
+            "height": 119,
+            "width": 97,
+            "origin": { "x": 170, "y":133}
+          }
+        },
+        "bijkeuken": {
+          "name": "bijkeuken",
+          "type": "BasicBuildingBlock",
+          "shape": {
+            "type": "rectangle",
+            "height": 45,
+            "width":  40,
+            "origin": { "x": 178, "y": 260 }
+          }
+        },
+        "toilet": {
+          "name": "toilet",
+          "type": "BasicBuildingBlock",
+          "shape": {
+            "type": "rectangle",
+            "height": 42,
+            "width": 40,
+            "origin": { "x": 178, "y": 310}
+          }
+        },
+        "badkamer": {
+          "name": "badkamer",
+          "type": "BasicBuildingBlock",
+          "shape": {
+            "type": "rectangle",
+            "height": 92,
+            "width": 44,
+            "origin": { "x": 223, "y": 260}
+          }
+        }
+      }
+    }
+  }
+}
