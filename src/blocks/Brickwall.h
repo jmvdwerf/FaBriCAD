@@ -22,6 +22,9 @@ namespace fabricad::blocks
     Brickwall* setStartRow(int start);
 
     std::string toString(std::string indent) override;
+  protected:
+    void render() override;
+
   private:
     float brick_height_;
     float brick_width_;

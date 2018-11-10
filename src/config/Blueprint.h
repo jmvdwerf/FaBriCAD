@@ -28,12 +28,21 @@ namespace fabricad::config
     size_t getSize();
     Blueprint* addBlock(BasicBuildingBlock* block);
 
+    layer getLayer(size_t l);
+    std::vector<layer> getLayers();
+
+
   private:
+    void render();
+
     std::string name_;
     std::string description_;
     std::string id_;
 
     std::vector<BasicBuildingBlock*> blocks_;
+
+    std::vector<layer> layers_;
+
   };
 
 

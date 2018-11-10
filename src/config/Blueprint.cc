@@ -1,4 +1,6 @@
 
+#include <iostream>
+
 #include "Blueprint.h"
 
 namespace fabricad::config
@@ -67,6 +69,67 @@ namespace fabricad::config
   {
     blocks_.push_back(block);
     return this;
+  }
+
+
+  layer Blueprint::getLayer(size_t l)
+  {
+    if (layers_.empty()) {
+      render();
+    }
+
+    // check bounds
+    if (l < 0 || l >= layers_.size() ) {
+      layer e;
+      return e;
+    }
+
+    return layers_.at(l);
+  }
+
+  std::vector<layer> Blueprint::getLayers()
+  {
+    if (layers_.empty()) {
+      render();
+    }
+    return layers_;
+  }
+
+  void Blueprint::render()
+  {
+    layers_.clear();
+
+    layer shapes;
+    shapes.id = "shapes";
+    shapes.name = "Shapes";
+    layers_.push_back(shapes);
+
+    layer bricks;
+    bricks.id = "bricks";
+    bricks.name = "Brickwork";
+    layers_.push_back(bricks);
+
+    layer cutout;
+    cutout.id = "cutout";
+    cutout.name = "Cutouts";
+    layers_.push_back(cutout);
+
+    layer other;
+    other.id = "other";
+    other.name = "Other shapes";
+    layers_.push_back(other);
+
+    // Walk the blocks, and add all shapes
+    // If an old shape is contained in a new shape, it should be removed
+    for(size_t i = 0 ; i < blocks_.size() ; i++)
+    {
+      for(size_t l = 0 ; l < 4 ; l++) {
+        layer items = blocks_[i]->getLayer(l);
+        if (!items.elements.empty()) {
+          layers_[l].elements.insert(layers_[l].elements.end(), items.elements.begin(), items.elements.end());
+        }
+      }
+    }
   }
 
   Blueprint::~Blueprint()

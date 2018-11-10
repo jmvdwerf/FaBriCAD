@@ -66,4 +66,54 @@ namespace fabricad::blocks
     return s;
   }
 
+  void Brickwall::render()
+  {
+    // Create initial layer with shape
+    BasicBuildingBlock::render();
+    // Now, create second layer with bricks
+
+    box bb;
+    bg::envelope(this->shape_, bb);
+
+
+    float minX = bb.min_corner().get<0>();
+    float minY = bb.min_corner().get<1>();
+    float maxX = bb.max_corner().get<0>();
+    float maxY = bb.max_corner().get<1>();
+
+
+    int counter = getStartRow();
+    float prevY = minY;
+    // Generate horizontal lines
+    for(float i = minY + getBrickHeight() ; i < maxY ; i += getBrickHeight() )
+    {
+      point p1 = point(minX, i);
+      point p2 = point(maxX, i);
+
+      // calculate the intersection with the shape, and add the resulting
+      // lines to layer 1
+      std::vector<linestring> lines;
+      bg::intersection(linestring({p1, p2}), this->shape_, lines);
+
+      // calculate the vertical lines
+      //start = $startX + (1-($counter % 2)/2) * $this->getBrickWidth();
+      float start = minX + (1-((float) (counter % 2))/2) * getBrickWidth();
+      for(float j = start ; j < maxX ; j += getBrickWidth() )
+      {
+        point py1 = point(j, prevY);
+        point py2 = point(j, i);
+        bg::intersection(linestring({py1, py2}), this->shape_, lines);
+      }
+
+      this->layers_[1].elements.insert(
+            this->layers_[1].elements.end(),
+            lines.begin(),
+            lines.end()
+      );
+      prevY = i;
+      counter++;
+    }
+
+  }
+
 }

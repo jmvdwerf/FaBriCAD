@@ -55,7 +55,8 @@ namespace fabricad::blocks {
      * If render() has not yet been called, it first does so.
      *
      */
-    std::vector<geometry> getLayer(size_t layer);
+    layer getLayer(size_t l);
+    std::vector<layer> getLayers();
 
   protected:
     /**
@@ -63,14 +64,13 @@ namespace fabricad::blocks {
      * the layers
      */
     virtual void render();
-    std::vector<std::vector<geometry>> layers_;
+    std::vector<layer> layers_;
+    geometry shape_;
 
   private:
     std::string id_;
     std::string name_;
     std::string type_;
-
-    geometry shape_;
   };
 
 }

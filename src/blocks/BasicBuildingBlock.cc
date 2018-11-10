@@ -69,18 +69,28 @@ namespace fabricad::blocks {
     return this;
   }
 
-  std::vector<geometry> BasicBuildingBlock::getLayer(size_t layer)
+  layer BasicBuildingBlock::getLayer(size_t l)
   {
     if (layers_.empty()) {
       render();
     }
 
     // check bounds
-    if (layer < 0 || layer >= layers_.size() ) {
-      return {};
+    if (l < 0 || l >= layers_.size() ) {
+      layer e;
+      return e;
     }
 
-    return layers_.at(layer);
+    return layers_.at(l);
+  }
+
+  std::vector<layer> BasicBuildingBlock::getLayers()
+  {
+    if (layers_.empty()) {
+      render();
+    }
+
+    return layers_;
   }
 
   /**
@@ -90,9 +100,27 @@ namespace fabricad::blocks {
   void BasicBuildingBlock::render()
   {
     layers_.clear();
-    std::vector<geometry> layer;
-    layer.push_back(shape_);
-    layers_.push_back(layer);
+    layer l;
+    l.elements.push_back(shape_);
+    l.id = getId();
+    l.name = getName();
+    layers_.push_back(l);
+
+    layer b;
+    b.id = getId() + "_bricks";
+    b.name = getName() + ": Bricks";
+    layers_.push_back(b);
+
+    layer c;
+    c.id = getId() + "_cutouts";
+    c.name = getName() + ": Cut outs";
+    layers_.push_back(c);
+
+    layer d;
+    d.id = getId() + "_other";
+    d.name = getName() + ": Other elements";
+    layers_.push_back(d);
+
   }
 
 }

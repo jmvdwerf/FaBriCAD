@@ -11,6 +11,8 @@
 #include <boost/geometry/geometries/multi_linestring.hpp>
 
 #include <iostream>
+#include <vector>
+#include <string>
 
 namespace bg = boost::geometry;
 
@@ -20,8 +22,15 @@ typedef bg::model::polygon<point, false, false> polygon;
 typedef bg::model::multi_polygon<polygon> multi_polygon;
 typedef bg::model::linestring<point> linestring;
 typedef bg::model::multi_linestring<linestring> multi_linestring;
-typedef boost::variant<point, box, polygon, linestring> geometry;
+typedef boost::variant<box, polygon, linestring> geometry;
 
+
+struct layer
+{
+  std::vector<geometry> elements;
+  std::string name;
+  std::string id;
+};
 
 //namespace fabricad::shapes
 //{
@@ -30,10 +39,13 @@ typedef boost::variant<point, box, polygon, linestring> geometry;
 
 struct print_visitor : public boost::static_visitor<>
 {
-    void operator()(polygon const& g) const { std::cout << bg::wkt<polygon>(g) << std::endl; }
-    void operator()(box const& g) const { std::cout << bg::wkt<box>(g) << std::endl; }
-    void operator()(linestring const& g) const { std::cout << bg::wkt<linestring>(g) << std::endl; }
-    void operator()(point const& g) const { std::cout << bg::wkt<point>(g) << std::endl; }
+  void operator()(polygon const& g) const { std::cout << bg::wkt<polygon>(g) << std::endl; }
+  void operator()(box const& g) const { std::cout << bg::wkt<box>(g) << std::endl; }
+  void operator()(linestring const& g) const { std::cout << bg::wkt<linestring>(g) << std::endl; }
 };
+
+
+void createSVGFile(std::string filename, std::vector<layer> layers);
+void createSVGFile(std::string filename, std::vector<geometry> elements);
 
 #endif

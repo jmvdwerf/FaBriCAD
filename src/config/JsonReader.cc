@@ -86,7 +86,8 @@ namespace fabricad::config
     } else if (type == "rectangle") {
       return parseRectangle(j);
     } else if (type == "singleton") {
-      return parsePoint(j["point"]);
+      point p = parsePoint(j["point"]);
+      return box(p, p);
     }
 
     polygon p1;
@@ -129,6 +130,7 @@ namespace fabricad::config
 
     if (j.value()["type"].is_string()) {
       std::string type = j.value()["type"];
+      std::transform(type.begin(), type.end(), type.begin(), ::tolower);
       if (type == "brickwall") {
         block = JsonReader::parseBrickwall(j.value());
       } else {
