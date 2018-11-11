@@ -16,16 +16,19 @@ namespace fabricad::blocks
     Brickwall* setBrickHeight(float height);
     float getBrickWidth();
     Brickwall* setBrickWidth(float width);
-    float getAngle();
-    Brickwall* setAngle(float angle);
+    bool horizontal();
+    Brickwall* setHorizontal(bool horizontal);
     int getStartRow();
     Brickwall* setStartRow(int start);
 
     std::string toString(std::string indent) override;
+  protected:
+    void render() override;
+
   private:
     float brick_height_;
     float brick_width_;
-    float angle_;
+    bool horizontal_;
     int start_;
   };
 }

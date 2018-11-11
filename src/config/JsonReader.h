@@ -28,7 +28,7 @@ namespace fabricad::config
     static fabricad::blocks::BasicBuildingBlock* parseBasicBuildingBlock(json &j);
     static fabricad::blocks::Brickwall* parseBrickwall(json &j);
 
-    static geometry parseGeometry(json &j);
+    static polygon parseGeometry(json &j);
     static point parsePoint(json &j);
     static polygon parsePolygon(json &j);
     static polygon parseRectangle(json &j);

@@ -45,8 +45,8 @@ namespace fabricad::blocks {
     std::string toString();
     virtual std::string toString(std::string indent);
 
-    geometry getShape();
-    BasicBuildingBlock* setShape(geometry shape);
+    polygon getShape();
+    BasicBuildingBlock* setShape(polygon const& shape);
 
     /**
      * This function is the function to obtain all
@@ -55,7 +55,8 @@ namespace fabricad::blocks {
      * If render() has not yet been called, it first does so.
      *
      */
-    std::vector<geometry> getLayer(size_t layer);
+    shapelayer getLayer(size_t layer);
+    std::vector<shapelayer> getLayers();
 
   protected:
     /**
@@ -63,14 +64,13 @@ namespace fabricad::blocks {
      * the layers
      */
     virtual void render();
-    std::vector<std::vector<geometry>> layers_;
+    std::vector<shapelayer> layers_;
+    polygon shape_;
 
   private:
     std::string id_;
     std::string name_;
     std::string type_;
-
-    geometry shape_;
   };
 
 }
