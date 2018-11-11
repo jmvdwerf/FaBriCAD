@@ -74,7 +74,7 @@ namespace fabricad::config
   }
 
 
-  geometry JsonReader::parseGeometry(json &j)
+  polygon JsonReader::parseGeometry(json &j)
   {
     std::string type = "";
     if (j["type"].is_string()) {
@@ -86,12 +86,15 @@ namespace fabricad::config
     } else if (type == "rectangle") {
       return parseRectangle(j);
     } else if (type == "singleton") {
-      point p = parsePoint(j["point"]);
-      return box(p, p);
+      polygon p;
+      bg::append(p.outer(), parsePoint(j["point"]));
+      bg::correct(p);
+      return p;
     }
 
     polygon p1;
     bg::append(p1.outer(), point(0,0));
+    bg::correct(p1);
     return p1;
   }
 
@@ -101,6 +104,7 @@ namespace fabricad::config
     for(json::iterator it = j["points"].begin(); it != j["points"].end(); ++it) {
       bg::append(p.outer(), parsePoint(it.value()));
     }
+    bg::correct(p);
     return p;
   }
 
@@ -116,6 +120,8 @@ namespace fabricad::config
     bg::append(p.outer(), point(x + w, y    ));
     bg::append(p.outer(), point(x + w, y + h));
     bg::append(p.outer(), point(x    , y + h));
+
+    bg::correct(p);
     return p;
   }
 
@@ -185,8 +191,6 @@ namespace fabricad::config
             wall->setBrickHeight(props.value());
           } else if (propkey == "width") {
             wall->setBrickWidth(props.value());
-          } else if (propkey == "angle") {
-            wall->setAngle(props.value());
           } else if (propkey == "start") {
             wall->setStartRow(props.value());
           }

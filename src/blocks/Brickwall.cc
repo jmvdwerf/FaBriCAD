@@ -6,7 +6,7 @@ namespace fabricad::blocks
 {
   Brickwall::Brickwall()
   {
-    angle_ = 0;
+    horizontal_ = true;
     brick_height_ = 5.0;
     brick_width_ = 10.0;
     start_ = 0;
@@ -34,14 +34,14 @@ namespace fabricad::blocks
     return this;
   }
 
-  float Brickwall::getAngle()
+  bool Brickwall::horizontal()
   {
-    return angle_;
+    return horizontal_;
   }
 
-  Brickwall* Brickwall::setAngle(float angle)
+  Brickwall* Brickwall::setHorizontal(bool horizontal)
   {
-    angle_ = angle;
+    horizontal_ = horizontal;
     return this;
   }
 
@@ -60,7 +60,7 @@ namespace fabricad::blocks
   {
     std::string s = BasicBuildingBlock::toString(indent);
     s = s + indent + "Bricks (w x h): " + std::to_string(getBrickWidth()) + ", " + std::to_string(getBrickHeight()) + "\n";
-    s = s + indent + "At angle      : " + std::to_string(getAngle()) + "\n";
+    s = s + indent + "Horizontal    : " + std::to_string(horizontal()) + "\n";
     s = s + indent + "Start at row  : " + std::to_string(getStartRow()) + "\n";
 
     return s;
@@ -105,8 +105,8 @@ namespace fabricad::blocks
         bg::intersection(linestring({py1, py2}), this->shape_, lines);
       }
 
-      this->layers_[1].elements.insert(
-            this->layers_[1].elements.end(),
+      this->layers_[1].lines.insert(
+            this->layers_[1].lines.end(),
             lines.begin(),
             lines.end()
       );

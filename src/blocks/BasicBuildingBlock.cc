@@ -58,33 +58,27 @@ namespace fabricad::blocks {
       indent + "Type: " + getType() + "\n" ;
   }
 
-  geometry BasicBuildingBlock::getShape()
+  polygon BasicBuildingBlock::getShape()
   {
     return shape_;
   }
 
-  BasicBuildingBlock* BasicBuildingBlock::setShape(geometry shape)
+  BasicBuildingBlock* BasicBuildingBlock::setShape(polygon const &shape)
   {
     shape_ = shape;
     return this;
   }
 
-  layer BasicBuildingBlock::getLayer(size_t l)
+  shapelayer BasicBuildingBlock::getLayer(size_t layer)
   {
     if (layers_.empty()) {
       render();
     }
 
-    // check bounds
-    if (l < 0 || l >= layers_.size() ) {
-      layer e;
-      return e;
-    }
-
-    return layers_.at(l);
+    return layers_.at(layer);
   }
 
-  std::vector<layer> BasicBuildingBlock::getLayers()
+  std::vector<shapelayer> BasicBuildingBlock::getLayers()
   {
     if (layers_.empty()) {
       render();
@@ -100,23 +94,23 @@ namespace fabricad::blocks {
   void BasicBuildingBlock::render()
   {
     layers_.clear();
-    layer l;
-    l.elements.push_back(shape_);
+    shapelayer l;
+    l.polygons.push_back(shape_);
     l.id = getId();
     l.name = getName();
     layers_.push_back(l);
 
-    layer b;
+    shapelayer b;
     b.id = getId() + "_bricks";
     b.name = getName() + ": Bricks";
     layers_.push_back(b);
 
-    layer c;
+    shapelayer c;
     c.id = getId() + "_cutouts";
     c.name = getName() + ": Cut outs";
     layers_.push_back(c);
 
-    layer d;
+    shapelayer d;
     d.id = getId() + "_other";
     d.name = getName() + ": Other elements";
     layers_.push_back(d);

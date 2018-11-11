@@ -28,8 +28,8 @@ namespace fabricad::config
     size_t getSize();
     Blueprint* addBlock(BasicBuildingBlock* block);
 
-    layer getLayer(size_t l);
-    std::vector<layer> getLayers();
+    shapelayer getLayer(size_t layer);
+    std::vector<shapelayer> getLayers();
 
 
   private:
@@ -41,7 +41,7 @@ namespace fabricad::config
 
     std::vector<BasicBuildingBlock*> blocks_;
 
-    std::vector<layer> layers_;
+    std::vector<shapelayer> layers_;
 
   };
 

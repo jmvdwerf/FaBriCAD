@@ -19,15 +19,14 @@ namespace bg = boost::geometry;
 typedef bg::model::point<float, 2, bg::cs::cartesian> point;
 typedef bg::model::box<point> box;
 typedef bg::model::polygon<point, false, false> polygon;
-typedef bg::model::multi_polygon<polygon> multi_polygon;
+// typedef bg::model::multi_polygon<polygon> multi_polygon;
 typedef bg::model::linestring<point> linestring;
-typedef bg::model::multi_linestring<linestring> multi_linestring;
-typedef boost::variant<box, polygon, linestring> geometry;
+// typedef bg::model::multi_linestring<linestring> multi_linestring;
 
-
-struct layer
+struct shapelayer
 {
-  std::vector<geometry> elements;
+  std::vector<polygon> polygons;
+  std::vector<linestring> lines;
   std::string name;
   std::string id;
 };
@@ -37,15 +36,14 @@ struct layer
   std::vector<polygon> split(polygon p1, polygon p2);
 //}
 
-struct print_visitor : public boost::static_visitor<>
-{
-  void operator()(polygon const& g) const { std::cout << bg::wkt<polygon>(g) << std::endl; }
-  void operator()(box const& g) const { std::cout << bg::wkt<box>(g) << std::endl; }
-  void operator()(linestring const& g) const { std::cout << bg::wkt<linestring>(g) << std::endl; }
-};
+void createSVGFile(const std::string filename, std::vector<shapelayer> const &layers);
+void createSVGFile(const std::string filename, shapelayer const &layer);
 
+void polygonmerge(std::vector<polygon> *orig, std::vector<polygon> const &toadd);
+void linestringmerge(std::vector<linestring> *orig, std::vector<linestring> const &toadd);
 
-void createSVGFile(std::string filename, std::vector<layer> layers);
-void createSVGFile(std::string filename, std::vector<geometry> elements);
+void calculateDifference(std::vector<linestring> items, std::vector<polygon> const &overlap, std::vector<linestring> *list);
+std::vector<linestring> calculateLineDifference(linestring line, std::vector<polygon> const& overlap);
+
 
 #endif

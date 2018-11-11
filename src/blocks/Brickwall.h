@@ -16,8 +16,8 @@ namespace fabricad::blocks
     Brickwall* setBrickHeight(float height);
     float getBrickWidth();
     Brickwall* setBrickWidth(float width);
-    float getAngle();
-    Brickwall* setAngle(float angle);
+    bool horizontal();
+    Brickwall* setHorizontal(bool horizontal);
     int getStartRow();
     Brickwall* setStartRow(int start);
 
@@ -28,7 +28,7 @@ namespace fabricad::blocks
   private:
     float brick_height_;
     float brick_width_;
-    float angle_;
+    bool horizontal_;
     int start_;
   };
 }

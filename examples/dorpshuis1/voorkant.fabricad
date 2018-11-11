@@ -10,7 +10,7 @@
       "blocks": {
         "wall": {
           "name": "wall",
-          "type": "StaandVerband",
+          "type": "BrickWall",
           "config": {
             "height": 4,
             "width": 10,
@@ -87,11 +87,12 @@
         },
         "dakkapelvensterbank": {
           "name": "Raam dakkapel",
-          "type": "brickwall",
+          "type": "cutout",
           "config": {
             "height": 10,
             "width": 3.6,
-            "start": 1
+            "start": 1,
+            "actual": "brickwall"
           },
           "shape": {
             "type": "rectangle",
@@ -227,11 +228,12 @@
         },
         "vensterbank": {
           "name": "Vensterbank",
-          "type": "brickwall",
+          "type": "cutout",
           "config": {
             "height": 10,
             "width": 3.7,
-            "start": 1
+            "start": 1,
+            "actual": "brickwall"
           },
           "shape": {
             "type": "rectangle",

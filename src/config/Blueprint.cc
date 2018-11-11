@@ -72,22 +72,16 @@ namespace fabricad::config
   }
 
 
-  layer Blueprint::getLayer(size_t l)
+  shapelayer Blueprint::getLayer(size_t layer)
   {
     if (layers_.empty()) {
       render();
     }
 
-    // check bounds
-    if (l < 0 || l >= layers_.size() ) {
-      layer e;
-      return e;
-    }
-
-    return layers_.at(l);
+    return layers_.at(layer);
   }
 
-  std::vector<layer> Blueprint::getLayers()
+  std::vector<shapelayer> Blueprint::getLayers()
   {
     if (layers_.empty()) {
       render();
@@ -99,34 +93,51 @@ namespace fabricad::config
   {
     layers_.clear();
 
-    layer shapes;
+    shapelayer shapes;
     shapes.id = "shapes";
     shapes.name = "Shapes";
     layers_.push_back(shapes);
 
-    layer bricks;
+    shapelayer bricks;
     bricks.id = "bricks";
     bricks.name = "Brickwork";
     layers_.push_back(bricks);
 
-    layer cutout;
+    shapelayer cutout;
     cutout.id = "cutout";
     cutout.name = "Cutouts";
     layers_.push_back(cutout);
 
-    layer other;
+    shapelayer other;
     other.id = "other";
     other.name = "Other shapes";
     layers_.push_back(other);
 
     // Walk the blocks, and add all shapes
-    // If an old shape is contained in a new shape, it should be removed
-    for(size_t i = 0 ; i < blocks_.size() ; i++)
+    // We walk the list backwards, so that we can check with the
+    // previous shapes what to exclude
+    for(size_t index = 0 ; index < blocks_.size() ; index++)
     {
-      for(size_t l = 0 ; l < 4 ; l++) {
-        layer items = blocks_[i]->getLayer(l);
-        if (!items.elements.empty()) {
-          layers_[l].elements.insert(layers_[l].elements.end(), items.elements.begin(), items.elements.end());
+      // size_t index = blocks_.size() -1 - i;
+      std::cout << "Working on   : " << blocks_[index]->getName() << std::endl;
+
+      for(size_t layer = 0 ; layer < 4 ; layer++) {
+        size_t l = 3 - layer;
+        if (!blocks_[index]->getLayer(l).lines.empty()) {
+          // here we want to calculate the difference of each element
+          // with the elements of the first layer, as that layer contains
+          // the outside shapes.
+          std::vector<linestring> lines;
+          std::cout << "I start with : " << blocks_[index]->getLayer(l).lines.size() << " elements" << std::endl;
+          calculateDifference(blocks_[index]->getLayer(l).lines, layers_[0].polygons, &lines);
+          std::cout << "I end up with: " << lines.size() << " elements" << std::endl;
+          linestringmerge(&layers_[l].lines, lines);
+        }
+
+        if (!blocks_[index]->getLayer(l).polygons.empty()) {
+          // Polugons we always add, independent of whether they overlap
+          // or not.
+          polygonmerge(&layers_[l].polygons, blocks_[index]->getLayer(l).polygons);
         }
       }
     }
