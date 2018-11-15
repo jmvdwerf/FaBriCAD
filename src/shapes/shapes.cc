@@ -2,6 +2,7 @@
 #include "shapes.h"
 #include <fstream>
 #include <iostream>
+#include <cmath>
 
 
 std::vector<polygon> split(polygon p1, polygon p2)
@@ -165,4 +166,30 @@ std::vector<linestring> calculateLineDifference(linestring line, std::vector<pol
   }
 
   return q;
+}
+
+
+/*
+ * Gives the x component given a length and an angle
+ *     tan(angle) = o / length;
+ */
+float getPointFor(float angle, float length)
+{
+  return tan(angle) * length;
+}
+
+std::string p2s(point p)
+{
+  return "( " + std::to_string(p.get<0>()) + ", " + std::to_string(p.get<1>()) + ")";
+}
+
+
+float getDxFor(float angle, float length)
+{
+  return sin(angle) * length;
+}
+
+float getDyFor(float angle, float length)
+{
+  return cos(angle) * length;
 }

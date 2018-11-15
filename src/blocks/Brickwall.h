@@ -1,7 +1,6 @@
 #ifndef _FABRICAD_BLOCKS_BRICKWALL_H_
 #define _FABRICAD_BLOCKS_BRICKWALL_H_
 
-
 #include "BasicBuildingBlock.h"
 
 namespace fabricad::blocks
@@ -16,20 +15,17 @@ namespace fabricad::blocks
     Brickwall* setBrickHeight(float height);
     float getBrickWidth();
     Brickwall* setBrickWidth(float width);
-    bool horizontal();
-    Brickwall* setHorizontal(bool horizontal);
-    int getStartRow();
-    Brickwall* setStartRow(int start);
+    size_t getStartRow();
+    Brickwall* setStartRow(size_t start);
 
     std::string toString(std::string indent) override;
   protected:
-    void render() override;
-
+    virtual void render() override;
+    virtual void renderBricksFor(box const& bb, std::vector<linestring> &lines);
   private:
     float brick_height_;
     float brick_width_;
-    bool horizontal_;
-    int start_;
+    size_t start_;
   };
 }
 

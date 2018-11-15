@@ -10,12 +10,12 @@
       "blocks": {
         "wall": {
           "name": "wall",
-          "type": "BrickWall",
+          "type": "EnglishBond",
           "config": {
-            "height": 4,
-            "width": 10,
+            "brickheight": 4,
+            "brickwidth": 10,
             "start": 1,
-            "actual": "StaandVerband"
+            "actual": "EnglishBond"
           },
           "shape": {
             "type": "polygon",
@@ -86,13 +86,12 @@
             }
         },
         "dakkapelvensterbank": {
-          "name": "Raam dakkapel",
-          "type": "cutout",
+          "name": "vensterbank dakkapel",
+          "type": "brickwall",
           "config": {
-            "height": 10,
-            "width": 3.6,
-            "start": 1,
-            "actual": "brickwall"
+            "brickheight": 10,
+            "brickwidth": 3.6,
+            "start": 0
           },
           "shape": {
             "type": "rectangle",
@@ -119,22 +118,19 @@
         },
         "deurlatij": {
           "name": "Deurlatij",
-          "type": "latij",
+          "type": "Lintel",
           "config": {
-            "width": 53,
+            "width": 26.5,
             "height": 16,
-            "stones": 7,
-            "brickheight": 11,
+            "stones": 6,
+            "brickheight": 10,
             "brickwidth": 4,
-            "porringpunt": {
+            "strikingpoint": {
               "x": 0,
               "y": -110
-            }
-          },
-          "shape": {
-            "type": "singleton",
-            "point": {
-              "x": 175,
+            },
+            "center": {
+              "x": 201.5,
               "y": 128
             }
           }
@@ -180,22 +176,19 @@
         },
         "raamlatij": {
           "name": "Raamlatij",
-          "type": "latij",
+          "type": "lintel",
           "config": {
-            "width": 70,
+            "width": 35,
             "height": 16,
             "stones": 8,
             "brickheight": 11,
             "brickwidth": 4,
-            "porringpunt": {
+            "strikingpoint": {
               "x": 0,
               "y": -130
-            }
-          },
-          "shape": {
-            "type": "singleton",
-            "point": {
-              "x": 50,
+            },
+            "center": {
+              "x": 85,
               "y": 128
             }
           }
@@ -228,12 +221,11 @@
         },
         "vensterbank": {
           "name": "Vensterbank",
-          "type": "cutout",
+          "type": "brickwall",
           "config": {
-            "height": 10,
-            "width": 3.7,
-            "start": 1,
-            "actual": "brickwall"
+            "brickheight": 10,
+            "brickwidth": 3.7,
+            "start": 0
           },
           "shape": {
             "type": "rectangle",

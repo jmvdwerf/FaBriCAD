@@ -139,6 +139,10 @@ namespace fabricad::config
       std::transform(type.begin(), type.end(), type.begin(), ::tolower);
       if (type == "brickwall") {
         block = JsonReader::parseBrickwall(j.value());
+      } else if (type == "englishbond") {
+        block = JsonReader::parseEnglishBondwall(j.value());
+      } else if (type == "lintel") {
+        block = JsonReader::parseLintel(j.value());
       } else {
         block = JsonReader::parseBasicBuildingBlock(j.value());
       }
@@ -174,8 +178,46 @@ namespace fabricad::config
   fabricad::blocks::Brickwall* JsonReader::parseBrickwall(json &j)
   {
     fabricad::blocks::Brickwall* wall = new fabricad::blocks::Brickwall();
+    parseWallParameters(wall, j);
 
-    for(json::iterator it = j.begin(); it != j.end(); ++it)
+    return wall;
+  }
+
+  fabricad::blocks::EnglishBond* JsonReader::parseEnglishBondwall(json &j)
+  {
+    fabricad::blocks::EnglishBond* wall = new fabricad::blocks::EnglishBond();
+    parseWallParameters(wall, j);
+
+    return wall;
+  }
+
+  fabricad::blocks::Lintel* JsonReader::parseLintel(json &j)
+  {
+    fabricad::blocks::Lintel* lintel = new fabricad::blocks::Lintel();
+    parseWallParameters(lintel, j);
+
+    for(json::iterator it = j["config"].begin(); it != j["config"].end(); ++it)
+    {
+      std::string key = it.key();
+      if (key == "center") {
+        lintel->setCenter(parsePoint(it.value()));
+      } else if (key == "strikingpoint") {
+        lintel->setStrikingPoint(parsePoint(it.value()));
+      } else if (key == "stones") {
+        lintel->setStones(it.value());
+      } else if (key == "height") {
+        lintel->setHeight(it.value());
+      } else if (key == "width") {
+        lintel->setWidth(it.value());
+      }
+    }
+
+    return lintel;
+  }
+
+  void JsonReader::parseWallParameters(Brickwall* wall, json &j)
+  {
+        for(json::iterator it = j.begin(); it != j.end(); ++it)
     {
       std::string key = it.key();
 
@@ -187,9 +229,9 @@ namespace fabricad::config
         for(json::iterator props = it.value().begin(); props != it.value().end() ; ++props)
         {
           std::string propkey = props.key();
-          if (propkey == "height") {
+          if (propkey == "brickheight") {
             wall->setBrickHeight(props.value());
-          } else if (propkey == "width") {
+          } else if (propkey == "brickwidth") {
             wall->setBrickWidth(props.value());
           } else if (propkey == "start") {
             wall->setStartRow(props.value());
@@ -198,10 +240,7 @@ namespace fabricad::config
       } else if (key == "shape") {
         wall->setShape(parseGeometry(it.value() ) );
       }
-
     }
-
-    return wall;
   }
 
 }

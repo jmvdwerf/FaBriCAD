@@ -15,6 +15,7 @@
 #include <string>
 
 namespace bg = boost::geometry;
+namespace trans = boost::geometry::strategy::transform;
 
 typedef bg::model::point<float, 2, bg::cs::cartesian> point;
 typedef bg::model::box<point> box;
@@ -45,5 +46,11 @@ void linestringmerge(std::vector<linestring> *orig, std::vector<linestring> cons
 void calculateDifference(std::vector<linestring> items, std::vector<polygon> const &overlap, std::vector<linestring> *list);
 std::vector<linestring> calculateLineDifference(linestring line, std::vector<polygon> const& overlap);
 
+float getPointFor(float angle, float length);
+
+std::string p2s(point p);
+
+float getDxFor(float angle, float length);
+float getDyFor(float angle, float length);
 
 #endif
