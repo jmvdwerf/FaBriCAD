@@ -120,7 +120,7 @@ namespace fabricad::config
     for(auto& block: blocks_)
     {
       // size_t index = blocks_.size() -1 - i;
-      std::cout << "Working on: " << block->getName() << std::endl;
+      // std::cout << "Working on: " << block->getName() << std::endl;
 
       for(size_t layer = 0 ; layer < 4 ; layer++) {
 
