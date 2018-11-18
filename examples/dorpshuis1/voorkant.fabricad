@@ -108,7 +108,7 @@
           "type": "cutout",
           "shape": {
             "type": "rectangle",
-            "width": 53,
+            "width": 55,
             "height": 124,
             "origin": {
               "x": 175,
@@ -120,7 +120,7 @@
           "name": "Deurlatij",
           "type": "Lintel",
           "config": {
-            "width": 26.5,
+            "width": 27.5,
             "height": 16,
             "stones": 6,
             "brickheight": 10,
@@ -130,7 +130,7 @@
               "y": -110
             },
             "center": {
-              "x": 201.5,
+              "x": 202.5,
               "y": 128
             }
           }
@@ -143,7 +143,7 @@
             "width": 45,
             "height": 90,
             "origin": {
-              "x": 179,
+              "x": 180,
               "y": 4
             }
           }
@@ -156,7 +156,7 @@
             "width": 45,
             "height": 25,
             "origin": {
-              "x": 179,
+              "x": 180,
               "y": 99
             }
           }
