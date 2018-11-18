@@ -11,6 +11,9 @@
 #include "config/JsonReader.h"
 #include "shapes/shapes.h"
 
+#include "converter/Exporter.h"
+#include "converter/TxtExporter.h"
+
 namespace config=fabricad::config;
 
 using json=nlohmann::json;
@@ -32,7 +35,8 @@ void printHelp(std::string error)
   std::cout << std::endl;
   std::cout << "<input> is a .fabricad-json file. Output is either: " << std::endl;
   std::cout << "\tsvg\tfilename is the start string of each blueprint" << std::endl;
-  std::cout << std::endl << "(c) 2018 Jan Martijn van der Werf (janmartijn@vdwerf.eu)" << std::endl;
+  std::cout << std::endl;
+  std::cout << "(c) 2018 Jan Martijn van der Werf (janmartijn@vdwerf.eu)" << std::endl;
 }
 
 int main(int argc, char* argv[])
@@ -76,7 +80,10 @@ int main(int argc, char* argv[])
 
   for(auto& t: outputs)
   {
-    if (t.type == "svg") {
+    if (t.type == "txt") {
+      fabricad::converter::Exporter* exp = new fabricad::converter::TxtExporter();
+      exp->exportToFile(t.output, p);
+    } else if (t.type == "svg") {
       std::cout << "Create output: " << t.type << std::endl;
       for(size_t i = 0 ; i < bp.size() ; i++)
       {
