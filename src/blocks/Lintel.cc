@@ -60,6 +60,40 @@ namespace fabricad::blocks
     return this;
   }
 
+  /*
+   For rendering, we use the following principles:
+
+   topR  >._____________. < topL
+           \           /
+  origin >  ._________.  < left
+             \   |   /|
+              \  |  / |
+               \ |a/  |
+                \|/...|
+                 .   < striking point
+
+    polygon outside = origin, topR, topL, left, origin
+
+    angle a:
+    maxangle = atan( (1/2 width) / strikingpoint_.get<1>() );
+
+    Step angle:
+    step = maxangle / (#stones + 1/2)
+
+    start angle: step / 2
+
+    For calculating the different points on the Lintel:
+    ____ < dX, dY
+    |  /
+    | / s
+    |/
+    a
+
+    sin a = o / s => o = s . sin a
+    cos a = a / s => a = s . cos a
+
+    This is done by getDxFor and getDyFor.
+   */
   void Lintel::render()
   {
     BasicBuildingBlock::render();
