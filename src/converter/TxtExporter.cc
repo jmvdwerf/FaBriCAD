@@ -61,6 +61,6 @@ namespace fabricad::converter
 
   void TxtExporter::handlePoint(std::ofstream &out, point const& p)
   {
-    out << "(" << p.get<0>() << ", " << p.get<1>() << ")";
+    out << p.get<0>() << ", " << p.get<1>();
   }
 }

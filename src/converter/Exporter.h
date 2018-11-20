@@ -60,10 +60,12 @@ namespace fabricad::converter
     virtual void handlePolygon(std::ofstream &out, polygon const& p) = 0;
     virtual void handleLinestring(std::ofstream &out, linestring const& l) = 0;
     virtual void handlePoint(std::ofstream &out, point const& p) = 0;
+    bool createInitialFile = true;
 
   private:
     void handleBlueprint(fabricad::config::Blueprint* print, std::string const& filename, std::ofstream &out);
     void handleLayer(std::ofstream &out, shapelayer const& layer);
+
   };
 
 }

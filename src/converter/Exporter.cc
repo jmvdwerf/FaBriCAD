@@ -7,7 +7,10 @@ namespace fabricad::converter
 
   void Exporter::exportToFile(std::string const& filename, fabricad::config::Project* project)
   {
-    std::ofstream out(filename.c_str());
+    std::ofstream out;
+    if (createInitialFile) {
+      out.open(filename.c_str(), std::ofstream::out);
+    }
     handleProjectStart(project, filename, out);
 
     for(fabricad::config::Blueprint* bp: project->getBlueprints())

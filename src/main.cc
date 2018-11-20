@@ -13,6 +13,9 @@
 
 #include "converter/Exporter.h"
 #include "converter/TxtExporter.h"
+#include "converter/SvgExporter.h"
+
+#include <boost/filesystem.hpp>
 
 namespace config=fabricad::config;
 
@@ -50,7 +53,7 @@ int main(int argc, char* argv[])
   while(counter < argc)
   {
     std::string argument = argv[counter];
-    std::cout << "Argument: " << argument << std::endl;
+
     if (argument.substr(0,2) == "-h") {
       printHelp("");
       return 0;
@@ -76,20 +79,21 @@ int main(int argc, char* argv[])
   }
 
   config::Project* p = config::JsonReader::read(filename);
-  std::vector<config::Blueprint*> bp = p->getBlueprints();
 
   for(auto& t: outputs)
   {
+    // First check if output dir exists
+    boost::filesystem::path outputdir(t.output.c_str());
+    if (!outputdir.parent_path().empty()) {
+      boost::filesystem::create_directories(outputdir.parent_path());
+    }
+
     if (t.type == "txt") {
       fabricad::converter::Exporter* exp = new fabricad::converter::TxtExporter();
       exp->exportToFile(t.output, p);
     } else if (t.type == "svg") {
-      std::cout << "Create output: " << t.type << std::endl;
-      for(size_t i = 0 ; i < bp.size() ; i++)
-      {
-        std::cout << "  * " << bp[i]->getName() << std::endl;
-        createSVGFile(t.output + "_" + bp[i]->getId() +".svg", bp[i]->getLayers());
-      }
+      fabricad::converter::Exporter* exp = new fabricad::converter::SvgExporter();
+      exp->exportToFile(t.output, p);
     } else {
       std::cout << "Unknown type: " << t.type << std::endl;
     }

@@ -34,6 +34,10 @@ OBJCOPY     = objcopy
 
 
 CC_FLAGS   += $(INCLUDES)
+# CC_FLAGS   += -std=c++17
+# Required for Boost::fileystem
+LD_FLAGS   += -lboost_filesystem -lboost_system
+
 # CC_FLAGS   += $(DEFINES)
 
 COL_INFO    = tput setaf 2
