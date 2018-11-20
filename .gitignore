@@ -4,3 +4,4 @@ test/
 *.svg
 *.html
 *.stackdump
+*.scad
