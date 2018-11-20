@@ -12,7 +12,7 @@ namespace fabricad::converter
   box SvgExporter::determineEnvelope(fabricad::config::Blueprint* print)
   {
 
-    box maxBound;
+    box mBound;
     for(auto& item: print->getLayers())
     {
       std::vector<shapelayer> layers = item.second;
@@ -22,18 +22,18 @@ namespace fabricad::converter
         {
           box b;
           bg::envelope(layers[layer].polygons[i], b);
-          bg::expand(maxBound, b);
+          bg::expand(mBound, b);
         }
         for(int i = 0 ; i < layers[layer].lines.size() ; i++)
         {
           box b;
           bg::envelope(layers[layer].lines[i], b);
-          bg::expand(maxBound, b);
+          bg::expand(mBound, b);
         }
       }
     }
 
-    return maxBound;
+    return mBound;
   }
 
   void SvgExporter::handleBlockStart(fabricad::blocks::BasicBuildingBlock* block, std::string const& filename, std::ostream &out)
@@ -66,7 +66,7 @@ namespace fabricad::converter
     top = topY;
 
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" << std::endl;
-    out << "<svg height=\""<< topX << "mm\" width=\"" << topY << "mm\" ";
+    out << "<svg height=\""<< topY << "mm\" width=\"" << topX << "mm\" ";
     out << "viewBox=\"0 0 "<< topX << " " << topY << "\">" << std::endl;
   }
 
@@ -115,7 +115,7 @@ namespace fabricad::converter
   void SvgExporter::handlePoint(std::ostream &out, point const& p)
   {
     float x = p.get<0>() + 10;
-    float y = top - p.get<1>();
+    float y = top - p.get<1>() - 10;
     out << x << ", " << y;
   }
 
