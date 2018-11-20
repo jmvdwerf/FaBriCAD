@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "../blocks/BasicBuildingBlock.h"
 
 using namespace std;
@@ -28,12 +29,12 @@ namespace fabricad::config
     size_t getSize();
     Blueprint* addBlock(BasicBuildingBlock* block);
 
-    shapelayer getLayer(size_t layer);
-    std::vector<shapelayer> getLayers();
-
+    // shapelayer getLayer(size_t layer);
+    std::map<BasicBuildingBlock*,std::vector<shapelayer>> getLayers();
 
   private:
     void render();
+    void initializeLayerSet(std::vector<shapelayer> &layers);
 
     std::string name_;
     std::string description_;
@@ -41,7 +42,7 @@ namespace fabricad::config
 
     std::vector<BasicBuildingBlock*> blocks_;
 
-    std::vector<shapelayer> layers_;
+    std::map<BasicBuildingBlock*, std::vector<shapelayer>> shapeElements_;
 
   };
 

@@ -23,6 +23,9 @@ namespace fabricad::converter
     void handleBlueprintStart(fabricad::config::Blueprint* print, std::string const& filename, std::ofstream &out) override;
     void handleBlueprintFinish(fabricad::config::Blueprint* print, std::string const& filename, std::ofstream &out) override;
 
+    void handleBlockStart(fabricad::blocks::BasicBuildingBlock* block, std::string const& filename, std::ofstream &out) override;
+    void handleBlockFinish(fabricad::blocks::BasicBuildingBlock* block, std::string const& filename, std::ofstream &out) override;
+
     void handleLayerStart(std::ofstream &out, shapelayer const& layer) override;
     void handleLayerFinish(std::ofstream &out, shapelayer const& layer) override;
 

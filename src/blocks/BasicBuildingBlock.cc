@@ -8,7 +8,7 @@ namespace fabricad::blocks {
     id_   = "";
     name_ = "";
     type_ = "";
-    color_ = "";
+    color_ = "royalblue";
     thickness_ = 0;
   }
 

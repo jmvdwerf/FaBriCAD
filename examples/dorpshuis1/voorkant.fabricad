@@ -11,6 +11,7 @@
         "wall": {
           "name": "wall",
           "type": "EnglishBond",
+          "color": "darkred",
           "config": {
             "brickheight": 4,
             "brickwidth": 10,
@@ -75,6 +76,7 @@
         "dakkapelraam": {
             "name": "dakkapelraam",
             "type": "cutout",
+            "color": "white",
             "shape": {
                 "type": "rectangle",
                 "width": 42,
@@ -151,6 +153,7 @@
         "deurraam": {
           "name": "Deur",
           "type": "cutout",
+          "color": "white",
           "shape": {
             "type": "rectangle",
             "width": 45,
@@ -164,6 +167,7 @@
         "raam": {
           "name": "Raam",
           "type": "cutout",
+          "color": "white",
           "shape": {
             "type": "rectangle",
             "width": 70,

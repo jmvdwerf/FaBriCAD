@@ -35,12 +35,36 @@ namespace fabricad::converter
 
     for(auto &layer: print->getLayers())
     {
-      handleLayer(out, layer);
+      handleBlock(layer, filename, out);
     }
 
     handleBlueprintFinish(print, filename, out);
 
     currentBlueprint = NULL;
+  }
+
+  void Exporter::handleBlock(std::pair<fabricad::blocks::BasicBuildingBlock*, std::vector<shapelayer>> const& blockItem, std::string const& filename, std::ofstream &out)
+  {
+    currentBlock = blockItem.first;
+
+    handleBlockStart(blockItem.first, filename, out);
+
+    for(auto& layer: blockItem.second)
+    {
+      handleLayer(out, layer);
+    }
+
+    handleBlockFinish(blockItem.first, filename, out);
+
+    currentBlock = NULL;
+  }
+
+  void Exporter::handleBlockStart(fabricad::blocks::BasicBuildingBlock*, std::string const& filename, std::ofstream &out)
+  {
+  }
+
+  void Exporter::handleBlockFinish(fabricad::blocks::BasicBuildingBlock*, std::string const& filename, std::ofstream &out)
+  {
   }
 
   void Exporter::handleProjectStart(fabricad::config::Project* project, std::string const& filename, std::ofstream &out)
@@ -105,5 +129,10 @@ namespace fabricad::converter
   fabricad::config::Project* Exporter::getCurrentProject()
   {
     return currentProject;
+  }
+
+  fabricad::blocks::BasicBuildingBlock* Exporter::getCurrentBlock()
+  {
+    return currentBlock;
   }
 }

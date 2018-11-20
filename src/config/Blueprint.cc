@@ -71,7 +71,7 @@ namespace fabricad::config
     return this;
   }
 
-
+/*
   shapelayer Blueprint::getLayer(size_t layer)
   {
     if (layers_.empty()) {
@@ -80,38 +80,20 @@ namespace fabricad::config
 
     return layers_.at(layer);
   }
-
-  std::vector<shapelayer> Blueprint::getLayers()
+*/
+  std::map<BasicBuildingBlock*, std::vector<shapelayer>> Blueprint::getLayers()
   {
-    if (layers_.empty()) {
+    if (shapeElements_.empty()) {
       render();
     }
-    return layers_;
+    return shapeElements_;
   }
 
   void Blueprint::render()
   {
-    layers_.clear();
+    shapeElements_.clear();
 
-    shapelayer shapes;
-    shapes.id = "shapes";
-    shapes.name = "Shapes";
-    layers_.push_back(shapes);
-
-    shapelayer bricks;
-    bricks.id = "bricks";
-    bricks.name = "Brickwork";
-    layers_.push_back(bricks);
-
-    shapelayer cutout;
-    cutout.id = "cutout";
-    cutout.name = "Cutouts";
-    layers_.push_back(cutout);
-
-    shapelayer other;
-    other.id = "other";
-    other.name = "Other shapes";
-    layers_.push_back(other);
+    std::vector<polygon> tocheck;
 
     // Walk the blocks, and add all shapes
     // We walk the list backwards, so that we can check with the
@@ -121,6 +103,8 @@ namespace fabricad::config
     {
       // size_t index = blocks_.size() -1 - i;
       // std::cout << "Working on: " << block->getName() << std::endl;
+      std::vector<shapelayer> layers;
+      initializeLayerSet(layers);
 
       for(size_t layer = 0 ; layer < 4 ; layer++) {
 
@@ -130,16 +114,22 @@ namespace fabricad::config
           // with the elements of the first layer, as that layer contains
           // the outside shapes.
           std::vector<linestring> lines;
-          calculateDifference(block->getLayer(l).lines, layers_[0].polygons, &lines);
-          linestringmerge(&layers_[l].lines, lines);
+          calculateDifference(block->getLayer(l).lines, tocheck, &lines);
+          linestringmerge(&layers[l].lines, lines);
         }
 
         if (!block->getLayer(l).polygons.empty()) {
-          // Polugons we always add, independent of whether they overlap
+          // Polygons we always add, independent of whether they overlap
           // or not.
-          polygonmerge(&layers_[l].polygons, block->getLayer(l).polygons);
+          polygonmerge(&layers[l].polygons, block->getLayer(l).polygons);
+
+          if (l == 0) {
+            polygonmerge(&tocheck, block->getLayer(l).polygons);
+          }
         }
       }
+      // Add block-layers pair to the shapeElements
+      shapeElements_.insert( std::pair<BasicBuildingBlock*, std::vector<shapelayer>>(block, layers));
     }
   }
 
@@ -151,5 +141,28 @@ namespace fabricad::config
     {
       delete blocks_[i];
     }
+  }
+
+  void Blueprint::initializeLayerSet(std::vector<shapelayer> &layers)
+  {
+    shapelayer shapes;
+    shapes.id = "shapes";
+    shapes.name = "Shapes";
+    layers.push_back(shapes);
+
+    shapelayer bricks;
+    bricks.id = "bricks";
+    bricks.name = "Brickwork";
+    layers.push_back(bricks);
+
+    shapelayer cutout;
+    cutout.id = "cutout";
+    cutout.name = "Cutouts";
+    layers.push_back(cutout);
+
+    shapelayer other;
+    other.id = "other";
+    other.name = "Other shapes";
+    layers.push_back(other);
   }
 }

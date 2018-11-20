@@ -7,7 +7,7 @@
 
 #include "../config/Project.h"
 #include "../config/Blueprint.h"
-
+#include "../blocks/BasicBuildingBlock.h"
 #include "../shapes/shapes.h"
 
 namespace fabricad::converter
@@ -54,25 +54,33 @@ namespace fabricad::converter
     virtual void handleBlueprintStart(fabricad::config::Blueprint* print, std::string const& filename, std::ofstream &out);
     virtual void handleBlueprintFinish(fabricad::config::Blueprint* print, std::string const& filename, std::ofstream &out);
 
+    virtual void handleBlockStart(fabricad::blocks::BasicBuildingBlock*, std::string const& filename, std::ofstream &out);
+    virtual void handleBlockFinish(fabricad::blocks::BasicBuildingBlock*, std::string const& filename, std::ofstream &out);
+
     virtual void handleLayerStart(std::ofstream &out, shapelayer const& layer);
     virtual void handleLayerFinish(std::ofstream &out, shapelayer const& layer);
 
     virtual void handlePolygon(std::ofstream &out, polygon const& p) = 0;
     virtual void handleLinestring(std::ofstream &out, linestring const& l) = 0;
     virtual void handlePoint(std::ofstream &out, point const& p) = 0;
+
     bool createInitialFile = true;
     bool reverseOrderPolygons = false;
     bool reverseOrderLines = false;
 
     fabricad::config::Blueprint* getCurrentBlueprint();
     fabricad::config::Project* getCurrentProject();
+    fabricad::blocks::BasicBuildingBlock* getCurrentBlock();
 
   private:
     void handleBlueprint(fabricad::config::Blueprint* print, std::string const& filename, std::ofstream &out);
+    void handleBlock(std::pair<fabricad::blocks::BasicBuildingBlock*, std::vector<shapelayer>> const& blockItem, std::string const& filename, std::ofstream &out);
     void handleLayer(std::ofstream &out, shapelayer const& layer);
 
     fabricad::config::Blueprint* currentBlueprint;
     fabricad::config::Project* currentProject;
+    fabricad::blocks::BasicBuildingBlock* currentBlock;
+
   };
 
 }
