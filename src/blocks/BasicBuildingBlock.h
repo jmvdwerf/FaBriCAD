@@ -42,6 +42,12 @@ namespace fabricad::blocks {
     std::string getType();
     BasicBuildingBlock* setType(std::string type);
 
+    std::string getColor();
+    BasicBuildingBlock* setColor(std::string color);
+
+    size_t getThickness();
+    BasicBuildingBlock* setThickness(size_t thickness);
+
     std::string toString();
     virtual std::string toString(std::string indent);
 
@@ -71,6 +77,8 @@ namespace fabricad::blocks {
     std::string id_;
     std::string name_;
     std::string type_;
+    std::string color_;
+    size_t thickness_;
   };
 
 }

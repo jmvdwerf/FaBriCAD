@@ -14,6 +14,7 @@
 #include "converter/Exporter.h"
 #include "converter/TxtExporter.h"
 #include "converter/SvgExporter.h"
+#include "converter/ScadExporter.h"
 
 #include <boost/filesystem.hpp>
 
@@ -93,6 +94,9 @@ int main(int argc, char* argv[])
       exp->exportToFile(t.output, p);
     } else if (t.type == "svg") {
       fabricad::converter::Exporter* exp = new fabricad::converter::SvgExporter();
+      exp->exportToFile(t.output, p);
+    } else if (t.type == "scad") {
+      fabricad::converter::Exporter* exp = new fabricad::converter::ScadExporter();
       exp->exportToFile(t.output, p);
     } else {
       std::cout << "Unknown type: " << t.type << std::endl;

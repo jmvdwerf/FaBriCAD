@@ -8,6 +8,30 @@ namespace fabricad::blocks {
     id_   = "";
     name_ = "";
     type_ = "";
+    color_ = "";
+    thickness_ = 0;
+  }
+
+  std::string BasicBuildingBlock::getColor()
+  {
+    return color_;
+  }
+
+  BasicBuildingBlock* BasicBuildingBlock::setColor(std::string color)
+  {
+    color_ = color;
+    return this;
+  }
+
+  size_t BasicBuildingBlock::getThickness()
+  {
+    return thickness_;
+  }
+
+  BasicBuildingBlock* BasicBuildingBlock::setThickness(size_t thickness)
+  {
+    thickness_ = thickness;
+    return this;
   }
 
   string BasicBuildingBlock::getId()

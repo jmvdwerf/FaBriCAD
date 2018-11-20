@@ -168,7 +168,11 @@ namespace fabricad::config
       } else if (key == "type") {
         block->setType(it.value());
       } else if (key == "shape") {
-        block->setShape(parseGeometry(it.value() ) );
+        block->setShape( parseGeometry(it.value()) );
+      } else if (key == "color") {
+        block->setColor(it.value());
+      } else if (key == "thickness") {
+        block->setThickness(it.value());
       }
     }
 
@@ -239,6 +243,10 @@ namespace fabricad::config
         }
       } else if (key == "shape") {
         wall->setShape(parseGeometry(it.value() ) );
+      } else if (key == "color") {
+        wall->setColor(it.value());
+      } else if (key == "thickness") {
+        wall->setThickness(it.value());
       }
     }
   }

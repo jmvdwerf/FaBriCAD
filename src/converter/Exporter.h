@@ -61,11 +61,18 @@ namespace fabricad::converter
     virtual void handleLinestring(std::ofstream &out, linestring const& l) = 0;
     virtual void handlePoint(std::ofstream &out, point const& p) = 0;
     bool createInitialFile = true;
+    bool reverseOrderPolygons = false;
+    bool reverseOrderLines = false;
+
+    fabricad::config::Blueprint* getCurrentBlueprint();
+    fabricad::config::Project* getCurrentProject();
 
   private:
     void handleBlueprint(fabricad::config::Blueprint* print, std::string const& filename, std::ofstream &out);
     void handleLayer(std::ofstream &out, shapelayer const& layer);
 
+    fabricad::config::Blueprint* currentBlueprint;
+    fabricad::config::Project* currentProject;
   };
 
 }
