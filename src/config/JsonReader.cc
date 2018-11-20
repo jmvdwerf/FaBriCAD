@@ -67,6 +67,14 @@ namespace fabricad::config
         {
           bp->addBlock(JsonReader::parseBlock(bit));
         }
+      } else if (key == "config") {
+        for(json::iterator bit = it.value().begin(); bit != it.value().end() ; ++bit)
+        {
+          std::string config = bit.key();
+          if (config == "thickness") {
+            bp->setThickness(bit.value());
+          }
+        }
       }
     }
 
@@ -169,10 +177,14 @@ namespace fabricad::config
         block->setType(it.value());
       } else if (key == "shape") {
         block->setShape( parseGeometry(it.value()) );
-      } else if (key == "color") {
-        block->setColor(it.value());
-      } else if (key == "thickness") {
-        block->setThickness(it.value());
+      } else if (key == "config") {
+        for(json::iterator bit = it.value().begin(); bit != it.value().end() ; ++bit)
+        {
+          std::string config = bit.key();
+          if (config == "color") {
+            block->setColor(bit.value());
+          }
+        }
       }
     }
 
@@ -239,14 +251,12 @@ namespace fabricad::config
             wall->setBrickWidth(props.value());
           } else if (propkey == "start") {
             wall->setStartRow(props.value());
+          } else if (key == "color") {
+            wall->setColor(it.value());
           }
         }
       } else if (key == "shape") {
         wall->setShape(parseGeometry(it.value() ) );
-      } else if (key == "color") {
-        wall->setColor(it.value());
-      } else if (key == "thickness") {
-        wall->setThickness(it.value());
       }
     }
   }

@@ -36,14 +36,14 @@ namespace fabricad::converter
     return maxBound;
   }
 
-  void SvgExporter::handleBlockStart(fabricad::blocks::BasicBuildingBlock* block, std::string const& filename, std::ofstream &out)
+  void SvgExporter::handleBlockStart(fabricad::blocks::BasicBuildingBlock* block, std::string const& filename, std::ostream &out)
   {
     out << "\t<g id=\"" << block->getId() << "\" ";
     out << "inkscape:label=\"" << block->getName() << "\" ";
     out << "inkscape:groupmode=\"layer\" >" << std::endl;
   }
 
-  void SvgExporter::handleBlockFinish(fabricad::blocks::BasicBuildingBlock* block, std::string const& filename, std::ofstream &out)
+  void SvgExporter::handleBlockFinish(fabricad::blocks::BasicBuildingBlock* block, std::string const& filename, std::ostream &out)
   {
     out << "\t</g>" << std::endl;
   }
@@ -76,19 +76,19 @@ namespace fabricad::converter
     out.close();
   }
 
-  void SvgExporter::handleLayerStart(std::ofstream &out, shapelayer const& layer)
+  void SvgExporter::handleLayerStart(std::ostream &out, shapelayer const& layer)
   {
     out << "\t\t<g id=\"" << getCurrentBlock()->getId() << "_" << layer.id << "\" ";
     out << "inkscape:label=\"" << layer.name << "\" ";
     out << "inkscape:groupmode=\"layer\" >" << std::endl;
   }
 
-  void SvgExporter::handleLayerFinish(std::ofstream &out, shapelayer const& layer)
+  void SvgExporter::handleLayerFinish(std::ostream &out, shapelayer const& layer)
   {
     out << "\t\t</g>" << std::endl;
   }
 
-  void SvgExporter::handlePolygon(std::ofstream &out, polygon const& p)
+  void SvgExporter::handlePolygon(std::ostream &out, polygon const& p)
   {
     std::vector<point> const& points = p.outer();
     out << "\t\t\t<polygon points=\"";
@@ -101,7 +101,7 @@ namespace fabricad::converter
     out << std::endl;
   }
 
-  void SvgExporter::handleLinestring(std::ofstream &out, linestring const& l)
+  void SvgExporter::handleLinestring(std::ostream &out, linestring const& l)
   {
     out << "\t\t\t<polyline style=\"stroke:red;stroke-width:1\" points=\"";
     for(int i = 0 ; i < l.size() ; i++)
@@ -112,7 +112,7 @@ namespace fabricad::converter
     out << + "\" />" << std::endl;
   }
 
-  void SvgExporter::handlePoint(std::ofstream &out, point const& p)
+  void SvgExporter::handlePoint(std::ostream &out, point const& p)
   {
     float x = p.get<0>() + 10;
     float y = top - p.get<1>();

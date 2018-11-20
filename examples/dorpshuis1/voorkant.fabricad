@@ -7,16 +7,19 @@
   "blueprints": {
     "front": {
       "name": "Front",
+      "config": {
+        "thickness": 8
+      },
       "blocks": {
         "wall": {
           "name": "wall",
           "type": "EnglishBond",
-          "color": "darkred",
           "config": {
             "brickheight": 4,
             "brickwidth": 10,
             "start": 1,
-            "actual": "EnglishBond"
+            "actual": "EnglishBond",
+            "color": "darkred"
           },
           "shape": {
             "type": "polygon",
@@ -76,7 +79,9 @@
         "dakkapelraam": {
             "name": "dakkapelraam",
             "type": "cutout",
-            "color": "white",
+            "config": {
+              "color": "white"
+            },
             "shape": {
                 "type": "rectangle",
                 "width": 42,
@@ -153,7 +158,9 @@
         "deurraam": {
           "name": "Deur",
           "type": "cutout",
-          "color": "white",
+          "config": {
+            "color": "white"
+          },
           "shape": {
             "type": "rectangle",
             "width": 45,
@@ -167,7 +174,9 @@
         "raam": {
           "name": "Raam",
           "type": "cutout",
-          "color": "white",
+          "config": {
+            "color": "white"
+          },
           "shape": {
             "type": "rectangle",
             "width": 70,

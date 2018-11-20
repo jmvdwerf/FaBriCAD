@@ -10,6 +10,17 @@ namespace fabricad::config
     return name_;
   }
 
+  size_t Blueprint::getThickness()
+  {
+    return thickness_;
+  }
+
+  Blueprint* Blueprint::setThickness(size_t thickness)
+  {
+    thickness_ = thickness;
+    return this;
+  }
+
   Blueprint* Blueprint::setName(std::string name)
   {
     name_ = name;

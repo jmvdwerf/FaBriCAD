@@ -23,15 +23,15 @@ namespace fabricad::converter
     void handleBlueprintStart(fabricad::config::Blueprint* print, std::string const& filename, std::ofstream &out) override;
     void handleBlueprintFinish(fabricad::config::Blueprint* print, std::string const& filename, std::ofstream &out) override;
 
-    void handleBlockStart(fabricad::blocks::BasicBuildingBlock* block, std::string const& filename, std::ofstream &out) override;
-    void handleBlockFinish(fabricad::blocks::BasicBuildingBlock* block, std::string const& filename, std::ofstream &out) override;
+    void handleBlockStart(fabricad::blocks::BasicBuildingBlock* block, std::string const& filename, std::ostream &out) override;
+    void handleBlockFinish(fabricad::blocks::BasicBuildingBlock* block, std::string const& filename, std::ostream &out) override;
 
-    void handleLayerStart(std::ofstream &out, shapelayer const& layer) override;
-    void handleLayerFinish(std::ofstream &out, shapelayer const& layer) override;
+    void handleLayerStart(std::ostream &out, shapelayer const& layer) override;
+    void handleLayerFinish(std::ostream &out, shapelayer const& layer) override;
 
-    void handlePolygon(std::ofstream &out, polygon const& p) override;
-    void handleLinestring(std::ofstream &out, linestring const& l) override;
-    void handlePoint(std::ofstream &out, point const& p) override;
+    void handlePolygon(std::ostream &out, polygon const& p) override;
+    void handleLinestring(std::ostream &out, linestring const& l) override;
+    void handlePoint(std::ostream &out, point const& p) override;
 
   private:
     float top;

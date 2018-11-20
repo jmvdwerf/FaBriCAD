@@ -3,6 +3,7 @@
 
 
 #include <string>
+#include <ostream>
 #include <fstream>
 
 #include "../config/Project.h"
@@ -48,21 +49,22 @@ namespace fabricad::converter
     void exportToFile(std::string const& filename, fabricad::config::Project* p);
 
   protected:
-    virtual void handleProjectStart(fabricad::config::Project* project, std::string const& filename, std::ofstream &out);
-    virtual void handleProjectFinish(fabricad::config::Project* project, std::string const& filename, std::ofstream &out);
+    virtual void handleProjectStart(fabricad::config::Project* project, std::string const& filename, std::ostream &out);
+    virtual void handleProjectFinish(fabricad::config::Project* project, std::string const& filename, std::ostream &out);
 
     virtual void handleBlueprintStart(fabricad::config::Blueprint* print, std::string const& filename, std::ofstream &out);
+    virtual void handleBlueprintLoop(fabricad::config::Blueprint* print, std::string const& filename, std::ofstream &out);
     virtual void handleBlueprintFinish(fabricad::config::Blueprint* print, std::string const& filename, std::ofstream &out);
 
-    virtual void handleBlockStart(fabricad::blocks::BasicBuildingBlock*, std::string const& filename, std::ofstream &out);
-    virtual void handleBlockFinish(fabricad::blocks::BasicBuildingBlock*, std::string const& filename, std::ofstream &out);
+    virtual void handleBlockStart(fabricad::blocks::BasicBuildingBlock*, std::string const& filename, std::ostream &out);
+    virtual void handleBlockFinish(fabricad::blocks::BasicBuildingBlock*, std::string const& filename, std::ostream &out);
 
-    virtual void handleLayerStart(std::ofstream &out, shapelayer const& layer);
-    virtual void handleLayerFinish(std::ofstream &out, shapelayer const& layer);
+    virtual void handleLayerStart(std::ostream &out, shapelayer const& layer);
+    virtual void handleLayerFinish(std::ostream &out, shapelayer const& layer);
 
-    virtual void handlePolygon(std::ofstream &out, polygon const& p) = 0;
-    virtual void handleLinestring(std::ofstream &out, linestring const& l) = 0;
-    virtual void handlePoint(std::ofstream &out, point const& p) = 0;
+    virtual void handlePolygon(std::ostream &out, polygon const& p) = 0;
+    virtual void handleLinestring(std::ostream &out, linestring const& l) = 0;
+    virtual void handlePoint(std::ostream &out, point const& p) = 0;
 
     bool createInitialFile = true;
     bool reverseOrderPolygons = false;
@@ -72,11 +74,11 @@ namespace fabricad::converter
     fabricad::config::Project* getCurrentProject();
     fabricad::blocks::BasicBuildingBlock* getCurrentBlock();
 
-  private:
     void handleBlueprint(fabricad::config::Blueprint* print, std::string const& filename, std::ofstream &out);
-    void handleBlock(std::pair<fabricad::blocks::BasicBuildingBlock*, std::vector<shapelayer>> const& blockItem, std::string const& filename, std::ofstream &out);
-    void handleLayer(std::ofstream &out, shapelayer const& layer);
+    void handleBlock(std::pair<fabricad::blocks::BasicBuildingBlock*, std::vector<shapelayer>> const& blockItem, std::string const& filename, std::ostream &out);
+    void handleLayer(std::ostream &out, shapelayer const& layer);
 
+  private:
     fabricad::config::Blueprint* currentBlueprint;
     fabricad::config::Project* currentProject;
     fabricad::blocks::BasicBuildingBlock* currentBlock;

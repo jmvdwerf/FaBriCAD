@@ -18,10 +18,15 @@ namespace fabricad::config
 
     std::string getName();
     Blueprint* setName(std::string name);
+
     std::string getId();
     Blueprint* setId(std::string id);
+
     std::string getDescription();
     Blueprint* setDescription(std::string description);
+
+    size_t getThickness();
+    Blueprint* setThickness(size_t thickness);
 
     std::string toString();
 
@@ -36,9 +41,10 @@ namespace fabricad::config
     void render();
     void initializeLayerSet(std::vector<shapelayer> &layers);
 
-    std::string name_;
-    std::string description_;
-    std::string id_;
+    std::string name_ = "";
+    std::string description_ = "";
+    std::string id_ = "";
+    size_t thickness_ = 0;
 
     std::vector<BasicBuildingBlock*> blocks_;
 

@@ -33,17 +33,22 @@ namespace fabricad::converter
 
     handleBlueprintStart(print, filename, out);
 
-    for(auto &layer: print->getLayers())
-    {
-      handleBlock(layer, filename, out);
-    }
+    handleBlueprintLoop(print, filename, out);
 
     handleBlueprintFinish(print, filename, out);
 
     currentBlueprint = NULL;
   }
 
-  void Exporter::handleBlock(std::pair<fabricad::blocks::BasicBuildingBlock*, std::vector<shapelayer>> const& blockItem, std::string const& filename, std::ofstream &out)
+  void Exporter::handleBlueprintLoop(fabricad::config::Blueprint* print, std::string const& filename, std::ofstream &out)
+  {
+    for(auto &layer: print->getLayers())
+    {
+      handleBlock(layer, filename, out);
+    }
+  }
+
+  void Exporter::handleBlock(std::pair<fabricad::blocks::BasicBuildingBlock*, std::vector<shapelayer>> const& blockItem, std::string const& filename, std::ostream &out)
   {
     currentBlock = blockItem.first;
 
@@ -59,19 +64,19 @@ namespace fabricad::converter
     currentBlock = NULL;
   }
 
-  void Exporter::handleBlockStart(fabricad::blocks::BasicBuildingBlock*, std::string const& filename, std::ofstream &out)
+  void Exporter::handleBlockStart(fabricad::blocks::BasicBuildingBlock*, std::string const& filename, std::ostream &out)
   {
   }
 
-  void Exporter::handleBlockFinish(fabricad::blocks::BasicBuildingBlock*, std::string const& filename, std::ofstream &out)
+  void Exporter::handleBlockFinish(fabricad::blocks::BasicBuildingBlock*, std::string const& filename, std::ostream &out)
   {
   }
 
-  void Exporter::handleProjectStart(fabricad::config::Project* project, std::string const& filename, std::ofstream &out)
+  void Exporter::handleProjectStart(fabricad::config::Project* project, std::string const& filename, std::ostream &out)
   {
   }
 
-  void Exporter::handleProjectFinish(fabricad::config::Project* project, std::string const& filename, std::ofstream &out)
+  void Exporter::handleProjectFinish(fabricad::config::Project* project, std::string const& filename, std::ostream &out)
   {
   }
 
@@ -85,7 +90,7 @@ namespace fabricad::converter
   }
 
 
-  void Exporter::handleLayer(std::ofstream &out, shapelayer const& layer)
+  void Exporter::handleLayer(std::ostream &out, shapelayer const& layer)
   {
     handleLayerStart(out, layer);
     if (reverseOrderPolygons) {
@@ -113,11 +118,11 @@ namespace fabricad::converter
     handleLayerFinish(out, layer);
   }
 
-  void Exporter::handleLayerStart(std::ofstream &out, shapelayer const& layer)
+  void Exporter::handleLayerStart(std::ostream &out, shapelayer const& layer)
   {
   }
 
-  void Exporter::handleLayerFinish(std::ofstream &out, shapelayer const& layer)
+  void Exporter::handleLayerFinish(std::ostream &out, shapelayer const& layer)
   {
   }
 
