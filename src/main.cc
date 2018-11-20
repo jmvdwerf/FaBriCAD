@@ -46,7 +46,7 @@ void printHelp(std::string error)
 int main(int argc, char* argv[])
 {
   std::vector<outputType> outputs;
-  std::string filename;
+  std::vector<std::string> filenames;
 
   program = argv[0];
 
@@ -69,37 +69,40 @@ int main(int argc, char* argv[])
       }
       outputs.push_back({argument.substr(2), argv[counter]});
     } else {
-      filename = argument;
+      filenames.push_back(argument);
     }
     counter++;
   }
 
-  if ((filename.empty()) || outputs.empty()) {
+  if ((filenames.empty()) || outputs.empty()) {
     printHelp("");
     return 2;
   }
 
-  config::Project* p = config::JsonReader::read(filename);
-
-  for(auto& t: outputs)
+  for(auto& filename: filenames)
   {
-    // First check if output dir exists
-    boost::filesystem::path outputdir(t.output.c_str());
-    if (!outputdir.parent_path().empty()) {
-      boost::filesystem::create_directories(outputdir.parent_path());
-    }
+    config::Project* p = config::JsonReader::read(filename);
 
-    if (t.type == "txt") {
-      fabricad::converter::Exporter* exp = new fabricad::converter::TxtExporter();
-      exp->exportToFile(t.output, p);
-    } else if (t.type == "svg") {
-      fabricad::converter::Exporter* exp = new fabricad::converter::SvgExporter();
-      exp->exportToFile(t.output, p);
-    } else if (t.type == "scad") {
-      fabricad::converter::Exporter* exp = new fabricad::converter::ScadExporter();
-      exp->exportToFile(t.output, p);
-    } else {
-      std::cout << "Unknown type: " << t.type << std::endl;
+    for(auto& t: outputs)
+    {
+      // First check if output dir exists
+      boost::filesystem::path outputdir(t.output.c_str());
+      if (!outputdir.parent_path().empty()) {
+        boost::filesystem::create_directories(outputdir.parent_path());
+      }
+
+      if (t.type == "txt") {
+        fabricad::converter::Exporter* exp = new fabricad::converter::TxtExporter();
+        exp->exportToFile(t.output, p);
+      } else if (t.type == "svg") {
+        fabricad::converter::Exporter* exp = new fabricad::converter::SvgExporter();
+        exp->exportToFile(t.output, p);
+      } else if (t.type == "scad") {
+        fabricad::converter::Exporter* exp = new fabricad::converter::ScadExporter();
+        exp->exportToFile(t.output, p);
+      } else {
+        std::cout << "Unknown type: " << t.type << std::endl;
+      }
     }
   }
 
