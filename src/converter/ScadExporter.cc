@@ -28,6 +28,8 @@ namespace fabricad::converter
     ostringstream unite;
     ostringstream differ;
 
+    linestr.clear();
+
     for(auto &layer: print->getLayers())
     {
       if (layer.first->getType() == "cutout") {
@@ -36,22 +38,29 @@ namespace fabricad::converter
         handleBlock(layer, filename, unite);
       }
     }
-    if (getCurrentBlueprint()->getThickness() > 0) {
-      out << "\tlinear_extrude(height=" << getCurrentBlueprint()->getThickness() << ") { ";
+    /*
+    if (getThickness() > 0) {
+      out << "\tlinear_extrude(height=" << getThickness() << ") { ";
     }
+    */
     out << "\tdifference() {" << std::endl << "\t\tunion() {" << std::endl;
     out << unite.str() << "\t\t} // union" << std::endl;
     out << differ.str() << std::endl;
+    out << linestr.str() << std::endl;
     out << "\t} // difference" << std::endl;
-    if (getCurrentBlueprint()->getThickness() > 0) {
+    /*
+    if (getThickness() > 0) {
       out << "\t} // extrude" << std::endl;
-    }
+    }*/
   }
 
   void ScadExporter::handlePolygon(std::ostream &out, polygon const& p)
   {
     std::vector<point> const& points = p.outer();
-    out << "\t\tcolor(\""<< getCurrentBlock()->getColor() << "\") { ";
+    out << "\t\tcolor(\""<< getColor() << "\") { ";
+    if (getThickness() > 0) {
+      out << "linear_extrude(height=" << getThickness() << ") { ";
+    }
     out << "polygon( [ " << std::endl;
     out << "\t\t\t";
     handlePoint(out, points[0]);
@@ -60,19 +69,38 @@ namespace fabricad::converter
       out << "," << std::endl << "\t\t\t";
       handlePoint(out, points[i]);
     }
-    out << std::endl << "\t\t] ); }" << std::endl << std::endl;
+    out << std::endl << "\t\t] ); }";
+    if (getThickness() > 0) {
+      out << " } ";
+    }
+    out << std::endl << std::endl;
   }
 
   void ScadExporter::handleLinestring(std::ostream &out, linestring const& l)
   {
     /*
-    out << "<polyline style=\"stroke:red;stroke-width:1\" points=\"";
+    linestr << "\t\t// add line " << std::endl;
+    std::vector<point> front;
+    std::vector<point> back;
+    float ln = getLineWidth() / 2;
     for(int i = 0 ; i < l.size() ; i++)
     {
-      handlePoint(out, l[i]);
-      out << " ";
+      front.push_back(increasePoint(l[i], ln));
+      back.insert(back.begin(), increasePoint(l[i], -1 * ln));
     }
-    out << + "\" />";
+    polygon poly;
+    for(auto& p: front)
+    {
+      bg::append(poly.outer(), p);
+    }
+    for(auto& p: back)
+    {
+      bg::append(poly.outer(), p);
+    }
+
+    linestr << "\t\ttranslate([0,0," << (getThickness() - getLineDepth()) << "]) {" << std::endl;
+    handlePolygon(linestr, poly);
+    linestr << "\t\t} // translate line" << std::endl;
     */
   }
 

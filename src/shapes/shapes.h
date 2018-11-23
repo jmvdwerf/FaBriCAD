@@ -47,4 +47,6 @@ std::string p2s(point p);
 float getDxFor(float angle, float length);
 float getDyFor(float angle, float length);
 
+point increasePoint(point p, float inc);
+
 #endif

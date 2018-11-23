@@ -78,6 +78,19 @@ namespace fabricad::converter
     void handleBlock(std::pair<fabricad::blocks::BasicBuildingBlock*, std::vector<shapelayer>> const& blockItem, std::string const& filename, std::ostream &out);
     void handleLayer(std::ostream &out, shapelayer const& layer);
 
+    std::string getColor();
+    std::string getLineColor();
+    float getThickness();
+    float getLineDepth();
+    float getLineWidth();
+
+    std::string color_ = "royalblue";
+    std::string linecolor_ = "red";
+
+    float thickness_ = 8;
+    float linewidth_ = 1;
+    float linedepth_ = 0.4;
+
   private:
     fabricad::config::Blueprint* currentBlueprint;
     fabricad::config::Project* currentProject;

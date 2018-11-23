@@ -157,4 +157,90 @@ namespace fabricad::converter
   {
     return currentBlock;
   }
+
+  std::string Exporter::getColor()
+  {
+    if (getCurrentBlock()->getColor().empty()) {
+      if (getCurrentBlueprint()->getColor().empty()) {
+        if(getCurrentProject()->getColor().empty()) {
+          return color_;
+        } else {
+          return getCurrentProject()->getColor();
+        }
+      } else {
+        return getCurrentBlueprint()->getColor();
+      }
+    } else {
+      return getCurrentBlock()->getColor();
+    }
+  }
+
+  std::string Exporter::getLineColor()
+  {
+    if (getCurrentBlock()->getLineColor().empty()) {
+      if (getCurrentBlueprint()->getLineColor().empty()) {
+        if(getCurrentProject()->getLineColor().empty()) {
+          return linecolor_;
+        } else {
+          return getCurrentProject()->getLineColor();
+        }
+      } else {
+        return getCurrentBlueprint()->getLineColor();
+      }
+    } else {
+      return getCurrentBlock()->getLineColor();
+    }
+  }
+
+  float Exporter::getThickness()
+  {
+    if (getCurrentBlock()->getThickness() == 0.0) {
+      if (getCurrentBlueprint()->getThickness() == 0.0) {
+        if(getCurrentProject()->getThickness() == 0.0) {
+          return thickness_;
+        } else {
+          return getCurrentProject()->getThickness();
+        }
+      } else {
+        return getCurrentBlueprint()->getThickness();
+      }
+    } else {
+      return getCurrentBlock()->getThickness();
+    }
+  }
+
+  float Exporter::getLineDepth()
+  {
+    if (getCurrentBlock()->getLineDepth() == 0) {
+      if (getCurrentBlueprint()->getLineDepth() == 0) {
+        if(getCurrentProject()->getLineDepth() == 0.0) {
+          return linedepth_;
+        } else {
+          return getCurrentProject()->getLineDepth();
+        }
+      } else {
+        return getCurrentBlueprint()->getLineDepth();
+      }
+    } else {
+      return getCurrentBlock()->getLineDepth();
+    }
+  }
+
+  float Exporter::getLineWidth()
+  {
+    if (getCurrentBlock()->getLineWidth() == 0) {
+      if (getCurrentBlueprint()->getLineWidth() == 0) {
+        if(getCurrentProject()->getLineWidth() == 0.0) {
+          return linewidth_;
+        } else {
+          return getCurrentProject()->getLineWidth();
+        }
+      } else {
+        return getCurrentBlueprint()->getLineWidth();
+      }
+    } else {
+      return getCurrentBlock()->getLineWidth();
+    }
+  }
+
 }

@@ -97,13 +97,13 @@ namespace fabricad::converter
       handlePoint(out, points[i]);
       out << " ";
     }
-    out << "\" style=\"fill:"<< getCurrentBlock()->getColor() << ";stroke:black;stroke-width:1\" fill-opacity=\"0.5\" />";
+    out << "\" style=\"fill:"<< getColor() << ";stroke:black;stroke-width:1\" fill-opacity=\"0.5\" />";
     out << std::endl;
   }
 
   void SvgExporter::handleLinestring(std::ostream &out, linestring const& l)
   {
-    out << "\t\t\t<polyline style=\"stroke:red;stroke-width:1\" points=\"";
+    out << "\t\t\t<polyline style=\"stroke:"<< getLineColor() << ";stroke-width:" << getLineWidth() << "\" points=\"";
     for(int i = 0 ; i < l.size() ; i++)
     {
       handlePoint(out, l[i]);

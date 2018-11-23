@@ -83,3 +83,11 @@ float getDyFor(float angle, float length)
 {
   return cos(angle) * length;
 }
+
+point increasePoint(point p, float inc)
+{
+  float x = p.get<0>() + inc;
+  float y = p.get<1>() + inc;
+
+  return point(x, y);
+}

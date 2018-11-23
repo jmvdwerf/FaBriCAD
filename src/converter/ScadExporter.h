@@ -24,8 +24,8 @@ namespace fabricad::converter
     void handleLinestring(std::ostream &out, linestring const& l) override;
     void handlePoint(std::ostream &out, point const& p) override;
 
-    // float getLineDepth(fabricad::blocks:BasicBuildingBlock* block);
-    // float getLineWidth(fabricad::blocks:BasicBuildingBlock* block);
+  private:
+      ostringstream linestr;
   };
 }
 
