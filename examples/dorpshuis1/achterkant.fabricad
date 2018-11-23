@@ -9,7 +9,8 @@
     "achter":
     {
       "name": "Achterkant",
-      "blocks": {
+      "blocks":
+      {
         "wall": {
           "name": "wall",
           "type": "EnglishBond",
@@ -25,8 +26,8 @@
               { "x": 0   , "y": 192 },
               { "x": 275 , "y": 192 },
               { "x": 275 , "y":   0 },
-              { "x": 105 , "y":   0 },
-              { "x": 105 , "y": 130 }
+              { "x":  97 , "y":   0 },
+              { "x":  97 , "y": 130 }
             ]
           }
         },
@@ -43,6 +44,85 @@
             "origin": {
               "x": 97,
               "y":  0
+            }
+          }
+        },
+        "raam": {
+          "name": "Raam",
+          "type": "cutout",
+          "config": {
+            "color": "white"
+          },
+          "shape": {
+            "type": "rectangle",
+            "width": 70,
+            "height": 86,
+            "origin": {
+              "x": 155,
+              "y": 42
+            }
+          }
+        },
+        "raamlatij": {
+          "name": "Raamlatij",
+          "type": "lintel",
+          "config": {
+            "width": 35,
+            "height": 16,
+            "stones": 8,
+            "brickheight": 11,
+            "brickwidth": 4,
+            "strikingpoint": {
+              "x": 0,
+              "y": -130
+            },
+            "center": {
+              "x": 190,
+              "y": 128
+            }
+          }
+        },
+        "raamboven": {
+          "name": "Raam",
+          "type": "cutout",
+          "shape": {
+            "type": "rectangle",
+            "width": 62,
+            "height": 25,
+            "origin": {
+              "x": 159,
+              "y": 99
+            }
+          }
+        },
+        "raamonder": {
+          "name": "Raam",
+          "type": "cutout",
+          "shape": {
+            "type": "rectangle",
+            "width": 62,
+            "height": 47,
+            "origin": {
+              "x": 159,
+              "y": 47
+            }
+          }
+        },
+        "vensterbank": {
+          "name": "Vensterbank",
+          "type": "brickwall",
+          "config": {
+            "brickheight": 10,
+            "brickwidth": 3.7,
+            "start": 0
+          },
+          "shape": {
+            "type": "rectangle",
+            "width": 70,
+            "height": 10,
+            "origin": {
+              "x": 155,
+              "y": 32
             }
           }
         }

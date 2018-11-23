@@ -11,9 +11,12 @@
         "wall": {
           "name": "Berging zijkant",
           "type": "EnglishBond",
+          "config": {
+            "color": "darkred"
+          },
           "shape": {
             "type": "rectangle",
-            "width":  100,
+            "width":  108,
             "height": 136,
             "origin": {
               "x": 0,
@@ -24,13 +27,10 @@
         "snijstuk": {
           "name": "snijstuk",
           "type": "BasicBuildingBlock",
-          "config": {
-            "thickness": 3
-          },
           "shape": {
             "type": "rectangle",
             "width": 8,
-            "height": 135,
+            "height": 136,
             "origin": {
               "x": 100,
               "y":   0

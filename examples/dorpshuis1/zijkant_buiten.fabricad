@@ -16,7 +16,8 @@
           "config": {
             "brickheight": 4,
             "brickwidth": 10,
-            "start": 0
+            "start": 0,
+            "color": "darkred"
           },
           "shape": {
             "type": "polygon",
