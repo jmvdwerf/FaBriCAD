@@ -67,7 +67,8 @@ namespace fabricad::converter
 
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" << std::endl;
     out << "<svg height=\""<< topY << "mm\" width=\"" << topX << "mm\" ";
-    out << "viewBox=\"0 0 "<< topX << " " << topY << "\">" << std::endl;
+    out << "viewBox=\"0 0 "<< topX << " " << topY << "\" ";
+    out << "xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\">" << std::endl;
   }
 
   void SvgExporter::handleBlueprintFinish(fabricad::config::Blueprint* print, std::string const& filename, std::ofstream &out)
