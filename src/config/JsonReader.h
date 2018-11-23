@@ -32,6 +32,7 @@ namespace fabricad::config
     static fabricad::blocks::EnglishBond* parseEnglishBondwall(json &j);
     static fabricad::blocks::Lintel* parseLintel(json &j);
     static void parseWallParameters(Brickwall *wall, json &j);
+    static void parseBaseElement(BaseElement* b, json &j);
 
     static polygon parseGeometry(json &j);
     static point parsePoint(json &j);

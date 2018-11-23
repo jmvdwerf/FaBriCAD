@@ -7,25 +7,24 @@
 using namespace std;
 
 #include "Blueprint.h"
+#include "BaseElement.h"
 
 namespace fabricad::config
 {
 
-  class Project
+  class Project : public BaseElement
   {
   public:
     Project();
     ~Project();
     // Getters and setters
-    std::string getName();
-    std::string getDescription();
     std::string getVersion();
-    std::string getLicense();
-    std::string getAuthor();
-    Project* setName(std::string name);
-    Project* setDescription(std::string description);
     Project* setVersion(std::string version);
+
+    std::string getLicense();
     Project* setLicense(std::string license);
+
+    std::string getAuthor();
     Project* setAuthor(std::string author);
 
     std::vector<Blueprint*> getBlueprints();
@@ -34,8 +33,6 @@ namespace fabricad::config
 
     std::string toString();
   private:
-    std::string name_;
-    std::string description_;
     std::string version_;
     std::string license_;
     std::string author_;

@@ -4,13 +4,13 @@
 #include <string>
 
 #include "../shapes/shapes.h"
+#include "../config/BaseElement.h"
 
 using namespace std;
 
 
 
 namespace fabricad::blocks {
-
 
   /*
    * The getRenderedLayers() returns a vector of vectors. Each layer is a vector
@@ -28,16 +28,11 @@ namespace fabricad::blocks {
    * It is the responsibility of the Block to ensure that layers have no overlapping
    * lines..
    */
-  class BasicBuildingBlock {
+  class BasicBuildingBlock : public fabricad::config::BaseElement {
 
   public:
-    BasicBuildingBlock();
-
     std::string getId();
     BasicBuildingBlock* setId(std::string id);
-
-    std::string getName();
-    BasicBuildingBlock* setName(std::string name);
 
     std::string getType();
     BasicBuildingBlock* setType(std::string type);
@@ -69,8 +64,8 @@ namespace fabricad::blocks {
 
   private:
     std::string id_;
-    std::string name_;
     std::string type_;
+
   };
 
 }

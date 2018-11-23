@@ -32,13 +32,7 @@ struct shapelayer
   std::string id;
 };
 
-//namespace fabricad::shapes
-//{
-  std::vector<polygon> split(polygon p1, polygon p2);
-//}
-
-void createSVGFile(const std::string filename, std::vector<shapelayer> const &layers);
-void createSVGFile(const std::string filename, shapelayer const &layer);
+std::vector<polygon> split(polygon p1, polygon p2);
 
 void polygonmerge(std::vector<polygon> *orig, std::vector<polygon> const &toadd);
 void linestringmerge(std::vector<linestring> *orig, std::vector<linestring> const &toadd);
@@ -52,5 +46,7 @@ std::string p2s(point p);
 
 float getDxFor(float angle, float length);
 float getDyFor(float angle, float length);
+
+point increasePoint(point p, float inc);
 
 #endif

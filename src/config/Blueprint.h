@@ -3,24 +3,22 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "../blocks/BasicBuildingBlock.h"
+#include "BaseElement.h"
 
 using namespace std;
 using namespace fabricad::blocks;
 
 namespace fabricad::config
 {
-  class Blueprint
+  class Blueprint : public BaseElement
   {
   public:
     ~Blueprint();
 
-    std::string getName();
-    Blueprint* setName(std::string name);
     std::string getId();
     Blueprint* setId(std::string id);
-    std::string getDescription();
-    Blueprint* setDescription(std::string description);
 
     std::string toString();
 
@@ -28,20 +26,18 @@ namespace fabricad::config
     size_t getSize();
     Blueprint* addBlock(BasicBuildingBlock* block);
 
-    shapelayer getLayer(size_t layer);
-    std::vector<shapelayer> getLayers();
-
+    // shapelayer getLayer(size_t layer);
+    std::map<BasicBuildingBlock*,std::vector<shapelayer>> getLayers();
 
   private:
     void render();
+    void initializeLayerSet(std::vector<shapelayer> &layers);
 
-    std::string name_;
-    std::string description_;
-    std::string id_;
+    std::string id_ = "";
 
     std::vector<BasicBuildingBlock*> blocks_;
 
-    std::vector<shapelayer> layers_;
+    std::map<BasicBuildingBlock*, std::vector<shapelayer>> shapeElements_;
 
   };
 

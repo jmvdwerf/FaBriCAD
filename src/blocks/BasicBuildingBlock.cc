@@ -3,13 +3,6 @@
 
 namespace fabricad::blocks {
 
-  BasicBuildingBlock::BasicBuildingBlock()
-  {
-    id_   = "";
-    name_ = "";
-    type_ = "";
-  }
-
   string BasicBuildingBlock::getId()
   {
     return id_;
@@ -18,18 +11,6 @@ namespace fabricad::blocks {
   BasicBuildingBlock* BasicBuildingBlock::setId(string id)
   {
     id_ = id;
-    return this;
-  }
-
-  string BasicBuildingBlock::getName()
-  {
-    return name_;
-  }
-
-
-  BasicBuildingBlock* BasicBuildingBlock::setName(string name)
-  {
-    name_ = name;
     return this;
   }
 
