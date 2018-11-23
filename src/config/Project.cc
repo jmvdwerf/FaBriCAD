@@ -6,35 +6,11 @@ namespace fabricad::config
 {
   Project::Project()
   {
-    name_ = "Default Project";
-    description_ = "Default project description";
-    version_ = "0.1";
-    author_ = "Author";
-    license_ = "MIT";
-
-  }
-
-
-  std::string Project::getName()
-  {
-    return name_;
-  }
-
-  Project* Project::setName(std::string name)
-  {
-    name_ = name;
-    return this;
-  }
-
-  std::string Project::getDescription()
-  {
-    return description_;
-  }
-
-  Project* Project::setDescription(std::string description)
-  {
-    description_ = description;
-    return this;
+    setName("Default Project");
+    setDescription("Default project description");
+    setVersion("0.1");
+    setAuthor("Author");
+    setLicense("MIT");
   }
 
   std::string Project::getVersion()

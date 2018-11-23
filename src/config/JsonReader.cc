@@ -15,20 +15,47 @@ namespace fabricad::config
     return JsonReader::parseProject(j);
   }
 
+  void JsonReader::parseBaseElement(BaseElement* b, json &j)
+  {
+    for (json::iterator it = j.begin(); it != j.end(); ++it)
+    {
+      // First get all properties
+      std::string key = it.key();
+
+      if (key =="name") {
+        b->setName(it.value());
+      } else if( key == "description" ) {
+        b->setDescription(it.value());
+      } else if (key == "config") {
+        for(json::iterator bit = it.value().begin(); bit != it.value().end() ; ++bit)
+        {
+          std::string config = bit.key();
+          if (config == "thickness") {
+            b->setThickness(bit.value());
+          } else if (config == "linewidth") {
+            b->setLineWidth(bit.value());
+          } else if (config == "linedepth") {
+            b->setLineDepth(bit.value());
+          } else if (config == "color") {
+            b->setColor(bit.value());
+          } else if (config == "linecolor") {
+            b->setLineColor(bit.value());
+          }
+        }
+      }
+    }
+  }
+
   Project* JsonReader::parseProject(json &j)
   {
     Project* p = new Project();
+    parseBaseElement(p, j);
 
     for (json::iterator it = j.begin(); it != j.end(); ++it)
     {
-
       // First get all properties
       std::string key = it.key();
-      if (key =="name") {
-          p->setName(it.value());
-      } else if( key == "description" ) {
-          p->setDescription(it.value());
-      } else if( key == "license" ) {
+      if( key == "license" ) {
           p->setLicense(it.value());
       } else if( key == "author" ) {
           p->setAuthor(it.value());
@@ -53,27 +80,15 @@ namespace fabricad::config
   {
     Blueprint* bp = new Blueprint();
     bp->setId(j.key());
+    parseBaseElement(bp, j.value());
 
     for(json::iterator it = j.value().begin(); it != j.value().end(); ++it)
     {
       std::string key = it.key();
-
-      if (key == "name") {
-        bp->setName(it.value());
-      } else if (key == "description") {
-        bp->setDescription(it.value());
-      } else if (key == "blocks") {
+      if (key == "blocks") {
         for(json::iterator bit = it.value().begin(); bit != it.value().end() ; ++bit)
         {
           bp->addBlock(JsonReader::parseBlock(bit));
-        }
-      } else if (key == "config") {
-        for(json::iterator bit = it.value().begin(); bit != it.value().end() ; ++bit)
-        {
-          std::string config = bit.key();
-          if (config == "thickness") {
-            bp->setThickness(bit.value());
-          }
         }
       }
     }
@@ -166,25 +181,16 @@ namespace fabricad::config
   fabricad::blocks::BasicBuildingBlock* JsonReader::parseBasicBuildingBlock(json &j)
   {
     fabricad::blocks::BasicBuildingBlock* block = new fabricad::blocks::BasicBuildingBlock();
+    parseBaseElement(block, j);
 
     for(json::iterator it = j.begin(); it != j.end(); ++it)
     {
       std::string key = it.key();
 
-      if (key == "name") {
-        block->setName(it.value());
-      } else if (key == "type") {
+      if (key == "type") {
         block->setType(it.value());
       } else if (key == "shape") {
         block->setShape( parseGeometry(it.value()) );
-      } else if (key == "config") {
-        for(json::iterator bit = it.value().begin(); bit != it.value().end() ; ++bit)
-        {
-          std::string config = bit.key();
-          if (config == "color") {
-            block->setColor(bit.value());
-          }
-        }
       }
     }
 
@@ -233,13 +239,12 @@ namespace fabricad::config
 
   void JsonReader::parseWallParameters(Brickwall* wall, json &j)
   {
-        for(json::iterator it = j.begin(); it != j.end(); ++it)
+    parseBaseElement(wall, j);
+    for(json::iterator it = j.begin(); it != j.end(); ++it)
     {
       std::string key = it.key();
 
-      if (key == "name") {
-        wall->setName(it.value());
-      } else if (key == "type") {
+      if (key == "type") {
         wall->setType(it.value());
       } else if (key == "config") {
         for(json::iterator props = it.value().begin(); props != it.value().end() ; ++props)
@@ -251,8 +256,6 @@ namespace fabricad::config
             wall->setBrickWidth(props.value());
           } else if (propkey == "start") {
             wall->setStartRow(props.value());
-          } else if (key == "color") {
-            wall->setColor(it.value());
           }
         }
       } else if (key == "shape") {

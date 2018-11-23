@@ -14,21 +14,23 @@ namespace fabricad::converter
     std::ofstream out;
     if (createInitialFile) {
       // if file name exists, rename by adding a number to it
+
       boost::filesystem::path file(filename.c_str());
+      std::string newfilename = filename;
+      /*
       if (boost::filesystem::exists(file)) {
         std::string ext(file.extension().c_str());
         std::string startfilename = filename.substr(0, filename.rfind(ext));
         size_t n = 1;
-        std::string newfilename = startfilename + "-" + std::to_string(n) + ext;
+        newfilename = startfilename + "-" + std::to_string(n) + ext;
         while(boost::filesystem::exists(newfilename))
         {
           ++n;
           newfilename = startfilename + "-" + std::to_string(n) + ext;
         }
-        out.open(newfilename.c_str(), std::ofstream::out);
-      } else {
-        out.open(filename.c_str(), std::ofstream::out);
       }
+      */
+      out.open(newfilename.c_str(), std::ofstream::out);
     }
     handleProjectStart(project, filename, out);
 

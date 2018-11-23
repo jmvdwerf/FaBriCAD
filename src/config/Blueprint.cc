@@ -5,27 +5,6 @@
 
 namespace fabricad::config
 {
-  std::string Blueprint::getName()
-  {
-    return name_;
-  }
-
-  size_t Blueprint::getThickness()
-  {
-    return thickness_;
-  }
-
-  Blueprint* Blueprint::setThickness(size_t thickness)
-  {
-    thickness_ = thickness;
-    return this;
-  }
-
-  Blueprint* Blueprint::setName(std::string name)
-  {
-    name_ = name;
-    return this;
-  }
 
   std::string Blueprint::getId()
   {
@@ -35,17 +14,6 @@ namespace fabricad::config
   Blueprint* Blueprint::setId(std::string id)
   {
     id_ = id;
-    return this;
-  }
-
-  std::string Blueprint::getDescription()
-  {
-    return description_;
-  }
-
-  Blueprint* Blueprint::setDescription(std::string description)
-  {
-    description_ = description;
     return this;
   }
 

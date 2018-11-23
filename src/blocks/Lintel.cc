@@ -129,6 +129,7 @@ namespace fabricad::blocks
     bg::append(outside.outer(), left  );
     bg::correct(outside);
     this->layers_[0].polygons.push_back(outside);
+    this->layers_[1].lines.push_back({left, leftT, rightT, right, left});
 
     // Create the vertical lines
     size_t counter = 0; // used for alternating the stone pattern

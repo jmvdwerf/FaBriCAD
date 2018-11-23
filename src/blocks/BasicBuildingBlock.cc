@@ -3,25 +3,6 @@
 
 namespace fabricad::blocks {
 
-  BasicBuildingBlock::BasicBuildingBlock()
-  {
-    id_   = "";
-    name_ = "";
-    type_ = "";
-    color_ = "royalblue";
-  }
-
-  std::string BasicBuildingBlock::getColor()
-  {
-    return color_;
-  }
-
-  BasicBuildingBlock* BasicBuildingBlock::setColor(std::string color)
-  {
-    color_ = color;
-    return this;
-  }
-
   string BasicBuildingBlock::getId()
   {
     return id_;
@@ -30,18 +11,6 @@ namespace fabricad::blocks {
   BasicBuildingBlock* BasicBuildingBlock::setId(string id)
   {
     id_ = id;
-    return this;
-  }
-
-  string BasicBuildingBlock::getName()
-  {
-    return name_;
-  }
-
-
-  BasicBuildingBlock* BasicBuildingBlock::setName(string name)
-  {
-    name_ = name;
     return this;
   }
 
