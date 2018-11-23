@@ -1,0 +1,31 @@
+{
+  "name": "Dorpshuis",
+  "description": "Hier komen nog 2 ramen op hoogte 160, gelijk dakkapelraam aan voorzijde",
+  "author": "J.M.E.M. van der Werf",
+  "version": "1.0",
+  "license": "MIT",
+  "blueprints":
+  {
+    "dakvoor": {
+      "name": "Dak voorkant",
+      "blocks": {
+        "dakvoor": {
+          "type": "BasicBuildingBlock",
+          "shape": {
+            "type": "polygon",
+            "points": [
+              {"x":   0, "y":   0 },
+              {"x": 105, "y":   0 },
+              {"x": 105, "y":  43.698802154 },
+              {"x": 165, "y":  43.698802154 },
+              {"x": 165, "y":   0 },
+              {"x": 275, "y":   0 },
+              {"x": 275, "y": 166.2 },
+              {"x":   0, "y": 166.2 }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

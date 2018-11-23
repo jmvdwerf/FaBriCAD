@@ -11,6 +11,9 @@
         "floor": {
           "name": "wall",
           "type": "BasicBuildingBlock",
+          "config": {
+            "thickness": 2
+          },
           "shape": {
             "type": "polygon",
             "points": [
@@ -44,6 +47,9 @@
         "woonkamer": {
           "name": "woonkamer",
           "type": "BasicBuildingBlock",
+          "config": {
+            "thickness": 3
+          },
           "shape": {
             "type": "rectangle",
             "height": 120,
@@ -54,6 +60,9 @@
         "eetkamer": {
           "name": "eetkamer",
           "type": "BasicBuildingBlock",
+          "config": {
+            "thickness": 3
+          },
           "shape": {
             "type": "rectangle",
             "height": 119,
@@ -64,6 +73,9 @@
         "hal": {
           "name": "hal",
           "type": "BasicBuildingBlock",
+          "config": {
+            "thickness": 3
+          },
           "shape": {
             "type": "rectangle",
             "height": 120,
@@ -74,6 +86,9 @@
         "keuken": {
           "name": "keuken",
           "type": "BasicBuildingBlock",
+          "config": {
+            "thickness": 3
+          },
           "shape": {
             "type": "rectangle",
             "height": 119,
@@ -84,9 +99,12 @@
         "bijkeuken": {
           "name": "bijkeuken",
           "type": "BasicBuildingBlock",
+          "config": {
+            "thickness": 3
+          },
           "shape": {
             "type": "rectangle",
-            "height": 45,
+            "height": 52,
             "width":  40,
             "origin": { "x": 178, "y": 260 }
           }
@@ -94,16 +112,22 @@
         "toilet": {
           "name": "toilet",
           "type": "BasicBuildingBlock",
+          "config": {
+            "thickness": 3
+          },
           "shape": {
             "type": "rectangle",
-            "height": 42,
+            "height": 35,
             "width": 40,
-            "origin": { "x": 178, "y": 310}
+            "origin": { "x": 178, "y": 317}
           }
         },
         "badkamer": {
           "name": "badkamer",
           "type": "BasicBuildingBlock",
+          "config": {
+            "thickness": 3
+          },
           "shape": {
             "type": "rectangle",
             "height": 92,

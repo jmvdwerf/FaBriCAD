@@ -6,9 +6,9 @@
   "license": "MIT",
   "blueprints":
   {
-    "buiten":
+    "achter":
     {
-      "name": "Zijkant buiten",
+      "name": "Achterkant",
       "blocks": {
         "wall": {
           "name": "wall",
@@ -21,13 +21,29 @@
           "shape": {
             "type": "polygon",
             "points": [
-              { "x": 0   , "y":   0 },
+              { "x": 0   , "y": 130 },
               { "x": 0   , "y": 192 },
-              { "x": 130 , "y": 267 },
-              { "x": 260 , "y": 192 },
-              { "x": 260 , "y": 135 },
-              { "x": 260 , "y":   0 }
+              { "x": 275 , "y": 192 },
+              { "x": 275 , "y":   0 },
+              { "x": 105 , "y":   0 },
+              { "x": 105 , "y": 130 }
             ]
+          }
+        },
+        "snijstuk": {
+          "name": "snijstuk",
+          "type": "BasicBuildingBlock",
+          "config": {
+            "thickness": 3
+          },
+          "shape": {
+            "type": "rectangle",
+            "width": 8,
+            "height": 136,
+            "origin": {
+              "x": 97,
+              "y":  0
+            }
           }
         }
       }

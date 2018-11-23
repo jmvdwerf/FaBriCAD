@@ -1,0 +1,95 @@
+{
+    "name": "Dorpshuis",
+    "description": "Dorpshuis 1, naar voorbeeld van het voorbeeld op de Koestraat 6 in Oirschot. Dit wordt het hoekhuis in een rijtje van 3.",
+    "author": "J.M.E.M. van der Werf",
+    "version": "1.0",
+    "license": "MIT",
+    "blueprints": {
+
+        "bergingachter": {
+            "name": "Achterkant van de berging",
+            "blocks": {
+                "wall": {
+                    "name": "Muur",
+                    "type": "EnglishBond",
+                    "config": {
+                        "brickheight": 4,
+                        "brickwidth": 10,
+                        "start":  1
+                    },
+                    "shape": {
+                        "type": "rectangle",
+                        "width": 105,
+                        "height": 136,
+                        "origin": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "badkamerraam": {
+                    "name": "klein raam badkamer",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "rectangle",
+                        "width": 12,
+                        "height": 24,
+                        "origin": {
+                            "x": 20,
+                            "y": 72
+                        }
+                    }
+                },
+                "badkamerraamlatij": {
+                    "name": "Latij boven raam",
+                    "type": "Brickwall",
+                    "config": {
+                        "brickwidth": 4,
+                        "brickheight": 8,
+                        "start": 0
+                    },
+                    "shape": {
+                        "type": "rectangle",
+                        "width": 12,
+                        "height": 8,
+                        "origin": {
+                            "x": 20,
+                            "y": 96
+                        }
+                    }
+                },
+                "toiletkamerraam": {
+                    "name": "klein raam badkamer",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "rectangle",
+                        "width": 12,
+                        "height": 24,
+                        "origin": {
+                            "x": 73,
+                            "y": 72
+                        }
+                    }
+                },
+                "toiletkamerraamlatij": {
+                    "name": "Latij boven raam",
+                    "type": "Brickwall",
+                    "config": {
+                        "brickwidth": 4,
+                        "brickheight": 8,
+                        "start": 0
+                    },
+                    "shape": {
+                        "type": "rectangle",
+                        "width": 12,
+                        "height": 8,
+                        "origin": {
+                            "x": 73,
+                            "y": 96
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
