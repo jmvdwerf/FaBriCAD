@@ -17,17 +17,18 @@
           "config": {
             "brickheight": 4,
             "brickwidth": 10,
-            "start": 0
+            "start": 0,
+            "color": "darkred"
           },
           "shape": {
             "type": "polygon",
             "points": [
-              { "x": 0   , "y": 130 },
+              { "x": 0   , "y": 135 },
               { "x": 0   , "y": 192 },
               { "x": 275 , "y": 192 },
               { "x": 275 , "y":   0 },
               { "x":  97 , "y":   0 },
-              { "x":  97 , "y": 130 }
+              { "x":  97 , "y": 135 }
             ]
           }
         },
