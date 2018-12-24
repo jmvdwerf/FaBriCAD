@@ -38,6 +38,7 @@ namespace fabricad::config
     static point parsePoint(json &j);
     static polygon parsePolygon(json &j);
     static polygon parseRectangle(json &j);
+    static polygon parseEllipse(json &j);
 
   };
 

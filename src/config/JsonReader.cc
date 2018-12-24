@@ -21,7 +21,7 @@ namespace fabricad::config
     {
       // First get all properties
       std::string key = it.key();
-
+      std::transform(key.begin(), key.end(), key.begin(), ::tolower);
       if (key =="name") {
         b->setName(it.value());
       } else if( key == "description" ) {
@@ -30,6 +30,7 @@ namespace fabricad::config
         for(json::iterator bit = it.value().begin(); bit != it.value().end() ; ++bit)
         {
           std::string config = bit.key();
+          std::transform(config.begin(), config.end(), config.begin(), ::tolower);
           if (config == "thickness") {
             b->setThickness(bit.value());
           } else if (config == "linewidth") {
@@ -55,6 +56,7 @@ namespace fabricad::config
     {
       // First get all properties
       std::string key = it.key();
+      std::transform(key.begin(), key.end(), key.begin(), ::tolower);
       if( key == "license" ) {
           p->setLicense(it.value());
       } else if( key == "author" ) {
@@ -85,6 +87,7 @@ namespace fabricad::config
     for(json::iterator it = j.value().begin(); it != j.value().end(); ++it)
     {
       std::string key = it.key();
+      std::transform(key.begin(), key.end(), key.begin(), ::tolower);
       if (key == "blocks") {
         for(json::iterator bit = it.value().begin(); bit != it.value().end() ; ++bit)
         {
@@ -103,6 +106,7 @@ namespace fabricad::config
     if (j["type"].is_string()) {
       type = j["type"];
     }
+    std::transform(type.begin(), type.end(), type.begin(), ::tolower);
 
     if (type == "polygon") {
       return parsePolygon(j);
@@ -113,6 +117,8 @@ namespace fabricad::config
       bg::append(p.outer(), parsePoint(j["point"]));
       bg::correct(p);
       return p;
+    } else if (type == "ellipse") {
+      return parseEllipse(j);
     }
 
     polygon p1;
@@ -129,6 +135,33 @@ namespace fabricad::config
     }
     bg::correct(p);
     return p;
+  }
+
+  polygon JsonReader::parseEllipse(json &j)
+  {
+
+    float a = 1;
+    float b = 1;
+    point c;
+    float sides = 24;
+
+    for(json::iterator it = j.begin(); it != j.end(); ++it)
+    {
+      std::string key = it.key();
+      std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+
+      if (key == "a") {
+        a = it.value();
+      } else if (key == "b") {
+        b = it.value();
+      } else if (key == "origin") {
+        c = parsePoint(it.value());
+      } else if (key == "sides") {
+        sides = it.value();
+      }
+    }
+
+    return ellipseToPolygon(c, a, b, sides);
   }
 
   polygon JsonReader::parseRectangle(json &j)
@@ -186,6 +219,7 @@ namespace fabricad::config
     for(json::iterator it = j.begin(); it != j.end(); ++it)
     {
       std::string key = it.key();
+      std::transform(key.begin(), key.end(), key.begin(), ::tolower);
 
       if (key == "type") {
         block->setType(it.value());
@@ -221,6 +255,7 @@ namespace fabricad::config
     for(json::iterator it = j["config"].begin(); it != j["config"].end(); ++it)
     {
       std::string key = it.key();
+      std::transform(key.begin(), key.end(), key.begin(), ::tolower);
       if (key == "center") {
         lintel->setCenter(parsePoint(it.value()));
       } else if (key == "strikingpoint") {
@@ -243,7 +278,7 @@ namespace fabricad::config
     for(json::iterator it = j.begin(); it != j.end(); ++it)
     {
       std::string key = it.key();
-
+      std::transform(key.begin(), key.end(), key.begin(), ::tolower);
       if (key == "type") {
         wall->setType(it.value());
       } else if (key == "config") {

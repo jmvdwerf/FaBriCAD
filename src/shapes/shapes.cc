@@ -91,3 +91,42 @@ point increasePoint(point p, float inc)
 
   return point(x, y);
 }
+
+polygon ellipseToPolygon(point const& center, float a, float b)
+{
+  return ellipseToPolygon(center, a, b, 24);
+}
+
+polygon ellipseToPolygon(point const& center, float a, float b, size_t sides)
+{
+  float step;
+  if (sides == 0) {
+    step = M_PI / 12;
+  } else {
+    step = 2 * M_PI / sides;
+  }
+
+  float cx = center.get<0>();
+  float cy = center.get<1>();
+
+  polygon p;
+
+  for(float angle = 0; angle < 2 * M_PI ; angle += step)
+  {
+    float x = a * cos(angle) + cx;
+    float y = b * sin(angle) + cy;
+    bg::append(p.outer(), point(x,y));
+  }
+  bg::correct(p);
+
+  return p;
+}
+
+
+
+
+
+
+
+
+

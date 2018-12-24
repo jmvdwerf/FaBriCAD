@@ -29,16 +29,23 @@
                 "terras": {
                     "name": "terras",
                     "type": "cutout",
+                    "config": {
+                        "color": "red"
+                    },
                     "shape": {
                         "type": "ellipse",
                         "origin": { "x": 1316, "y": 0 },
                         "A": 520,
-                        "B": 520
+                        "B": 520,
+                        "sides": 100
                     }
                 },
                 "boom": {
                     "name": "Boom",
                     "type": "cutout",
+                    "config": {
+                        "color": "green"
+                    },
                     "shape": {
                         "type": "ellipse",
                         "origin": { "x": 676, "y":  90 },

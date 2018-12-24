@@ -49,4 +49,7 @@ float getDyFor(float angle, float length);
 
 point increasePoint(point p, float inc);
 
+polygon ellipseToPolygon(point const& center, float a, float b);
+polygon ellipseToPolygon(point const& center, float a, float b, size_t sides);
+
 #endif
