@@ -12,7 +12,7 @@ namespace fabricad::converter
   box SvgExporter::determineEnvelope(fabricad::config::Blueprint* print)
   {
 
-    box mBound;
+    box mBound(point(0,0),point(0,0));
     for(auto& item: print->getLayers())
     {
       std::vector<shapelayer> layers = item.second;
