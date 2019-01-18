@@ -56,10 +56,19 @@ namespace fabricad::converter
 
   void ScadExporter::handlePolygon(std::ostream &out, polygon const& p)
   {
+    out << "\t\t";
+
+    float extra = 0;
+
+    if (getCurrentBlock()->getType() == "cutout") {
+      extra = 2;
+      out << "translate([0,0,-1]) ";
+    }
+
     std::vector<point> const& points = p.outer();
-    out << "\t\tcolor(\""<< getColor() << "\") { ";
+    out << "color(\""<< getColor() << "\") { ";
     if (getThickness() > 0) {
-      out << "linear_extrude(height=" << getThickness() << ") { ";
+      out << "linear_extrude(height=" << (getThickness()+extra) << ") { ";
     }
     out << "polygon( [ " << std::endl;
     out << "\t\t\t";

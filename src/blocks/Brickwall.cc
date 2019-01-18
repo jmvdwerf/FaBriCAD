@@ -84,8 +84,8 @@ namespace fabricad::blocks
   {
     float minX = bb.min_corner().get<0>();
     float minY = bb.min_corner().get<1>();
-    float maxX = bb.max_corner().get<0>();
-    float maxY = bb.max_corner().get<1>();
+    float maxX = bb.max_corner().get<0>() + getBrickWidth();
+    float maxY = bb.max_corner().get<1>() + getBrickHeight();
 
     size_t counter = getStartRow();
     float prevY = minY;
@@ -102,7 +102,7 @@ namespace fabricad::blocks
       }
 
       float start = minX + (1-((float) (counter % 2))/2) * getBrickWidth();
-      for(float j = start ; j < maxX ; j += getBrickWidth() )
+      for(float j = start ; j <= maxX ; j += getBrickWidth() )
       {
         point py1 = point(j, prevY);
         point py2 = point(j, i);
