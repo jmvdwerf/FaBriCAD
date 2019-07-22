@@ -25,7 +25,14 @@ namespace fabricad::blocks
         bg::append(line, point(x, y));
         bg::append(line, point(x, y + getMillingLength()));
 
-        this->layers_[1].lines.push_back(line);
+
+        std::vector<linestring> l;
+        bg::intersection(line, this->shape_, l);
+        this->layers_[1].lines.insert(
+            this->layers_[1].lines.end(),
+            l.begin(),
+            l.end()
+        );
       }
     }
   }
