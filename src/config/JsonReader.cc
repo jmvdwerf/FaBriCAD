@@ -199,6 +199,8 @@ namespace fabricad::config
         block = JsonReader::parseEnglishBondwall(j.value());
       } else if (type == "lintel") {
         block = JsonReader::parseLintel(j.value());
+      } else if (type == "simpleroof") {
+        block = JsonReader::parseSimpleRoof(j.value());
       } else {
         block = JsonReader::parseBasicBuildingBlock(j.value());
       }
@@ -270,6 +272,25 @@ namespace fabricad::config
     }
 
     return lintel;
+  }
+
+  fabricad::blocks::SimpleRoof* JsonReader::parseSimpleRoof(json &j)
+  {
+    fabricad::blocks::SimpleRoof* roof = new fabricad::blocks::SimpleRoof();
+    parseBaseElement(roof, j);
+
+    for(json::iterator it = j.begin(); it != j.end(); ++it)
+    {
+      std::string key = it.key();
+      std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+      if (key == "config") {
+
+      } else if (key == "shape") {
+        roof->setShape(parseGeometry(it.value() ) );
+      }
+
+    }
+    return roof;
   }
 
   void JsonReader::parseWallParameters(Brickwall* wall, json &j)

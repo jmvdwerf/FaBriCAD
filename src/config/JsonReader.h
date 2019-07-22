@@ -10,6 +10,7 @@
 #include "../blocks/Brickwall.h"
 #include "../blocks/EnglishBond.h"
 #include "../blocks/Lintel.h"
+#include "../blocks/SimpleRoof.h"
 
 #include "../../include/json.hpp"
 using json=nlohmann::json;
@@ -31,6 +32,7 @@ namespace fabricad::config
     static fabricad::blocks::Brickwall* parseBrickwall(json &j);
     static fabricad::blocks::EnglishBond* parseEnglishBondwall(json &j);
     static fabricad::blocks::Lintel* parseLintel(json &j);
+    static fabricad::blocks::SimpleRoof* parseSimpleRoof(json &j);
     static void parseWallParameters(Brickwall *wall, json &j);
     static void parseBaseElement(BaseElement* b, json &j);
 
