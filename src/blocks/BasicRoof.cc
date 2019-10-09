@@ -9,7 +9,7 @@ namespace fabricad::blocks
     tile_height_ = 10;
     tile_width_ = 7;
     tile_depth_ = 1;
-    milling_length_ = 9;
+    mill_diameter_ = 9;
   }
 
   BasicRoof* BasicRoof::setTileWidth(float w)
@@ -45,15 +45,15 @@ namespace fabricad::blocks
     return tile_depth_;
   }
 
-  BasicRoof* BasicRoof::setMillingLength(float w)
+  BasicRoof* BasicRoof::setMillDiameter(float w)
   {
-    milling_length_ = w;
+    mill_diameter_ = w;
     return this;
   }
 
-  float BasicRoof::getMillingLength()
+  float BasicRoof::getMillDiameter()
   {
-    return milling_length_;
+    return mill_diameter_;
   }
 
   void BasicRoof::generateSawTooth(float length, float width, float height, float x, float y, std::vector<linestring> &lines)

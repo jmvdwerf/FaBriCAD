@@ -23,9 +23,16 @@ namespace fabricad::blocks
       for(float y = minY; y < maxY ; y+= getTileHeight()) {
         linestring line;
         bg::append(line, point(x, y));
-        bg::append(line, point(x, y + getMillingLength()));
+        bg::append(line, point(x, y + getMillDiameter()));
 
-        this->layers_[1].lines.push_back(line);
+
+        std::vector<linestring> l;
+        bg::intersection(line, this->shape_, l);
+        this->layers_[1].lines.insert(
+            this->layers_[1].lines.end(),
+            l.begin(),
+            l.end()
+        );
       }
     }
   }

@@ -7,6 +7,16 @@
 namespace fabricad::converter
 {
 
+  void Exporter::setMaxLevel(size_t level)
+  {
+    level_ = level;
+  }
+
+  size_t Exporter::getMaxLevel()
+  {
+    return level_;
+  }
+
   void Exporter::exportToFile(std::string const& filename, fabricad::config::Project* project)
   {
     currentProject = project;
@@ -70,10 +80,14 @@ namespace fabricad::converter
     currentBlock = blockItem.first;
 
     handleBlockStart(blockItem.first, filename, out);
+    size_t layercount = 0;
 
     for(auto& layer: blockItem.second)
     {
       handleLayer(out, layer);
+      layercount++;
+      // Stop if the layer count is larger than the max level
+      if (layercount > getMaxLevel()) break;
     }
 
     handleBlockFinish(blockItem.first, filename, out);

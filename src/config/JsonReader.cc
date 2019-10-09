@@ -278,19 +278,36 @@ namespace fabricad::config
   {
     fabricad::blocks::SimpleRoof* roof = new fabricad::blocks::SimpleRoof();
     parseBaseElement(roof, j);
+    parseBaseRoofElement(roof, j);
 
+    return roof;
+  }
+
+  void JsonReader::parseBaseRoofElement(fabricad::blocks::SimpleRoof* roof, json &j) {
     for(json::iterator it = j.begin(); it != j.end(); ++it)
     {
       std::string key = it.key();
       std::transform(key.begin(), key.end(), key.begin(), ::tolower);
       if (key == "config") {
-
+        for(json::iterator props = it.value().begin(); props != it.value().end() ; ++props)
+        {
+          std::string propkey = props.key();
+          std::transform(propkey.begin(), propkey.end(), propkey.begin(), ::tolower);
+          if (propkey == "tilewidth") {
+            roof->setTileWidth(props.value());
+          } else if (propkey == "tileheight") {
+            roof->setTileHeight(props.value());
+          } else if (propkey == "tiledepth") {
+            roof->setTileDepth(props.value());
+          } else if (propkey == "milldiameter") {
+            roof->setMillDiameter(props.value());
+          }
+        }
       } else if (key == "shape") {
         roof->setShape(parseGeometry(it.value() ) );
       }
 
     }
-    return roof;
   }
 
   void JsonReader::parseWallParameters(Brickwall* wall, json &j)
