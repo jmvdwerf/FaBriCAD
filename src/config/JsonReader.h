@@ -33,6 +33,7 @@ namespace fabricad::config
     static fabricad::blocks::EnglishBond* parseEnglishBondwall(json &j);
     static fabricad::blocks::Lintel* parseLintel(json &j);
     static fabricad::blocks::SimpleRoof* parseSimpleRoof(json &j);
+    static void parseBaseRoofElement(fabricad::blocks::SimpleRoof* roof, json &j);
     static void parseWallParameters(Brickwall *wall, json &j);
     static void parseBaseElement(BaseElement* b, json &j);
 

@@ -34,8 +34,8 @@ namespace fabricad::blocks
       BasicRoof* setTileDepth(float d);
       float getTileDepth();
 
-      BasicRoof* setMillingLength(float d);
-      float getMillingLength();
+      BasicRoof* setMillDiameter(float d);
+      float getMillDiameter();
     protected:
       // function to build a sawtooth of a given length, starting at point (x,y)
       // and adds it to the vector lines
@@ -49,7 +49,7 @@ namespace fabricad::blocks
       float tile_height_;
       float tile_width_;
       float tile_depth_;
-      float milling_length_;
+      float mill_diameter_;
   };
 }
 

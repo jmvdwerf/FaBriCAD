@@ -50,6 +50,8 @@ int main(int argc, char* argv[])
 
   program = argv[0];
 
+  size_t level = 20;
+
   size_t counter = 1;
   while(counter < argc)
   {
@@ -58,8 +60,15 @@ int main(int argc, char* argv[])
     if (argument.substr(0,2) == "-h") {
       printHelp("");
       return 0;
-    }
-    if (argument.substr(0,2) == "-T") {
+    } else if (argument == "--maxlevel" || argument == "-L") {
+      counter++;
+      if (counter >= argc) {
+        printHelp("No argument for --maxlevel");
+        return 4;
+      }
+      // std::cout << "Set max level to: " << argv[counter] << std::endl;
+      level = std::stoi(argv[counter]);
+    } else if (argument.substr(0,2) == "-T") {
       // Next letters are the output type
       // Next argument is the corresponding output type
       counter++;
@@ -69,8 +78,11 @@ int main(int argc, char* argv[])
       }
       outputs.push_back({argument.substr(2), argv[counter]});
     } else {
+      // std::cout << "Added file: " << argument << std::endl ;
       filenames.push_back(argument);
     }
+
+
     counter++;
   }
 
@@ -91,18 +103,21 @@ int main(int argc, char* argv[])
         boost::filesystem::create_directories(outputdir.parent_path());
       }
 
+      fabricad::converter::Exporter* exp;
       if (t.type == "txt") {
-        fabricad::converter::Exporter* exp = new fabricad::converter::TxtExporter();
-        exp->exportToFile(t.output, p);
+        exp = new fabricad::converter::TxtExporter();
       } else if (t.type == "svg") {
-        fabricad::converter::Exporter* exp = new fabricad::converter::SvgExporter();
-        exp->exportToFile(t.output, p);
+        exp = new fabricad::converter::SvgExporter();
       } else if (t.type == "scad") {
-        fabricad::converter::Exporter* exp = new fabricad::converter::ScadExporter();
-        exp->exportToFile(t.output, p);
+        exp = new fabricad::converter::ScadExporter();
       } else {
         std::cout << "Unknown type: " << t.type << std::endl;
+        return 3;
       }
+
+      exp->setMaxLevel(level);
+      exp->exportToFile(t.output, p);
+
     }
   }
 

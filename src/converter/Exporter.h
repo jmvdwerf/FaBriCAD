@@ -48,6 +48,9 @@ namespace fabricad::converter
      */
     void exportToFile(std::string const& filename, fabricad::config::Project* p);
 
+    void setMaxLevel(size_t l);
+    size_t getMaxLevel();
+
   protected:
     virtual void handleProjectStart(fabricad::config::Project* project, std::string const& filename, std::ostream &out);
     virtual void handleProjectFinish(fabricad::config::Project* project, std::string const& filename, std::ostream &out);
@@ -90,6 +93,8 @@ namespace fabricad::converter
     float thickness_ = 8;
     float linewidth_ = 1;
     float linedepth_ = 0.4;
+
+    size_t level_ = 20;
 
   private:
     fabricad::config::Blueprint* currentBlueprint;
