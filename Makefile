@@ -34,9 +34,11 @@ OBJCOPY     = objcopy
 
 
 CC_FLAGS   += $(INCLUDES)
-# CC_FLAGS   += -std=c++17
+CC_FLAGS   += -std=c++17
 # Required for Boost::fileystem
-LD_FLAGS   += -lboost_filesystem -lboost_system
+LD_FLAGS   += -llibboost_filesystem
+# Default Boost libraries
+LD_FLAGS   += -llibboost_system
 
 # CC_FLAGS   += $(DEFINES)
 
@@ -84,9 +86,11 @@ directories:
 	@$(CC) $(CC_FLAGS) $(filter %/$(subst .o,.cc,$(notdir $@)), $(SOURCES)) -c -o $@
 	@$(call log_ok)
 
+
+# Warning: for Boost, the LD_Flags should be at the end, since otherwise Boost::system complains.
 $(BIN): ${OBJECTS}
 	@echo
 	@$(call log_info,Building $(BIN))
 	@$(COL_ERROR)
-	@$(CC) $(LD_FLAGS) $(OBJECTS) $(LIBS) -o $(BIN)
+	@$(CC) $(OBJECTS) $(LIBS) -o $(BIN) $(LD_FLAGS)
 	@$(call log_ok)
