@@ -8,6 +8,13 @@ Libraries used:
   - BOOST Geometry
 
 
+
+To import the generated SVG into Fusion, use the following scale factor:
+```
+3.77965
+```
+
+
 # JSON format
 
 ## Project
