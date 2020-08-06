@@ -1,0 +1,76 @@
+{
+    "name": "Example Shed",
+    "description": "Simple example of a shed that shows the capabilities of FaBriCAD",
+    "author": "J.M.E.M. van der Werf",
+    "version": "1.0",
+    "license": "MIT",
+    "settings": {
+        "unit": "mm"
+    },
+    "blueprints": {
+        "front": {
+            "name": "Front",
+            "blocks": {
+                "wall": {
+                    "name": "wall",
+                    "type": "brickwall",
+                    "config": {
+                        "height": 5,
+                        "width": 10,
+                        "angle": 0
+                    },
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x":   0, "y":   0 },
+                            { "x": 200, "y":   0 },
+                            { "x": 200, "y": 125 },
+                            { "x":   0, "y": 125 }
+                        ]
+                    }
+                },
+                "door": {
+                    "name": "door",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 135, "y":   5 },
+                            { "x": 180, "y":   5 },
+                            { "x": 180, "y": 110 },
+                            { "x": 135, "y": 110 }
+                        ]
+                    }
+                },
+                "window": {
+                    "name": "window",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x":  40, "y":  70 },
+                            { "x": 100, "y":  70 },
+                            { "x": 100, "y": 110 },
+                            { "x": 40,  "y": 110 }
+                        ]
+                    }
+                },
+                "latij": {
+                    "name": "Latij boven raam",
+                    "type": "latij",
+                    "config": {
+                        "width": 60,
+                        "height": 10,
+                        "stones": 5,
+                        "brickheight": 10,
+                        "brickwidth": 5
+                    },
+                    "shape": {
+                        "type": "singleton",
+                        "point": { "x": 40, "y": 110 }
+                    }
+                }
+            }
+        }
+    }
+}

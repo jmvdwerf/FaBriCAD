@@ -1,0 +1,8 @@
+build/
+test/
+*.h.gch
+*.svg
+*.html
+*.stackdump
+*.scad
+*.sublime-*

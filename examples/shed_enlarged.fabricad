@@ -1,0 +1,156 @@
+{
+    "name": "Example Shed",
+    "description": "Simple example of a shed that shows the capabilities of FaBriCAD",
+    "author": "J.M.E.M. van der Werf",
+    "version": "1.0",
+    "license": "MIT",
+    "blueprints": {
+        "front": {
+            "name": "Front",
+            "blocks": {
+                "wall": {
+                    "name": "wall",
+                    "type": "brickwall",
+                    "config": {
+                        "height": 50,
+                        "width": 100,
+                        "angle": 0
+                    },
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x":   0, "y":   0 },
+                            { "x": 2000, "y":   0 },
+                            { "x": 2000, "y": 1200 },
+                            { "x":   0, "y": 1200 }
+                        ]
+                    }
+                },
+                "door": {
+                    "name": "door",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 1350, "y":   50 },
+                            { "x": 1800, "y":   50 },
+                            { "x": 1800, "y": 1100 },
+                            { "x": 1350, "y": 1100 }
+                        ]
+                    }
+                },
+                "window": {
+                    "name": "window",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x":  400, "y":  700 },
+                            { "x": 1000, "y":  700 },
+                            { "x": 1000, "y": 1100 },
+                            { "x": 400,  "y": 1100 }
+                        ]
+                    }
+                }
+            }
+        },
+        "left": {
+            "name": "Left",
+            "blocks": {
+                "wall": {
+                    "name": "wall",
+                    "type": "brickwall",
+                    "config": {
+                        "height": 50,
+                        "width": 100,
+                        "angle": 0
+                    },
+                    "shape": {
+                      "type": "polygon",
+                      "points": [
+                         { "x":  0, "y":  0 },
+                         { "x": 800, "y":  0 },
+                         { "x": 800, "y": 1200 },
+                         { "x":  0, "y": 1500 }                      
+                      ]
+                    }
+                },
+                "window": {
+                    "name": "window",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "ellipse",
+                        "A": 100,
+                        "B": 200,
+                        "origin": {
+                            "x": 400,
+                            "y": 800
+                        }
+                    }
+                }
+            }
+        },
+        "right": {
+            "name": "Right",
+            "blocks": {
+                "wall": {
+                    "name": "wall",
+                    "type": "brickwall",
+                    "config": {
+                        "height": 50,
+                        "width": 100,
+                        "angle": 0
+                    },
+                    "shape": {
+                      "type": "polygon",
+                      "points": [
+                         { "x":  0, "y":  0 },
+                         { "x": 800, "y":  0 },
+                         { "x": 800, "y": 1500 },
+                         { "x":  0, "y": 1200 }                      
+                      ]
+                    }
+                },
+                "window": {
+                    "name": "window",
+                    "type": "cutout",
+                    "config": {
+                        "style": "fill:red;stroke:black;stroke-width:1"
+                    },
+                    "shape": {
+                        "type": "rectangle",
+                        "width": 200,
+                        "height": 400,
+                        "origin": {
+                            "x": 300,
+                            "y": 600
+                        }
+                    }
+                }
+            }
+        },
+        "back": {
+            "name": "Back",
+            "blocks": {
+                "wall": {
+                    "name": "wall",
+                    "type": "brickwall",
+                    "config": {
+                        "height": 50,
+                        "width": 100,
+                        "angle": 0
+                    },
+                    "shape": {
+                      "type": "polygon",
+                      "points": [
+                         { "x":   0, "y":  0 },
+                         { "x": 2000, "y":  0 },
+                         { "x": 2000, "y": 1500 },
+                         { "x":   0, "y": 1500 }                      
+                      ]
+                    }
+                }
+            }
+        }
+    }
+}

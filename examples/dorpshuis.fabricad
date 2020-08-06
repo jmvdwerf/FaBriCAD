@@ -1,0 +1,455 @@
+{
+    "name": "Dorpshuis",
+    "description": "Dorpshuis 1, naar voorbeeld van het voorbeeld op de Koestraat 6 in Oirschot. Dit wordt het hoekhuis in een rijtje van 3.",
+    "author": "J.M.E.M. van der Werf",
+    "version": "1.0",
+    "license": "MIT",
+    "blueprints": {
+        "front": {
+            "name": "Front",
+            "blocks": {
+                "wall": {
+                    "name": "wall",
+                    "type": "StaandVerband",
+                    "config": {
+                        "height": 4,
+                        "width": 10,
+			"start": 1,
+                        "actual": "StaandVerband"
+                    },
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x":   0, "y":   0 },
+                            { "x": 275, "y":   0 },
+                            { "x": 275, "y": 200 },
+                            { "x": 165, "y": 200 },
+                            { "x": 165, "y": 166 },
+                            { "x": 105, "y": 166 },
+                            { "x": 105, "y": 200 },
+                            { "x":   0, "y": 200 }
+                        ]
+                    }
+                },
+                "dakkapel": {
+                    "name": "dakkapel",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 105, "y": 175 },
+                            { "x": 105, "y": 225 },
+                            { "x": 135, "y": 250 },
+                            { "x": 165, "y": 225 },
+                            { "x": 165, "y": 175 }
+                        ]
+                    }
+                },
+                "dakkapelraam": {
+                    "name": "Raam dakkapel",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 110, "y": 175 },
+                            { "x": 110, "y": 225 },
+                            { "x": 160, "y": 225 },
+                            { "x": 160, "y": 175 }
+                        ]
+                    }
+                },
+                "dakkapelvensterbank": {
+                    "name": "Raam dakkapel",
+                    "type": "brickwall",
+                    "config": {
+                        "height": 10,
+                        "width": 5,
+                        "start": 1
+                    },
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 105, "y": 165 },
+                            { "x": 105, "y": 175 },
+                            { "x": 165, "y": 175 },
+                            { "x": 165, "y": 165 }
+                        ]
+                    }
+                },
+                "driehoekkapel": {
+                    "name": "driehoek dakkapel",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 110, "y": 225 },
+                            { "x": 135  , "y": 245 },
+                            { "x": 160, "y": 225 }
+                        ]
+                    }
+                },
+                "dakkapelraampje11": {
+                    "name": "raam dakkapel",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 113.5, "y": 179 },
+                            { "x": 113.5, "y": 192 },
+                            { "x": 126.5, "y": 192 },
+                            { "x": 126.5, "y": 179 }
+                        ]
+                    }
+                },
+                "dakkapelraampje12": {
+                    "name": "raam dakkapel",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 113.5, "y": 194 },
+                            { "x": 113.5, "y": 207 },
+                            { "x": 126.5, "y": 207 },
+                            { "x": 126.5, "y": 194 }
+                        ]
+                    }
+                },
+                "dakkapelraampje13": {
+                    "name": "raam dakkapel",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 113.5, "y": 209 },
+                            { "x": 113.5, "y": 222 },
+                            { "x": 126.5, "y": 222 },
+                            { "x": 126.5, "y": 209 }
+                        ]
+                    }
+                },
+                "dakkapelraampje21": {
+                    "name": "raam dakkapel",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 128.5, "y": 179 },
+                            { "x": 128.5, "y": 192 },
+                            { "x": 141.5, "y": 192 },
+                            { "x": 141.5, "y": 179 }
+                        ]
+                    }
+                },
+                "dakkapelraampje22": {
+                    "name": "raam dakkapel",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 128.5, "y": 194 },
+                            { "x": 128.5, "y": 207 },
+                            { "x": 141.5, "y": 207 },
+                            { "x": 141.5, "y": 194 }
+                        ]
+                    }
+                },
+                "dakkapelraampje23": {
+                    "name": "raam dakkapel",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 128.5, "y": 209 },
+                            { "x": 128.5, "y": 222 },
+                            { "x": 141.5, "y": 222 },
+                            { "x": 141.5, "y": 209 }
+                        ]
+                    }
+                },
+                "dakkapelraampje31": {
+                    "name": "raam dakkapel",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 143.5, "y": 179 },
+                            { "x": 143.5, "y": 192 },
+                            { "x": 156.5, "y": 192 },
+                            { "x": 156.5, "y": 179 }
+                        ]
+                    }
+                },
+                "dakkapelraampje32": {
+                    "name": "raam dakkapel",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 143.5, "y": 194 },
+                            { "x": 143.5, "y": 207 },
+                            { "x": 156.5, "y": 207 },
+                            { "x": 156.5, "y": 194 }
+                        ]
+                    }
+                },
+                "dakkapelraampje33": {
+                    "name": "raam dakkapel",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 143.5, "y": 209 },
+                            { "x": 143.5, "y": 222 },
+                            { "x": 156.5, "y": 222 },
+                            { "x": 156.5, "y": 209 }
+                        ]
+                    }
+                },
+                "deurkozijn": {
+                    "name": "Deur",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 170, "y": 5},
+                            { "x": 170, "y": 130},
+                            { "x": 225, "y": 130},
+                            { "x": 225, "y": 5}
+                        ]
+                    }
+                },
+                "deurlatij": {
+                    "name": "Deurlatij",
+                    "type": "latij",
+                    "config": {
+                        "width": 55,
+                        "height": 15,
+                        "stones": 6,
+                        "brickheight": 10,
+                        "brickwidth": 5
+                    },
+                    "shape": {
+                        "type": "singleton",
+                        "point": { "x": 170, "y": 130 }
+                    }
+                },
+                "deur": {
+                    "name": "Deur",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 175, "y": 5},
+                            { "x": 175, "y": 95},
+                            { "x": 220, "y": 95},
+                            { "x": 220, "y": 5}
+                        ]
+                    }
+                },
+                "deurraam1": {
+                    "name": "Deur",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 175, "y": 100},
+                            { "x": 175, "y": 125},
+                            { "x": 188, "y": 125},
+                            { "x": 188, "y": 100}
+                        ]
+                    }
+                },
+                "deurraam2": {
+                    "name": "Deur",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 191, "y": 100},
+                            { "x": 191, "y": 125},
+                            { "x": 204, "y": 125},
+                            { "x": 204, "y": 100}
+                        ]
+                    }
+                },
+                "deurraam3": {
+                    "name": "Deur",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 207, "y": 100},
+                            { "x": 207, "y": 125},
+                            { "x": 220, "y": 125},
+                            { "x": 220, "y": 100}
+                        ]
+                    }
+                },
+                "raam": {
+                    "name": "Raam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 55, "y": 45},
+                            { "x": 55, "y": 130},
+                            { "x": 120, "y": 130},
+                            { "x": 120, "y": 45}
+                        ]
+                    }
+                },
+                "raamlatij": {
+                    "name": "Raamlatij",
+                    "type": "latij",
+                    "config": {
+                        "width": 65,
+                        "height": 15,
+                        "stones": 8,
+                        "brickheight": 10,
+                        "brickwidth": 5
+                    },
+                    "shape": {
+                        "type": "singleton",
+                        "point": { "x": 55, "y": 130 }
+                    }
+                },
+                "raamboven1": {
+                    "name": "Raam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 60, "y": 100},
+                            { "x": 60, "y": 125},
+                            { "x": 76, "y": 125},
+                            { "x": 76, "y": 100}
+                        ]
+                    }
+                },
+                "raamboven2": {
+                    "name": "Raam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 79.5, "y": 100},
+                            { "x": 79.5, "y": 125},
+                            { "x": 95.5, "y": 125},
+                            { "x": 95.5, "y": 100}
+                        ]
+                    }
+                },
+                "raamboven3": {
+                    "name": "Raam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x":  99, "y": 100},
+                            { "x":  99, "y": 125},
+                            { "x": 115, "y": 125},
+                            { "x": 115, "y": 100}
+                        ]
+                    }
+                },
+                "raamonder11": {
+                    "name": "Raam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 60, "y": 50},
+                            { "x": 60, "y": 71},
+                            { "x": 76, "y": 71},
+                            { "x": 76, "y": 50}
+                        ]
+                    }
+                },
+                "raamonder12": {
+                    "name": "Raam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 60, "y": 74},
+                            { "x": 60, "y": 95},
+                            { "x": 76, "y": 95},
+                            { "x": 76, "y": 74}
+                        ]
+                    }
+                },
+                "raamonder21": {
+                    "name": "Raam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 79.5, "y": 50},
+                            { "x": 79.5, "y": 71},
+                            { "x": 95.5, "y": 71},
+                            { "x": 95.5, "y": 50}
+                        ]
+                    }
+                },
+                "raamonder22": {
+                    "name": "Raam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x": 79.5, "y": 74},
+                            { "x": 79.5, "y": 95},
+                            { "x": 95.5, "y": 95},
+                            { "x": 95.5, "y": 74}
+                        ]
+                    }
+                },
+                "raamonder31": {
+                    "name": "Raam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x":  99, "y": 50},
+                            { "x":  99, "y": 71},
+                            { "x": 115, "y": 71},
+                            { "x": 115, "y": 50}
+                        ]
+                    }
+                },
+                "raamonder32": {
+                    "name": "Raam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x":  99, "y": 74},
+                            { "x":  99, "y": 95},
+                            { "x": 115, "y": 95},
+                            { "x": 115, "y": 74}
+                        ]
+                    }
+                }
+                ,
+                "vensterbank": {
+                    "name": "Vensterbank",
+                    "type": "brickwall",
+                    "config": {
+                        "height": 10,
+                        "width": 5,
+                        "start": 1
+                    },
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            { "x":  55, "y": 35},
+                            { "x":  55, "y": 45},
+                            { "x": 120, "y": 45},
+                            { "x": 120, "y": 35}
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
