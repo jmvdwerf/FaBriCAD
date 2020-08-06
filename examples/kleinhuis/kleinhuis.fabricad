@@ -1,0 +1,286 @@
+{
+    "name": "Small dutch village house",
+    "description": "A small dutch village house",
+    "author": "J.M.E.M. van der Werf",
+    "version": "1.0",
+    "license": "MIT",
+    "blueprints": {
+    	"front": {
+    		"name": "Front",
+    		"blocks": {
+    			"wall": {
+    				"name": "wall",
+                    "type": "brickwall",
+                    "config": {
+                         "brickheight": 3.5,
+                         "brickwidth": 10
+                    },
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                          { "x" :   0, "y":   0},
+                          { "x" : 200, "y":   0},
+                          { "x" : 200, "y": 119},
+                          { "x" : 100, "y": 210},
+                          { "x" :   0, "y": 119}]
+                    }
+                 },
+                "door": {
+                    "name": "door",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": {"x": 135, "y": 3.5},
+                        "height": 91,
+                        "width" : 45.5
+                    }
+                },
+                "doorlintel": {
+                    "name": "Lintel above door",
+                    "type": "brickwall",
+                    "config": {
+                        "brickwidth": 3.5,
+                        "brickheight": 10.5
+                    },
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": {"x": 135, "y": 94.5},
+                        "width": 45.5,
+                        "height": 10.5
+                    }
+                },
+                "raam": {
+                    "name": "raam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": { "x": 44, "y": 41 },
+                        "width": 42,
+                        "height": 53.5
+                    }
+                },
+                "raamlintel": {
+                    "name": "Lintel above raam",
+                    "type": "brickwall",
+                    "config": {
+                        "brickheight": 10.5,
+                        "brickwidth": 3.5
+                    },
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": { "x": 44, "y": 94.5 },
+                        "width": 42,
+                        "height": 10.5
+                    }
+                },
+                "dakraam": {
+                    "name": "dakraam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": {"x": 85, "y": 140},
+                        "height": 42,
+                        "width" : 30
+                    }
+                }
+            }
+        },
+        "back": {
+            "name": "Back",
+            "blocks": {
+                "wall": {
+                    "name": "wall",
+                    "type": "brickwall",
+                    "config": {
+                         "brickheight": 3.5,
+                         "brickwidth": 10
+                    },
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                          { "x" :   0, "y":   0},
+                          { "x" : 200, "y":   0},
+                          { "x" : 200, "y": 119},
+                          { "x" : 100, "y": 210},
+                          { "x" :   0, "y": 119}]
+                    }
+                },
+                "deur": {
+                    "name": "achterdeur",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "polygon",
+                        "points": [
+                            {"x": 130, "y":  3.5 },
+                            {"x": 170, "y":  3.5 },
+                            {"x": 170, "y": 52.5 },
+                            {"x": 190, "y": 52.5 },
+                            {"x": 190, "y": 94.5 },
+                            {"x": 130, "y": 94.5 }
+                        ]
+                    }
+                },
+                "deurlintel": {
+                    "name": "Lintel above raam",
+                    "type": "brickwall",
+                    "config": {
+                        "brickheight": 10.5,
+                        "brickwidth": 3.53
+                    },
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": { "x": 130, "y": 94.5 },
+                        "width": 60,
+                        "height": 10.5
+                    }
+                },
+                "raam": {
+                    "name": "raam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": { "x": 44, "y": 41 },
+                        "width": 42,
+                        "height": 53.5
+                    }
+                },
+                "raamlintel": {
+                    "name": "Lintel above raam",
+                    "type": "brickwall",
+                    "config": {
+                        "brickheight": 10.5,
+                        "brickwidth": 3.5
+                    },
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": { "x": 44, "y": 94.5 },
+                        "width": 42,
+                        "height": 10.5
+                    }
+                },
+                "dakraam": {
+                    "name": "dakraam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": {"x": 85, "y": 140},
+                        "height": 42,
+                        "width" : 30
+                    }
+                }
+            }
+        },
+        "right": {
+            "name": "right side (kitchen side)",
+            "blocks": {
+                "wall": {
+                    "name": "wall",
+                    "type": "brickwall",
+                    "config": {
+                        "brickwidth": 10,
+                        "brickheight": 3.5,
+                        "start": 1
+                    },
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": {"x": 0, "y": 0},
+                        "height": 119,
+                        "width": 250
+                    }
+                },
+                "raam": {
+                    "name": "raam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": { "x": 150, "y": 52.5},
+                        "width": 60,
+                        "height": 42
+                    }
+                },
+                "raamlintel": {
+                    "name": "raamlintel",
+                    "type": "brickwall",
+                    "config": {
+                        "brickheight": 10.5,
+                        "brickwidth": 3.52
+                    },
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": { "x": 150, "y": 94.5},
+                        "width": 60,
+                        "height": 10.5
+                    }
+                }
+            }
+        },
+        "left": {
+            "name": "left side",
+            "blocks": {
+                "wall": {
+                    "name": "wall",
+                    "type": "brickwall",
+                    "config": {
+                        "brickwidth": 10,
+                        "brickheight": 3.5,
+                        "start": 1
+                    },
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": {"x": 0, "y": 0},
+                        "height": 119,
+                        "width": 250
+                    }
+                },
+                "raam": {
+                    "name": "raam",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": { "x": 44, "y": 41 },
+                        "width": 42,
+                        "height": 53.5
+                    }
+                },
+                "raamlintel": {
+                    "name": "Lintel above raam",
+                    "type": "brickwall",
+                    "config": {
+                        "brickheight": 10.5,
+                        "brickwidth": 3.5
+                    },
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": { "x": 44, "y": 94.5 },
+                        "width": 42,
+                        "height": 10.5
+                    }
+                },
+                "raamachter": {
+                    "name": "raam achter",
+                    "type": "cutout",
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": { "x": 164, "y": 41 },
+                        "width": 42,
+                        "height": 53.5
+                    }
+                },
+                "raamachterlintel": {
+                    "name": "Lintel above raam",
+                    "type": "brickwall",
+                    "config": {
+                        "brickheight": 10.5,
+                        "brickwidth": 3.5
+                    },
+                    "shape": {
+                        "type": "rectangle",
+                        "origin": { "x": 164, "y": 94.5 },
+                        "width": 42,
+                        "height": 10.5
+                    }
+                }
+            }
+        }
+    }
+}
