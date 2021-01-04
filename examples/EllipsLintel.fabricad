@@ -1,0 +1,69 @@
+{
+  "name": "Testmuur",
+  "description": "Simpele muur met een raam",
+  "author": "J.M.E.M. van der Werf",
+  "version": "1.0",
+  "license": "MIT",
+  "blueprints":
+  {
+  	"front":
+    {
+  		"name": "Front",
+  		"blocks":
+      {
+  			"wall":
+        {
+  				"name": "wall",
+          "type": "brickwall",
+          "config":
+          {
+             "brickheight": 3.5,
+             "brickwidth": 10
+          },
+          "shape":
+          {
+            "type": "rectangle",
+            "origin": {"x": 0, "y": 0},
+            "width": 150,
+            "height": 119
+          }
+       },
+       "boog":
+       {
+          "name": "boog",
+          "type": "ellipsLintel",
+          "config":
+          {
+            "minorAxis": 10,
+            "majorAxis": 40,
+            "capstone":
+            {
+              "width": 2,
+              "stones": 2.5,
+              "useBond": false
+            },
+            "springers":
+            {
+              "count": 2,
+              "width": 2,
+              "stones": 2.5,
+              "useBond": false
+            },
+            "brickwork":
+            {
+              "maxwidth": 3.5,
+              "stones": 2,
+              "height": 10,
+              "useBond": true
+            }
+          },
+          "shape":
+          {
+            "type": "singleton",
+            "point": {"x": 75, "y": 50 }
+          }
+        }
+      }
+    }
+  }
+}
