@@ -1,6 +1,12 @@
 #ifndef _FABRICAD_SHAPES_SHAPES_H_
 #define _FABRICAD_SHAPES_SHAPES_H_
 
+#define _USE_MATH_DEFINES
+#include <cmath>
+
+#ifndef M_PI
+#define M_PI 3.1415926535897932385
+#endif
 
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/point.hpp>
@@ -51,5 +57,9 @@ point increasePoint(point p, float inc);
 
 polygon ellipseToPolygon(point const& center, float a, float b);
 polygon ellipseToPolygon(point const& center, float a, float b, size_t sides);
+
+float ellipseCircumference(float a, float b);
+
+point getUpperIntersectionEllipseLine(float a, float b, float m, float c);
 
 #endif

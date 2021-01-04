@@ -199,6 +199,11 @@ namespace fabricad::config
         block = JsonReader::parseEnglishBondwall(j.value());
       } else if (type == "lintel") {
         block = JsonReader::parseLintel(j.value());
+      // } else if (type == "ellipslintel") {
+      //  block = JsonReader::parseEllipsLintel(j.value());
+      } else if (type == "arclintel") {
+        block = JsonReader::parseArcLintel(j.value());
+      }
       } else if (type == "simpleroof") {
         block = JsonReader::parseSimpleRoof(j.value());
       } else {
@@ -274,6 +279,14 @@ namespace fabricad::config
     return lintel;
   }
 
+  fabricad::blocks::EllipsLintel* JsonReader::parseEllipsLintel(json &j)
+  {
+    fabricad::blocks::EllipsLintel* lintel = new fabricad::blocks::EllipsLintel();
+    parseEllipsLintelParameters(lintel, j);
+    return lintel;
+  }
+
+
   fabricad::blocks::SimpleRoof* JsonReader::parseSimpleRoof(json &j)
   {
     fabricad::blocks::SimpleRoof* roof = new fabricad::blocks::SimpleRoof();
@@ -281,6 +294,73 @@ namespace fabricad::config
     parseBaseRoofElement(roof, j);
 
     return roof;
+  }
+
+  void JsonReader::parseEllipsLintelParameters(fabricad::blocks::EllipsLintel* lintel, json &j)
+  {
+    parseBaseElement(lintel, j);
+    for(json::iterator it = j.begin(); it != j.end(); ++it)
+    {
+      std::string key = it.key();
+      std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+
+      if (key == "config") {
+        for(json::iterator props = it.value().begin(); props != it.value().end() ; ++props)
+        {
+          std::string propkey = props.key();
+          std::transform(propkey.begin(), propkey.end(), propkey.begin(), ::tolower);
+          if (propkey == "minoraxis" || propkey == "a") {
+            lintel->minorAxis(props.value());
+          } else if (propkey == "majoraxis" || propkey == "b") {
+            lintel->majorAxis(props.value());
+          } else if (propkey == "capstone") {
+            for(json::iterator cpr = props.value().begin(); cpr != props.value().end(); ++cpr)
+            {
+              std::string cpkey = cpr.key();
+              std::transform(cpkey.begin(), cpkey.end(), cpkey.begin(), ::tolower);
+              if (cpkey == "width") {
+                lintel->capstoneWidth(cpr.value());
+              } else if (cpkey == "stones") {
+                lintel->nrOfStonesInCapstone(cpr.value());
+              } else if (cpkey == "usebond") {
+                lintel->fillCapstone(cpr.value());
+              }
+            }
+          } else if (propkey == "springers") {
+            for(json::iterator cpr = props.value().begin(); cpr != props.value().end(); ++cpr)
+            {
+              std::string cpkey = cpr.key();
+              std::transform(cpkey.begin(), cpkey.end(), cpkey.begin(), ::tolower);
+              if (cpkey == "width") {
+                lintel->springerWidth(cpr.value());
+              } else if (cpkey == "stones") {
+                lintel->nrOfStonesInSpringer(cpr.value());
+              } else if (cpkey == "usebond") {
+                lintel->fillSpringer(cpr.value());
+              } else if (cpkey == "count") {
+                lintel->springers(cpr.value());
+              }
+            }
+          } else if (propkey == "brickwork") {
+            for(json::iterator cpr = props.value().begin(); cpr != props.value().end(); ++cpr)
+            {
+              std::string cpkey = cpr.key();
+              std::transform(cpkey.begin(), cpkey.end(), cpkey.begin(), ::tolower);
+              if (cpkey == "maxwidth") {
+                lintel->maxBrickWidth(cpr.value());
+              } else if (cpkey == "stones") {
+                lintel->stones(cpr.value());
+              } else if (cpkey == "usebond") {
+                lintel->useBond(cpr.value());
+              } else if (cpkey == "height") {
+                lintel->brickHeight(cpr.value());
+              }
+            }
+          }
+        }
+      }
+
+    }
   }
 
   void JsonReader::parseBaseRoofElement(fabricad::blocks::SimpleRoof* roof, json &j) {

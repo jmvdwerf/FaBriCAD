@@ -1,14 +1,7 @@
 #include "shapes.h"
 
-#define _USE_MATH_DEFINES
-#include <cmath>
-
 #include <fstream>
 #include <iostream>
-
-#ifndef M_PI
-#define M_PI 3.1415926535897932385
-#endif
 
 std::vector<polygon> split(polygon p1, polygon p2)
 {
@@ -127,10 +120,42 @@ polygon ellipseToPolygon(point const& center, float a, float b, size_t sides)
   return p;
 }
 
+float ellipseCircumference(float a, float b) {
+  // We use Ramanujan's second approximation
+  // pi (a + b) [ 1 + 3 h / (10 + (4 - 3 h)^1/2 ) ]
+  // with h = (a-b)^2 / (a+b)^2
+  float h = ((a-b)*(a-b)) / (a+b)*(a+b);
+  return M_PI * (a+b) * ( 1 + 3*h / (10 + sqrt(4 - 3 * h)) );
+}
 
 
+point getUpperIntersectionEllipseLine(float a, float b, float m, float c)
+{
+  float a2 = a * a;
+  float b2 = b * b;
+  float m2 = m * m;
+  float c2 = c * c;
 
+  // Check if there are solutions:
+  if (c2 >= ( a2 * m2 + b2) || b == 0 || a == 0) {
+    // There is no solution!
+    return point(0,0);
+  }
 
+  float det = sqrt(a2 * m2 + b2 - c2) / (a * b);
+  float denominator = (1 / a2) + (m2 / b2);
+
+  float x1 = (-1 * det - ((c * m) / b2)) / denominator;
+  float x2 = (det - ((c * m) / b2)) / denominator;
+
+  float y1 = m * x1 + c;
+
+  if (y1 >= 0) {
+    return point(x1, y1);
+  } else {
+    return point(x2, m * x2 + c);
+  }
+}
 
 
 
