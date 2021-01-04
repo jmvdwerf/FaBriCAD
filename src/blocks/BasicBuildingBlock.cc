@@ -1,6 +1,8 @@
 
 #include "BasicBuildingBlock.h"
 
+#include <sstream>
+
 namespace fabricad::blocks {
 
   string BasicBuildingBlock::getId()
@@ -14,7 +16,7 @@ namespace fabricad::blocks {
     return this;
   }
 
-  string BasicBuildingBlock::getType()
+  std::string BasicBuildingBlock::getType()
   {
     return type_;
   }
@@ -34,9 +36,12 @@ namespace fabricad::blocks {
 
   std::string BasicBuildingBlock::toString(std::string indent)
   {
+    ostringstream stream;
+    stream << boost::geometry::dsv(getShape());
     return
-      indent + "Name: " + getName() + "\n" +
-      indent + "Type: " + getType() + "\n" ;
+      indent + "Name : " + getName() + "\n" +
+      indent + "Type : " + getType() + "\n" +
+      indent + "shape: " + stream.str() +"\n";
   }
 
   polygon BasicBuildingBlock::getShape()

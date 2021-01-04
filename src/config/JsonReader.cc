@@ -203,7 +203,6 @@ namespace fabricad::config
       //  block = JsonReader::parseEllipsLintel(j.value());
       } else if (type == "arclintel") {
         block = JsonReader::parseArcLintel(j.value());
-      }
       } else if (type == "simpleroof") {
         block = JsonReader::parseSimpleRoof(j.value());
       } else {
@@ -279,23 +278,52 @@ namespace fabricad::config
     return lintel;
   }
 
+  fabricad::blocks::ArcLintel* JsonReader::parseArcLintel(json &j)
+  {
+    fabricad::blocks::ArcLintel* lintel = new fabricad::blocks::ArcLintel();
+    parseBaseElement(lintel, j);
+
+    for(json::iterator it = j.begin(); it != j.end(); ++it)
+    {
+      std::string key = it.key();
+      std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+
+      if (key == "config")
+      {
+        for(json::iterator cfg = it.value().begin() ; cfg != it.value().end() ; ++cfg)
+        {
+          std::string config = cfg.key();
+          std::transform(config.begin(), config.end(), config.begin(), ::tolower);
+
+          if (config == "brickheight") {
+            lintel->brickHeight(cfg.value());
+          } else if (config == "brickwidth") {
+            lintel->brickWidth(cfg.value());
+          } else if (config  == "arclength") {
+            lintel->arcLength(cfg.value());
+          }
+        }
+      } else if (key == "type") {
+        lintel->setType(it.value());
+      } else if (key == "shape") {
+        lintel->setShape(parseGeometry(it.value() ) );
+      }
+    }
+    return lintel;
+  }
+
+
+
+  /*
   fabricad::blocks::EllipsLintel* JsonReader::parseEllipsLintel(json &j)
   {
     fabricad::blocks::EllipsLintel* lintel = new fabricad::blocks::EllipsLintel();
     parseEllipsLintelParameters(lintel, j);
     return lintel;
   }
+  */
 
-
-  fabricad::blocks::SimpleRoof* JsonReader::parseSimpleRoof(json &j)
-  {
-    fabricad::blocks::SimpleRoof* roof = new fabricad::blocks::SimpleRoof();
-    parseBaseElement(roof, j);
-    parseBaseRoofElement(roof, j);
-
-    return roof;
-  }
-
+  /*
   void JsonReader::parseEllipsLintelParameters(fabricad::blocks::EllipsLintel* lintel, json &j)
   {
     parseBaseElement(lintel, j);
@@ -361,6 +389,16 @@ namespace fabricad::config
       }
 
     }
+  }
+  */
+
+  fabricad::blocks::SimpleRoof* JsonReader::parseSimpleRoof(json &j)
+  {
+    fabricad::blocks::SimpleRoof* roof = new fabricad::blocks::SimpleRoof();
+    parseBaseElement(roof, j);
+    parseBaseRoofElement(roof, j);
+
+    return roof;
   }
 
   void JsonReader::parseBaseRoofElement(fabricad::blocks::SimpleRoof* roof, json &j) {

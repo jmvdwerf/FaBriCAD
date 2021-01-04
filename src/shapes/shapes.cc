@@ -123,9 +123,12 @@ polygon ellipseToPolygon(point const& center, float a, float b, size_t sides)
 float ellipseCircumference(float a, float b) {
   // We use Ramanujan's second approximation
   // pi (a + b) [ 1 + 3 h / (10 + (4 - 3 h)^1/2 ) ]
-  // with h = (a-b)^2 / (a+b)^2
-  float h = ((a-b)*(a-b)) / (a+b)*(a+b);
-  return M_PI * (a+b) * ( 1 + 3*h / (10 + sqrt(4 - 3 * h)) );
+  // with h = ((a-b) / (a+b))^2
+  float h = pow((a-b) / (a+b), 2);
+  std::cout << "h: " << h << std::endl;
+
+  float value = M_PI * (a+b) * ( 1 + 3*h / (10 + sqrt(4 - 3 * h)) );
+  return value;
 }
 
 

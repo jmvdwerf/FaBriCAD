@@ -1,7 +1,7 @@
-#ifndef _FABRICAD_BLOCKS_LINTEL_H_
-#define _FABRICAD_BLOCKS_LINTEL_H_
+#ifndef _FABRICAD_BLOCKS_ARCLINTEL_H_
+#define _FABRICAD_BLOCKS_ARCLINTEL_H_
 
-#include "Brickwall.h"
+#include "BasicBuildingBlock.h"
 
 
 /**
@@ -56,11 +56,14 @@ namespace fabricad::blocks
     float arcLength();
     ArcLintel* arcLength(float length);
 
+    std::string toString(std::string indent) override;
+
     // Override of the setShape() to directly set all the other variables as well.
     BasicBuildingBlock* setShape(polygon const& shape) override;
 
   protected:
   	void render() override;
+
   private:
 
   	point origin_;
