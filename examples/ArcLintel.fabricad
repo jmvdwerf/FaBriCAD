@@ -49,7 +49,7 @@
             "brickheight": 30,
             "brickwidth": 100,
             "arcLength": 250,
-            "rays": 7
+            "rays": 8
           },
           "shape":
           {

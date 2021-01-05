@@ -101,17 +101,12 @@ namespace fabricad::blocks {
   {
 		BasicBuildingBlock::render();
 
-    cout << toString("");
-
     // As getUpperIntersectionEllipseLine requires the origin to be the center
     // of the ellipse, we first translate point porring_
 
     point p_rel;
     p_rel.set<0>(0);
     p_rel.set<1>(porring_.get<1>() - origin_.get<1>());
-
-    cout << "porring(rel): x: " << p_rel.get<0>() << std::endl;
-    cout << "              y: " << p_rel.get<1>() << std::endl;
 
     // Determine the number of points at each ray.
     // For simplicity, we divide each ray in half brick stones

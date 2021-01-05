@@ -126,6 +126,7 @@ Shape should be a rectangle.
 |brickheight| float | Height of a brick    |
 |brickwidth | float | Width of a brick     |
 |arclength  | float | Length of the lintel |
+|rays       | int   | Nr of rays in one half of the lintel|
 
 ## shapes
 
