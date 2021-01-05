@@ -301,6 +301,8 @@ namespace fabricad::config
             lintel->brickWidth(cfg.value());
           } else if (config  == "arclength") {
             lintel->arcLength(cfg.value());
+          } else if (config == "rays") {
+            lintel->rays(cfg.value());
           }
         }
       } else if (key == "type") {

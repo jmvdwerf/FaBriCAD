@@ -56,6 +56,9 @@ namespace fabricad::blocks
     float arcLength();
     ArcLintel* arcLength(float length);
 
+    int rays();
+    ArcLintel* rays(int rays);
+
     std::string toString(std::string indent) override;
 
     // Override of the setShape() to directly set all the other variables as well.
@@ -64,6 +67,9 @@ namespace fabricad::blocks
   protected:
   	void render() override;
 
+    // polygon ArcLintel::createOuterPolygon(point[][] points, int rows, int cols);
+    // polygon ArcLintel::createOuterPolygon(point[][] points, point offset, int rows, int cols);
+    // polygon ArcLintel::createOuterPolygon(point[][] points, float dx, float dy, int rows, int cols);
   private:
 
   	point origin_;
@@ -72,6 +78,8 @@ namespace fabricad::blocks
     float brick_width_;  // The width of the brick
 
     float arc_length_; // The length of the arc, i.e., how large the lintel will be
+
+    int rays_; // The number of stones (rays) in the arc lintel
 
     float b_; // The height of the rectangle        -> semi-minor axis of the ellipse
     float a_; // Half of the width of the rectangle -> semi-major axis of the ellipse

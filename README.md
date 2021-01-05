@@ -90,6 +90,30 @@ The start parameter is typically used to start at a different row, to align the 
 |brickwidth | float | Width of a single brick |
 |start      | float | The offset to start     |
 
+### Lintel
+
+```
+           topR  >._____________. < topL (center + height)
+                   \           /
+center - width/2 >  .____.____.  < center + width / 2
+                    |\   |   /|
+                    | \  |  / |
+                    |  \ | /  |
+                    |   \|/...|
+                         .   < striking point
+```
+
+#### Configuration
+|parameter      | type  | description                                         |
+|---------------|-------|-----------------------------------------------------|
+|center         | point | The center of the lintel                            |
+|striking point | point | The point used to determine the angle of the lintel |
+|stones         | int   | Number of stones in one half of the lintel          |
+|height         | float | The height of the lintel                            |
+|width          | float | The width of the lintel                             |
+
+
+
 ### Arc Lintel
 
 Shape should be a rectangle.

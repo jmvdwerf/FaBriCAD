@@ -1,4 +1,6 @@
 #include "ArcLintel.h"
+#include "RayedBrickArch.h"
+
 
 namespace fabricad::blocks {
 
@@ -8,6 +10,7 @@ namespace fabricad::blocks {
     brickHeight(5);
     brickWidth(10);
     arcLength(10);
+    rays(2);
   }
 
   float ArcLintel::brickHeight()
@@ -43,6 +46,18 @@ namespace fabricad::blocks {
     return this;
   }
 
+  int ArcLintel::rays()
+  {
+    // We add one, as also the initial ray should be counted...
+    return rays_ + 1;
+  }
+
+  ArcLintel* ArcLintel::rays(int rays)
+  {
+    rays_ = rays;
+    return this;
+  }
+
   std::string ArcLintel::toString(std::string indent)
   {
     std::string s = BasicBuildingBlock::toString(indent);
@@ -50,6 +65,7 @@ namespace fabricad::blocks {
       indent + "major axis  : " + std::to_string(a_) + "\n" +
       indent + "minor axis  : " + std::to_string(b_) + "\n" +
       indent + "arc length  : " + std::to_string(arcLength()) + "\n" +
+      indent + "rays        : " + std::to_string(rays()) + "\n" +
       indent + "brick height: " + std::to_string(brickHeight()) + "\n" +
       indent + "brick width : " + std::to_string(brickWidth()) + "\n" +
       indent + "origin      : x: " + std::to_string(origin_.get<0>()) + "\n" +
@@ -87,18 +103,6 @@ namespace fabricad::blocks {
 
     cout << toString("");
 
-    // We only calculate it for a quarter...
-    float outer_length = ellipseCircumference(a_ + arcLength(), b_ + arcLength()) / 4;
-
-    cout << "outer length: " << outer_length << std::endl;
-
-    // Nr of rays is based on a quarter, minus the cap stone, a single brick stone
-    // We use a floor instead of a ceil, since most of the times, it is better looking
-    // to have slightly larger than slightly smaller stones...
-    int nr_of_rays = (int) floor((outer_length-brickHeight()) / brickHeight());
-
-    cout << "nr of rays  : " << nr_of_rays << std::endl;
-
     // As getUpperIntersectionEllipseLine requires the origin to be the center
     // of the ellipse, we first translate point porring_
 
@@ -106,39 +110,36 @@ namespace fabricad::blocks {
     p_rel.set<0>(0);
     p_rel.set<1>(porring_.get<1>() - origin_.get<1>());
 
-    cout << "porring(rel): x: " << porring_.get<0>() << std::endl;
-    cout << "              y: " << porring_.get<1>() << std::endl;
+    cout << "porring(rel): x: " << p_rel.get<0>() << std::endl;
+    cout << "              y: " << p_rel.get<1>() << std::endl;
 
     // Determine the number of points at each ray.
     // For simplicity, we divide each ray in half brick stones
-    int nr_of_stones = ceil(arcLength() / (2 * brickWidth()));
-
-    cout << "nr of stones: " << nr_of_stones << std::endl;
-
-    // Array to store all the rays in the quarter, to the relative center.
-    point rays[nr_of_rays][nr_of_stones];
-
+    int nr_of_stones = 2 * ceil(arcLength() / brickWidth());
 
     // First, determine the start angle
     float start_angle = atan(abs(p_rel.get<1>())/ a_);
     // The step size per stone
-    float angle_step = ((M_PI / 2) - start_angle) / nr_of_rays;
+    float angle_step = ((M_PI / 2) - start_angle) / (rays()-0.5);
 
     // Every line has form y = mx + c.
     // As every line passes point p_rel, we can rewrite this to:
     // So, moving the angle up, we get:
     // y = tan(a)*x + p_rel_y
 
+    RayedBrickArch* arc = new RayedBrickArch(rays(), nr_of_stones);
+
     // Walk the arc, and store the points in a vector of rays.
     float angle = start_angle;
-    float height = 0;
 
-    for( int ray = 0 ; ray < nr_of_rays ; ray++ )
+    // TODO CHECK THIS LOOP HERE
+    for( int ray = 0 ; ray < rays() ; ray++ )
     {
+      float height = 0;
       // Create a point for each half stone
       for(int stone = 0 ; stone < nr_of_stones ; stone++)
       {
-        rays[ray][stone] = getUpperIntersectionEllipseLine(a_ + height, b_ + height, tan(angle), p_rel.get<1>());
+        arc->set(ray, stone, getUpperIntersectionEllipseLine(a_ + height, b_ + height, tan(angle), p_rel.get<1>()) );
 
         // Update the height for the next round, and take care not to be bigger
         // than the arc length itself.
@@ -157,53 +158,13 @@ namespace fabricad::blocks {
     // Y-coordinate of the origin.
 
     // First, we do layer 0, the outside of the lintel
+    // Notice that we walk from left to right!
     this->layers_[0].polygons.clear();
-    polygon outer;
-
-    // Walk the first half
-    for(int ray = 0 ; ray < nr_of_rays ; ray++)
-    {
-      bg::append(outer.outer(),
-        point(
-          porring_.get<0>() + rays[ray][0].get<0>(), // X point
-          origin_.get<1>()  + rays[ray][0].get<1>() // Y point
-        )
-      );
-    }
-    // Walk the second half, i.e., interpret the ray with negative X coordinate
-    for(int ray = nr_of_rays - 1 ; ray >= 0 ; ray--)
-    {
-      bg::append(outer.outer(),
-        point(
-          porring_.get<0>() - rays[ray][0].get<0>(), // X point
-          origin_.get<1>()  + rays[ray][0].get<1>() // Y point
-        )
-      );
-    }
-    // Walk the third half
-    for(int ray = 0 ; ray < nr_of_rays ; ray++) {
-      bg::append(outer.outer(),
-        point(
-          porring_.get<0>() - rays[ray][nr_of_stones - 1].get<0>(), // X point
-          origin_.get<1>()  + rays[ray][nr_of_stones - 1].get<1>() // Y point
-        )
-      );
-    }
-    // Walk the fourth half
-    for(int ray = nr_of_rays - 1 ; ray >= 0 ; ray--)
-    {
-      bg::append(outer.outer(),
-        point(
-          porring_.get<0>() + rays[ray][nr_of_stones - 1].get<0>(), // X point
-          origin_.get<1>()  + rays[ray][nr_of_stones - 1].get<1>() // Y point
-        )
-      );
-    }
-
     // Store this shape as the main
-    this->layers_[0].polygons.push_back(outer);
+    this->layers_[0].polygons.push_back(arc->outerPolygon(porring_.get<0>(), origin_.get<1>()));
 
     // Now do all the brick lines
+    arc->addBrickWork(this->layers_[1].lines, porring_.get<0>(), origin_.get<1>());
   }
 
 } // End of Namespace
