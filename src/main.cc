@@ -43,7 +43,7 @@ void printHelp(std::string error)
   std::cout << "<input> is a .fabricad-json file. Output is either: " << std::endl;
   std::cout << "\tsvg\tfilename is the start string of each blueprint" << std::endl;
   std::cout << std::endl;
-  std::cout << "(c) 2018 Jan Martijn van der Werf (janmartijn@vdwerf.eu)" << std::endl;
+  std::cout << "(c) 2018 - 2021 Jan Martijn van der Werf (janmartijn@vdwerf.eu)" << std::endl;
 }
 
 int main(int argc, char* argv[])
@@ -107,10 +107,10 @@ int main(int argc, char* argv[])
       }
 
       fabricad::converter::Exporter* exp;
-      if (t.type == "txt") {
-        exp = new fabricad::converter::TxtExporter();
-      } else if (t.type == "svg") {
+      if (t.type == "svg") {
         exp = new fabricad::converter::SvgExporter();
+      } else if (t.type == "txt") {
+        exp = new fabricad::converter::TxtExporter();
       } else if (t.type == "scad") {
         exp = new fabricad::converter::ScadExporter();
       } else {

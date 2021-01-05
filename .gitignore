@@ -1,5 +1,6 @@
 build/
 test/
+tmp/
 *.h.gch
 *.svg
 *.html

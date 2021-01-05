@@ -113,6 +113,21 @@ center - width/2 >  .____.____.  < center + width / 2
 |width          | float | The width of the lintel                             |
 
 
+
+### Arc Lintel
+
+Shape should be a rectangle.
+
+
+#### Configuration
+
+|parameter  | type  | description          |
+|-----------|-------|----------------------|
+|brickheight| float | Height of a brick    |
+|brickwidth | float | Width of a brick     |
+|arclength  | float | Length of the lintel |
+|rays       | int   | Nr of rays in one half of the lintel|
+
 ## shapes
 
 ### Polygon

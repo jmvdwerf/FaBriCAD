@@ -41,7 +41,7 @@ namespace fabricad::blocks {
     virtual std::string toString(std::string indent);
 
     polygon getShape();
-    BasicBuildingBlock* setShape(polygon const& shape);
+    virtual BasicBuildingBlock* setShape(polygon const& shape);
 
     /**
      * This function is the function to obtain all
